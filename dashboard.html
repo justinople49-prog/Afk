@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ReadQuest Dashboard</title>
+
+
+    <!-- =========================================
+         GOOGLE FONTS
+    ========================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================
+         FONT AWESOME
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- =========================================
+         MAIN CSS
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         PIXEL BACKGROUND
+    ========================================== -->
+
+    <div class="pixel-background">
+
+        <img
+            src="images/background/1-Sky.png"
+            class="bg sky"
+            alt=""
+        >
+
+        <img
+            src="images/background/2-Stars.png"
+            class="bg stars"
+            alt=""
+        >
+
+        <img
+            src="images/background/3-Sky.png"
+            class="bg clouds"
+            alt=""
+        >
+
+        <img
+            src="images/background/4-Moon.png"
+            class="bg moon"
+            alt=""
+        >
+
+        <img
+            src="images/background/5-BG Mountains.png"
+            class="bg bgmountains"
+            alt=""
+        >
+
+        <img
+            src="images/background/6-Mountains.png"
+            class="bg mountains"
+            alt=""
+        >
+
+        <img
+            src="images/background/7-Forests.png"
+            class="bg forest"
+            alt=""
+        >
+
+        <img
+            src="images/background/10-Floating Castle.png"
+            class="bg castle"
+            alt=""
+        >
+
+        <img
+            src="images/background/8-Fireflies1.png"
+            id="fireflies"
+            class="bg fireflies"
+            alt=""
+        >
+
+        <img
+            src="images/background/9-Ground.png"
+            class="bg ground"
+            alt=""
+        >
+
+    </div>
+
+
+    <!-- =========================================
+         MENU BUTTON
+    ========================================== -->
+
+    <button
+        id="menu-btn"
+        class="menu-btn"
+        type="button"
+        aria-label="Open menu"
+    >
+        ☰
+    </button>
+
+
+    <!-- =========================================
+         OVERLAY
+    ========================================== -->
+
+    <div
+        id="overlay"
+        class="overlay"
+    ></div>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <h2>
+                    ReadQuest
+                </h2>
+
+            </div>
+
+
+            <!-- TOP PROFILE -->
+
+            <div
+                class="profile"
+                id="navProfile"
+                role="button"
+                tabindex="0"
+                aria-label="Open profile"
+            >
+
+                <img
+                    id="navAvatar"
+                    src="images/default-avatar.png"
+                    class="nav-avatar"
+                    alt="Profile avatar"
+                >
+
+                <span id="userName">
+                    Player
+                </span>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN CONTAINER
+    ========================================== -->
+
+    <div class="container">
+
+
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
+
+        <aside
+            class="sidebar collapsed"
+            id="sidebar"
+        >
+
+            <h3>
+                Reading Kingdom
+            </h3>
+
+
+            <ul>
+
+
+                <!-- =================================
+                     HOME
+                ================================== -->
+
+                <li
+                    class="active"
+                    id="homeMenuItem"
+                >
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>
+                        Home
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     MINI GAMES
+                ================================== -->
+
+                <li
+                    id="lessonsMenuItem"
+                >
+
+                    <i class="fa-solid fa-gamepad"></i>
+
+                    <span>
+                        Mini Games
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     PROGRESS
+                ================================== -->
+
+                <li
+                    id="progressMenuItem"
+                >
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>
+                        Progress
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     ACHIEVEMENTS
+                ================================== -->
+
+                <li
+                    id="achievementsMenuItem"
+                >
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                    <span>
+                        Achievements
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     LEADERBOARD
+                ================================== -->
+
+                <li
+                    id="leaderboardMenuItem"
+                >
+
+                    <i class="fa-solid fa-ranking-star"></i>
+
+                    <span>
+                        Leaderboard
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     FRIENDS
+                ================================== -->
+
+                <li
+                    id="friendsMenuItem"
+                >
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>
+                        Friends
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     PROFILE
+                ================================== -->
+
+                <li
+                    id="profileMenuItem"
+                >
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span>
+                        Profile
+                    </span>
+
+                </li>
+
+
+                <!-- =================================
+                     LOGOUT
+                ================================== -->
+
+                <li
+                    id="logoutBtn"
+                >
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- =====================================
+             DASHBOARD
+        ====================================== -->
+
+        <main class="dashboard">
+
+
+            <!-- =================================
+                 WELCOME SECTION
+            ================================== -->
+
+            <section class="welcome">
+
+
+                <!-- WELCOME TEXT -->
+
+                <div class="hero-text">
+
+                    <h1 id="welcomeText">
+                        Welcome back!
+                    </h1>
+
+                    <p>
+                        Begin today's reading adventure
+                        and unlock new stories inside
+                        the Reading Kingdom.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================
+                     HERO CHARACTER + XP
+                ================================== -->
+
+                <div class="hero-character">
+
+                    <div id="heroSprite"></div>
+
+
+                    <div class="hero-info">
+
+                        <h3 id="heroLevel">
+                            ⭐ Level 1
+                        </h3>
+
+                        <p id="heroRank">
+                            📖 Reader Apprentice
+                        </p>
+
+
+                        <!-- XP BAR -->
+
+                        <div class="xp-bar">
+
+                            <div class="xp-fill"></div>
+
+                        </div>
+
+
+                        <small id="heroXPText">
+                            XP 0 / 100
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 MAIN DASHBOARD CARDS
+            ================================== -->
+
+            <section class="stats">
+
+
+                <!-- =================================
+                     MINI GAMES
+                ================================== -->
+
+                <div
+                    class="card"
+                    id="lessonCard"
+                    role="button"
+                    tabindex="0"
+                >
+
+                    <h3>
+                        🎮 Mini Games
+                    </h3>
+
+                    <p>
+                        Adventure Time!
+                    </p>
+
+                </div>
+
+
+                <!-- =================================
+                     FRIENDS
+                ================================== -->
+
+                <div
+                    class="card"
+                    id="friendsCard"
+                    role="button"
+                    tabindex="0"
+                >
+
+                    <h3>
+                        👥 Friends
+                    </h3>
+
+                    <p>
+                        Add your Friends
+                    </p>
+
+                </div>
+
+
+                <!-- =================================
+                     ACHIEVEMENTS
+                ================================== -->
+
+                <div
+                    class="card"
+                    id="achievementCard"
+                    role="button"
+                    tabindex="0"
+                >
+
+                    <h3>
+                        🏆 Achievements
+                    </h3>
+
+                    <p id="achievementCardText">
+                        View your achievements
+                    </p>
+                </div>
+            </section>
+
+
+            <!-- =================================
+                 READING KINGDOM
+            ================================== -->
+
+            <section class="kingdom">
+
+                <h2>
+                    🌙 Reading Kingdom
+                </h2>
+
+
+                <div class="kingdom-map">
+
+
+                    <!-- MOON -->
+
+                    <div class="map-moon"></div>
+
+
+                    <!-- =================================
+                         MAGIC LIBRARY
+                    ================================== -->
+                            
+                              <div class="location library" id="magicLibraryCard">
+                                 <img src="images/hero/owlhouse_transparent.png" alt="Magic Library">
+                                          <span>
+                                                Profile
+                                            </span>
+
+                                </div>
+
+                    <!-- =================================
+                         VOCABULARY FOREST
+                    ================================== -->
+
+                    <div class="location forest">
+
+                        <img
+                            src="images/hero/treehouse_transparent.png"
+                            alt="Vocabulary Forest"
+                        >
+
+                        <span>
+                            Vocabulary Forest
+                        </span>
+
+                    </div>
+
+
+                    <!-- =================================
+                         READING CASTLE
+                    ================================== -->
+
+                    <div class="location castle">
+
+                        <img
+                            src="images/hero/castle_transparent.png"
+                            alt="Reading Castle"
+                        >
+
+                        <span>
+                            Reading Castle
+                        </span>
+
+                    </div>
+
+
+                    <!-- =================================
+                         OWL ACADEMY
+                    ================================== -->
+
+                    <div class="location academy">
+
+                        <img
+                            src="images/hero/floating_cottage_transparent.png"
+                            alt="Owl Academy"
+                        >
+
+                        <span>
+                            Owl Academy
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 RECENT ACTIVITY
+            ================================== -->
+
+            <section class="activity">
+
+                <h2>
+                    📜 Recent Activity
+                </h2>
+
+
+                <ul id="activityList">
+
+                    <li>
+                        Welcome to ReadQuest!
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- =================================
+                 ADVENTURER LEVEL
+            ================================== -->
+
+            <section class="progress-card">
+
+                <h2>
+                    ⭐ Adventurer Level
+                </h2>
+
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"></div>
+
+                </div>
+
+
+                <p id="levelProgress">
+                    Level 1 • 0 / 100 XP
+                </p>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        © 2026 ReadQuest
+
+    </footer>
+
+
+    <!-- =========================================
+         DASHBOARD JAVASCRIPT
+    ========================================== -->
+
+    <script src="js/script.js"></script>
+
+    <script src="js/progressSystem.js"></script>
+
+    <script src="js/achievementDashboard.js"></script>
+
+
+    <!-- =========================================
+         DASHBOARD NAVIGATION
+    ========================================== -->
+
+    <script>
+
+const magicLibraryCard = document.getElementById("magicLibraryCard");
+
+if (magicLibraryCard) {
+    magicLibraryCard.addEventListener("click", function () {
+        window.location.href = "profile.html";
+    });
+}
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =====================================
+                   PROFILE SIDEBAR
+                ====================================== */
+
+                const profileMenuItem =
+                    document.getElementById(
+                        "profileMenuItem"
+                    );
+
+
+                if (profileMenuItem) {
+
+                    profileMenuItem.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "profile.html";
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   TOP PROFILE
+                ====================================== */
+
+                const navProfile =
+                    document.getElementById(
+                        "navProfile"
+                    );
+
+
+                if (navProfile) {
+
+                    navProfile.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "profile.html";
+
+                        }
+                    );
+
+
+                    navProfile.addEventListener(
+                        "keydown",
+                        function (event) {
+
+                            if (
+                                event.key === "Enter" ||
+                                event.key === " "
+                            ) {
+
+                                event.preventDefault();
+
+                                window.location.href =
+                                    "profile.html";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   MINI GAMES SIDEBAR
+                ====================================== */
+
+                const lessonsMenuItem =
+                    document.getElementById(
+                        "lessonsMenuItem"
+                    );
+
+
+                if (lessonsMenuItem) {
+
+                    lessonsMenuItem.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "lessons.html";
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   MINI GAMES DASHBOARD CARD
+                ====================================== */
+
+                const lessonCard =
+                    document.getElementById(
+                        "lessonCard"
+                    );
+
+
+                if (lessonCard) {
+
+                    lessonCard.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "lessons.html";
+
+                        }
+                    );
+
+
+                    lessonCard.addEventListener(
+                        "keydown",
+                        function (event) {
+
+                            if (
+                                event.key === "Enter" ||
+                                event.key === " "
+                            ) {
+
+                                event.preventDefault();
+
+                                window.location.href =
+                                    "lessons.html";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   ACHIEVEMENTS SIDEBAR
+                ====================================== */
+
+                const achievementsMenuItem =
+                    document.getElementById(
+                        "achievementsMenuItem"
+                    );
+
+
+                if (achievementsMenuItem) {
+
+                    achievementsMenuItem.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "achievements.html";
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   ACHIEVEMENTS DASHBOARD CARD
+                ====================================== */
+
+                const achievementCard =
+                    document.getElementById(
+                        "achievementCard"
+                    );
+
+
+                if (achievementCard) {
+
+                    achievementCard.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "achievements.html";
+
+                        }
+                    );
+
+
+                    achievementCard.addEventListener(
+                        "keydown",
+                        function (event) {
+
+                            if (
+                                event.key === "Enter" ||
+                                event.key === " "
+                            ) {
+
+                                event.preventDefault();
+
+                                window.location.href =
+                                    "achievements.html";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   LEADERBOARD
+                ====================================== */
+
+                const leaderboardMenuItem =
+                    document.getElementById(
+                        "leaderboardMenuItem"
+                    );
+
+
+                if (leaderboardMenuItem) {
+
+                    leaderboardMenuItem.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "leaderboard.html";
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   FRIENDS SIDEBAR
+                ====================================== */
+
+                const friendsMenuItem =
+                    document.getElementById(
+                        "friendsMenuItem"
+                    );
+
+
+                if (friendsMenuItem) {
+
+                    friendsMenuItem.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "friends.html";
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   FRIENDS DASHBOARD CARD
+                ====================================== */
+
+                const friendsCard =
+                    document.getElementById(
+                        "friendsCard"
+                    );
+
+
+                if (friendsCard) {
+
+                    friendsCard.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "friends.html";
+
+                        }
+                    );
+
+
+                    friendsCard.addEventListener(
+                        "keydown",
+                        function (event) {
+
+                            if (
+                                event.key === "Enter" ||
+                                event.key === " "
+                            ) {
+
+                                event.preventDefault();
+
+                                window.location.href =
+                                    "friends.html";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =====================================
+                   PROGRESS
+                ====================================== */
+
+                const progressMenuItem =
+                    document.getElementById(
+                        "progressMenuItem"
+                    );
+
+
+                if (progressMenuItem) {
+
+                    progressMenuItem.addEventListener(
+                        "click",
+                        function () {
+
+                            alert(
+                                "📊 Progress page is coming soon!"
+                            );
+
+                        }
+                    );
+
+                }
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

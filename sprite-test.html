@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Hero Sprite Animation Test</title>
+
+    <link
+        rel="stylesheet"
+        href="css/sprite-test.css"
+    >
+
+</head>
+
+<body>
+
+    <main class="page">
+
+        <h1>Hero Sprite Animation</h1>
+
+        <p class="subtitle">
+            Testing the 4-frame character animation
+        </p>
+
+        <!-- =====================================
+             SPRITE
+        ====================================== -->
+
+        <div class="character-stage">
+
+            <div
+                id="heroSprite"
+                class="hero-sprite"
+            ></div>
+
+        </div>
+
+        <!-- =====================================
+             CONTROLS
+        ====================================== -->
+
+        <div class="controls">
+
+            <button id="playBtn">
+                ▶ Play
+            </button>
+
+            <button id="pauseBtn">
+                ⏸ Pause
+            </button>
+
+            <button id="resetBtn">
+                ↻ Reset
+            </button>
+
+        </div>
+
+        <div class="frame-info">
+
+            Frame:
+
+            <span id="frameNumber">
+                1
+            </span>
+
+            / 4
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const sprite =
+            document.getElementById("heroSprite");
+
+        const frameNumber =
+            document.getElementById("frameNumber");
+
+        const playBtn =
+            document.getElementById("playBtn");
+
+        const pauseBtn =
+            document.getElementById("pauseBtn");
+
+        const resetBtn =
+            document.getElementById("resetBtn");
+
+
+        let currentFrame = 0;
+
+        let animationTimer = null;
+
+
+        /*
+        ==========================================
+        FRAME SETTINGS
+        ==========================================
+        */
+
+        const totalFrames = 4;
+
+        const frameSpeed = 180;
+
+
+        /*
+        ==========================================
+        SHOW FRAME
+        ==========================================
+        */
+
+        function showFrame(frame){
+
+            currentFrame =
+                frame % totalFrames;
+
+            sprite.style.setProperty(
+                "--frame",
+                currentFrame
+            );
+
+            frameNumber.textContent =
+                currentFrame + 1;
+
+        }
+
+
+        /*
+        ==========================================
+        PLAY
+        ==========================================
+        */
+
+        function playAnimation(){
+
+            if(animationTimer !== null){
+
+                return;
+
+            }
+
+            animationTimer =
+                setInterval(()=>{
+
+                    showFrame(
+                        currentFrame + 1
+                    );
+
+                },frameSpeed);
+
+        }
+
+
+        /*
+        ==========================================
+        PAUSE
+        ==========================================
+        */
+
+        function pauseAnimation(){
+
+            clearInterval(animationTimer);
+
+            animationTimer = null;
+
+        }
+
+
+        /*
+        ==========================================
+        RESET
+        ==========================================
+        */
+
+        function resetAnimation(){
+
+            pauseAnimation();
+
+            showFrame(0);
+
+        }
+
+
+        /*
+        ==========================================
+        BUTTON EVENTS
+        ==========================================
+        */
+
+        playBtn.addEventListener(
+            "click",
+            playAnimation
+        );
+
+        pauseBtn.addEventListener(
+            "click",
+            pauseAnimation
+        );
+
+        resetBtn.addEventListener(
+            "click",
+            resetAnimation
+        );
+
+
+        /*
+        ==========================================
+        START
+        ==========================================
+        */
+
+        showFrame(0);
+
+        playAnimation();
+
+    </script>
+
+</body>
+
+</html>

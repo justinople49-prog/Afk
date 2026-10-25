@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReadQuest | Author's Purpose Challenge</title>
+<style>
+:root {
+  --bg:#080d18; --panel:#101827; --gold:#f5a623;
+  --gold-light:#ffd078; --text:#f5f1e8; --muted:#aab4c6;
+  --border:#29384f; --green:#3bc98a; --red:#ff727b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  background:radial-gradient(ellipse at top,#17233a,var(--bg) 65%);
+  font-family:"Segoe UI",Arial,sans-serif
+}
+button,a{font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
+.topbar{background:#0b1220;border-bottom:1px solid var(--border)}
+.topbar-inner{
+  width:min(950px,94%);margin:auto;padding:18px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px
+}
+.brand{font-weight:900;letter-spacing:1px;color:var(--gold)}
+.brand span{color:white}
+.top-link{color:var(--muted);text-decoration:none;font-size:.9rem}
+main{width:min(850px,94%);margin:26px auto 45px}
+.header,.panel{
+  border:1px solid var(--border);border-radius:15px;
+  background:linear-gradient(145deg,#121b2b,#0e1624)
+}
+.header{
+  padding:18px;display:flex;justify-content:space-between;
+  align-items:center;gap:15px
+}
+.case-info{display:flex;align-items:center;gap:12px}
+.case-icon{
+  width:44px;height:44px;display:grid;place-items:center;
+  border-radius:12px;background:var(--gold);color:#211707;font-size:1.4rem
+}
+h1{font-size:1.08rem;margin:0}
+.subtitle{color:var(--muted);font-size:.85rem;margin:5px 0 0}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{
+  padding:9px 11px;border:1px solid var(--border);border-radius:9px;
+  background:#151e2e;color:var(--gold-light);font-size:.85rem
+}
+.levels{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;
+  padding:13px;border:1px solid var(--border);border-top:0;background:#0d1523
+}
+.level{
+  padding:12px 10px;border:1px solid var(--border);border-radius:10px;
+  background:#111b2b;color:var(--muted);text-align:left;cursor:pointer
+}
+.level strong{display:block;color:var(--text);margin-bottom:5px}
+.level small{line-height:1.4}
+.level.active{background:#302516;border-color:var(--gold)}
+.level.active strong{color:var(--gold-light)}
+.level:disabled{opacity:.45;cursor:not-allowed}
+.progress{height:5px;background:#202b3d}
+#progressBar{height:100%;width:0;background:var(--gold);transition:width .25s}
+.panel{margin-top:16px;overflow:hidden}
+.sentence-card{
+  padding:25px;color:#272116;
+  background:linear-gradient(135deg,#fff1d1,#f4ddb0);
+  border-color:#f4d39a
+}
+.eyebrow{
+  color:#8a5b14;font-size:.74rem;font-weight:900;
+  letter-spacing:1.4px;text-transform:uppercase;margin:0 0 12px
+}
+.sentence-card h2{font-size:1.5rem;margin:0 0 13px}
+.sentence-card p{line-height:1.8;margin:0}
+.story-tip{margin-top:14px;color:#765a32;font-size:.83rem}
+.question-panel{padding:22px}
+.question-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tag{padding:8px 12px;border-radius:8px;background:var(--gold);color:#211707;font-size:.75rem;font-weight:900}
+.counter{color:var(--muted);font-size:.85rem}
+#questionText{font-size:1.3rem;line-height:1.55;margin:19px 0}
+.choices{display:grid;grid-template-columns:1fr;gap:10px}
+.choice{
+  display:flex;align-items:center;gap:12px;width:100%;min-height:57px;
+  padding:12px;border:1px solid var(--border);border-radius:10px;
+  background:#111b2b;color:var(--text);text-align:left;cursor:pointer;
+  transition:background .15s,border-color .15s
+}
+.choice:hover:not(:disabled){border-color:var(--gold);background:#202b3d}
+.choice:disabled{cursor:default}
+.letter{
+  width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;
+  border-radius:8px;background:#1b293d;color:var(--gold-light);font-weight:900
+}
+.choice.correct{border-color:var(--green);background:#102d28}
+.choice.correct .letter{background:var(--green);color:#062117}
+.choice.incorrect{border-color:var(--red);background:#351b27}
+.choice.incorrect .letter{background:var(--red);color:#260b10}
+.hint,.feedback{
+  display:none;margin-top:14px;padding:14px;border-radius:10px;line-height:1.65
+}
+.hint.show{display:block;background:#2a2418;border:1px solid #705321;color:#ffe0a1}
+.feedback.show{display:block;background:#131f31;border:1px solid #344660}
+.feedback.good{border-color:#287a50}
+.feedback.try{border-color:#a8772c}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.group{display:flex;gap:9px;flex-wrap:wrap}
+.btn{
+  padding:12px 15px;border:1px solid transparent;border-radius:10px;
+  font-weight:800;cursor:pointer
+}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.gold{background:var(--gold);color:#211707}
+.dark{background:#182438;border-color:#35445b;color:var(--text)}
+.btn:hover:not(:disabled){filter:brightness(1.1)}
+.navigation{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px}
+.navigation a{
+  padding:11px 14px;border:1px solid #36445a;border-radius:10px;
+  color:var(--text);background:#101a2a;text-decoration:none;font-size:.9rem
+}
+#result{display:none;padding:26px;text-align:center}
+.result-icon{font-size:2.8rem}
+#resultTitle{margin:10px 0;font-size:1.7rem}
+.final-score{font-size:3rem;font-weight:900;color:var(--gold-light);margin:15px}
+.result-message{color:var(--muted);line-height:1.7}
+.result-row{
+  display:flex;justify-content:space-between;gap:12px;margin:10px 0;
+  padding:14px;border:1px solid var(--border);border-radius:10px;background:#0d1625;text-align:left
+}
+.hidden{display:none!important}
+@media(min-width:600px){.choices{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){
+  main{margin-top:15px}
+  .header{align-items:flex-start;flex-direction:column}
+  .sentence-card,.question-panel{padding:17px}
+  .actions{align-items:stretch;flex-direction:column}
+  .group{width:100%}.group .btn,.actions>.btn{flex:1}
+  .levels{padding:8px;gap:6px}.level{padding:10px 7px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">READ<span>QUEST</span></div>
+    <a class="top-link" id="topBack" href="text-comprehension-games.html">← All Games</a>
+  </div>
+</header>
+
+<main>
+  <section id="gameScreen">
+    <header class="header">
+      <div class="case-info">
+        <div class="case-icon" aria-hidden="true">✎</div>
+        <div>
+          <h1 id="caseTitle">Author's Purpose Challenge</h1>
+          <p class="subtitle" id="subtitle">Level 1 · Beginner</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">⭐ <span id="score">0</span> pts</div>
+        <div class="stat">🔥 <span id="streak">0</span> streak</div>
+      </div>
+    </header>
+
+    <div class="levels">
+      <button class="level active" id="level0" type="button">
+        <strong>Level 1</strong><small>Beginner · Identify</small>
+      </button>
+      <button class="level" id="level1" type="button" disabled>
+        <strong>Level 2</strong><small>Intermediate · Analyze</small>
+      </button>
+      <button class="level" id="level2" type="button" disabled>
+        <strong>Level 3</strong><small>Expert · Challenge</small>
+      </button>
+    </div>
+    <div class="progress"><div id="progressBar"></div></div>
+
+    <article class="panel sentence-card">
+      <p class="eyebrow">▣ Read the sentence</p>
+      <h2 id="sentenceTitle">What is the author's purpose?</h2>
+      <p id="sentence"></p>
+      <div class="story-tip">ⓘ Look for clues that show why the author wrote this.</div>
+    </article>
+
+    <section class="panel question-panel">
+      <div class="question-top">
+        <span class="tag">AUTHOR'S PURPOSE</span>
+        <span class="counter" id="counter">Question 1 of 10</span>
+      </div>
+      <h2 id="questionText">Why did the author write this sentence?</h2>
+      <div class="choices" id="choices"></div>
+      <div class="hint" id="hint" role="status"></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+      <div class="actions">
+        <div class="group">
+          <button class="btn dark" id="hintButton" type="button">♧ Get a Hint</button>
+          <button class="btn dark" id="restartButton" type="button">↻ Restart</button>
+        </div>
+        <button class="btn gold" id="checkButton" type="button" disabled>Check Answer →</button>
+      </div>
+    </section>
+  </section>
+
+  <section class="panel" id="result">
+    <div style="padding:20px">
+      <div class="result-icon">🏆</div>
+      <p class="eyebrow">Level report</p>
+      <h2 id="resultTitle">Level Completed!</h2>
+      <div class="final-score" id="finalScore">0 pts</div>
+      <p class="result-message" id="resultMessage"></p>
+      <div id="results"></div>
+      <div class="actions" style="justify-content:center">
+        <button class="btn gold" id="continueButton" type="button">Next Level →</button>
+        <button class="btn dark" id="againButton" type="button">Play Again</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="navigation">
+    <a id="backButton" href="text-comprehension-games.html">← Back to Games</a>
+    <a id="categoriesButton" href="assessment-categories.html">Assessment Categories</a>
+  </nav>
+</main>
+
+<script>
+"use strict";
+
+const levels = [
+  {
+    title:"Beginner",
+    questions:[
+      {s:"Please recycle your plastic bottles to help keep our community clean.",a:0,h:"The author asks readers to do something.",e:"The author wants readers to recycle, so the purpose is to persuade."},
+      {s:"Water freezes at 0 degrees Celsius under standard atmospheric pressure.",a:1,h:"This sentence gives a scientific fact.",e:"The sentence provides factual information."},
+      {s:"The little rabbit wore a crown and danced with the moon.",a:2,h:"Imagine a magical story meant to delight a reader.",e:"The imaginary rabbit and dancing moon make the sentence entertaining."},
+      {s:"Buy our new notebook today and make every school day easier!",a:0,h:"The sentence encourages people to buy something.",e:"The author tries to convince readers to buy the notebook."},
+      {s:"A triangle is a shape with three sides.",a:1,h:"This sentence explains a definition.",e:"The sentence informs readers about a triangle."},
+      {s:"The sleepy dragon sneezed and accidentally covered the king in glitter.",a:2,h:"Look for an amusing event in a story.",e:"The silly dragon incident is written to entertain."},
+      {s:"Join our school clean-up this Friday and help make our campus shine.",a:0,h:"The author encourages the reader to participate.",e:"The sentence persuades readers to join an activity."},
+      {s:"Bees help pollinate many flowering plants.",a:1,h:"This tells the reader something about bees.",e:"The sentence gives information about the role of bees."},
+      {s:"Milo the monkey tried to juggle bananas, but they landed in his hat.",a:2,h:"Think about the funny scene.",e:"The amusing monkey story is meant to entertain."},
+      {s:"Choose a reusable water bottle to reduce plastic waste.",a:0,h:"The sentence recommends an action.",e:"The author encourages readers to choose a reusable bottle."}
+    ]
+  },
+  {
+    title:"Intermediate",
+    questions:[
+      {s:"Our town library opens at 8 a.m. on weekdays and offers free book borrowing to members.",a:1,h:"The sentence gives details about opening hours and services.",e:"The purpose is to inform readers about library services."},
+      {s:"Sign up for the reading club today; discover new adventures and make reading your favorite habit!",a:0,h:"The author wants the reader to sign up.",e:"The invitation and encouragement aim to persuade."},
+      {s:"When the wizard opened his lunchbox, a tiny orchestra of frogs began playing jazz.",a:2,h:"This describes an imaginary, amusing event.",e:"The unusual magical scene is meant to entertain."},
+      {s:"The old lighthouse stood on a rocky cliff, its white walls weathered by wind and salt.",a:3,h:"Notice how the sentence focuses on appearance and details.",e:"The author mainly describes the lighthouse."},
+      {s:"Regular sleep helps the body rest and supports learning and attention.",a:1,h:"The sentence explains effects of sleep.",e:"The purpose is to provide information about sleep."},
+      {s:"Don't wait for tomorrow—plant a tree this weekend and help create a greener neighborhood!",a:0,h:"The author directly encourages an action.",e:"The sentence tries to persuade readers to plant a tree."},
+      {s:"The pirate's parrot announced every secret aloud, including the captain's surprise birthday plan.",a:2,h:"This sounds like a funny story.",e:"The surprising and humorous event is intended to entertain."},
+      {s:"The backpack is made of blue canvas and has two front pockets and padded shoulder straps.",a:3,h:"The sentence lists physical features.",e:"The purpose is to describe the backpack."},
+      {s:"The city museum displays artifacts from the region's history and is open Tuesday through Sunday.",a:1,h:"This provides factual details about a museum.",e:"The sentence informs readers about the museum."},
+      {s:"Try the school's new breakfast program so you can start the day ready to learn!",a:0,h:"The sentence encourages students to try a program.",e:"The author wants students to use the breakfast program."}
+    ]
+  },
+  {
+    title:"Expert",
+    questions:[
+      {s:"Because single-use plastics can remain in the environment for many years, residents should carry reusable bags when shopping.",a:0,h:"The fact supports a recommendation for the reader.",e:"The sentence uses a reason to persuade residents to carry reusable bags."},
+      {s:"A lunar eclipse occurs when Earth moves between the Sun and the Moon, casting its shadow on the Moon.",a:1,h:"This explains how a natural event happens.",e:"The sentence informs readers about a lunar eclipse."},
+      {s:"The detective questioned the suspicious parrot, who demanded a lawyer before revealing who stole the crackers.",a:2,h:"This is a playful fictional scene.",e:"The humorous fictional detective story entertains the reader."},
+      {s:"The narrow trail curved between tall pine trees, with soft moss covering the stones beside the stream.",a:3,h:"The sentence builds a picture through sensory details.",e:"The main purpose is to describe a setting."},
+      {s:"Students should have access to a quiet reading period every day because regular reading builds vocabulary and comprehension.",a:0,h:"The author gives a recommendation and supports it with a reason.",e:"The author argues for daily reading time, so the purpose is to persuade."},
+      {s:"Researchers compare observations, gather evidence, and test explanations to investigate scientific questions.",a:1,h:"This explains what researchers do.",e:"The sentence provides information about scientific investigation."},
+      {s:"The robot entered the cooking contest and presented a cake shaped exactly like its own metal head.",a:2,h:"Picture the surprising and funny situation.",e:"The imaginative contest scene is intended to entertain."},
+      {s:"The ceramic vase has a rounded base, a narrow neck, and a blue pattern painted around its rim.",a:3,h:"The sentence focuses on the vase's physical features.",e:"The purpose is to describe the vase."},
+      {s:"Our school should add more shaded seating because students need comfortable places to rest during warm afternoons.",a:0,h:"The writer states what the school should do and explains why.",e:"The author tries to convince the school to add shaded seating."},
+      {s:"A reliable news report identifies its sources, checks claims against evidence, and distinguishes verified facts from opinion.",a:1,h:"The sentence explains features of a reliable news report.",e:"The sentence informs readers about checking news reliability."}
+    ]
+  }
+];
+
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const gradeParam = params.get("grade");
+const grade = ["7","8","9","10"].includes(gradeParam) ? gradeParam : "7";
+
+if (gradeParam) {
+  const query = `?grade=${encodeURIComponent(grade)}`;
+  $("topBack").href = "text-comprehension-games.html" + query;
+  $("backButton").href = "text-comprehension-games.html" + query;
+  $("categoriesButton").href = "assessment-categories.html" + query;
+}
+
+const categories = ["Persuade","Inform","Entertain","Describe"];
+let levelIndex = 0;
+let questionIndex = 0;
+let totalScore = 0;
+let levelScore = 0;
+let streak = 0;
+let selected = null;
+let checked = false;
+let hintUsed = false;
+let unlocked = [true,false,false];
+let levelScores = [null,null,null];
+
+function render() {
+  const level = levels[levelIndex];
+  const item = level.questions[questionIndex];
+
+  $("caseTitle").textContent = "Author's Purpose Challenge";
+  $("subtitle").textContent = `Level ${levelIndex+1} · ${level.title} · Grade ${grade}`;
+
+  for (let i=0;i<3;i++) {
+    $("level"+i).classList.toggle("active",i===levelIndex);
+    $("level"+i).disabled = !unlocked[i];
+  }
+
+  $("sentenceTitle").textContent = "What is the author's purpose?";
+  $("sentence").textContent = "“" + item.s + "”";
+  $("counter").textContent = `Question ${questionIndex+1} of ${level.questions.length}`;
+  $("questionText").textContent = "Why did the author write this sentence?";
+  $("progressBar").style.width = `${(questionIndex+1)/level.questions.length*100}%`;
+  $("score").textContent = totalScore;
+  $("streak").textContent = streak;
+
+  $("choices").replaceChildren();
+
+  const distractors = categories.filter((_,i)=>i!==item.a);
+  const displayed = [categories[item.a],...distractors];
+  const order = [0,1,2,3];
+
+  // Rotate the correct choice's position to avoid a predictable answer pattern.
+  const shift = (levelIndex*2 + questionIndex) % 4;
+  const options = order.map(i=>displayed[(i+shift)%4]);
+  const correctText = categories[item.a];
+  const correctIndex = options.indexOf(correctText);
+
+  options.forEach((option,index)=>{
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "choice";
+    button.dataset.correct = String(index===correctIndex);
+
+    const letter = document.createElement("span");
+    letter.className = "letter";
+    letter.textContent = "ABCD"[index];
+
+    const text = document.createElement("span");
+    text.textContent = option;
+
+    button.append(letter,text);
+    button.addEventListener("click",()=>choose(index));
+    $("choices").appendChild(button);
+  });
+
+  // Save the actual correct option index for answer checking.
+  $("choices").dataset.answer = String(correctIndex);
+
+  selected = null;
+  checked = false;
+  hintUsed = false;
+  $("hint").className = "hint";
+  $("hint").textContent = "";
+  $("feedback").className = "feedback";
+  $("feedback").replaceChildren();
+  $("hintButton").disabled = false;
+  $("checkButton").disabled = true;
+  $("checkButton").style.display = "inline-block";
+  $("checkButton").textContent = "Check Answer →";
+}
+
+function choose(index) {
+  if (checked) return;
+  selected = index;
+  document.querySelectorAll(".choice").forEach((button,i)=>{
+    button.style.borderColor = i===index ? "#f5a623" : "";
+    button.style.background = i===index ? "#302516" : "";
+  });
+  $("checkButton").disabled = false;
+}
+
+function checkAnswer() {
+  if (selected===null || checked) return;
+  checked = true;
+
+  const item = levels[levelIndex].questions[questionIndex];
+  const correctIndex = Number($("choices").dataset.answer);
+  const correct = selected===correctIndex;
+
+  document.querySelectorAll(".choice").forEach((button,index)=>{
+    button.disabled = true;
+    button.style.borderColor = "";
+    button.style.background = "";
+    if(index===correctIndex) button.classList.add("correct");
+    if(index===selected&&!correct) button.classList.add("incorrect");
+  });
+
+  if(correct) {
+    const points = hintUsed ? 5 : 10;
+    totalScore += points;
+    levelScore += points;
+    streak++;
+    $("feedback").className = "feedback show good";
+    $("feedback").textContent = `✓ Correct! +${points} points. ${item.e}`;
+  } else {
+    streak = 0;
+    $("feedback").className = "feedback show try";
+    $("feedback").textContent = `Not quite. The correct answer is ${categories[item.a]}. ${item.e}`;
+  }
+
+  $("score").textContent = totalScore;
+  $("streak").textContent = streak;
+  $("checkButton").style.display = "none";
+
+  const last = questionIndex===levels[levelIndex].questions.length-1;
+  const next = document.createElement("button");
+  next.type = "button";
+  next.className = "btn gold";
+  next.style.marginTop = "12px";
+  next.textContent = last
+    ? (levelIndex===2 ? "Finish Challenge →" : "Complete Level →")
+    : "Next Question →";
+  next.addEventListener("click",()=>{
+    if(last) finishLevel();
+    else { questionIndex++; render(); }
+  });
+  $("feedback").append(document.createElement("br"),next);
+}
+
+function showHint() {
+  if(checked||hintUsed) return;
+  hintUsed = true;
+  $("hint").textContent = "💡 Hint: " + levels[levelIndex].questions[questionIndex].h;
+  $("hint").className = "hint show";
+  $("hintButton").disabled = true;
+}
+
+function finishLevel() {
+  levelScores[levelIndex] = levelScore;
+  unlocked[Math.min(levelIndex+1,2)] = true;
+
+  $("gameScreen").classList.add("hidden");
+  $("result").style.display = "block";
+
+  $("resultTitle").textContent = levelIndex===2
+    ? "Challenge Completed!"
+    : `Level ${levelIndex+1} Completed!`;
+  $("finalScore").textContent = `${levelScore} pts`;
+  $("resultMessage").textContent = levelIndex===2
+    ? "You completed all three levels of Author's Purpose Challenge. Great work!"
+    : `Great work! Level ${levelIndex+2} is now unlocked.`;
+
+    if (
+    levelIndex === 2 &&
+    typeof window.reportAchievementCompletion === "function"
+) {
+    window.reportAchievementCompletion("authors_purpose")
+        .then(result => {
+            console.log("Author's Purpose achievement saved:", result);
+        })
+        .catch(error => {
+            console.error(
+                "Failed to save Author's Purpose achievement:",
+                error
+            );
+        });
+}
+
+  $("results").replaceChildren();
+  levels.forEach((level,i)=>{
+    const row = document.createElement("div");
+    row.className = "result-row";
+    const name = document.createElement("span");
+    name.textContent = `Level ${i+1} · ${level.title}`;
+    const points = document.createElement("strong");
+    points.textContent = levelScores[i]===null ? (unlocked[i]?"Ready":"Locked") : `${levelScores[i]} pts`;
+    row.append(name,points);
+    $("results").appendChild(row);
+  });
+
+  $("continueButton").style.display = levelIndex===2 ? "none" : "inline-block";
+  $("continueButton").textContent = `Start Level ${levelIndex+2} →`;
+  $("againButton").textContent = "Play from Level 1";
+}
+
+function startLevel(index) {
+  if(!unlocked[index]) return;
+  levelIndex = index;
+  questionIndex = 0;
+  levelScore = 0;
+  $("result").style.display = "none";
+  $("gameScreen").classList.remove("hidden");
+  render();
+}
+
+function restart() {
+  levelIndex=0;
+  questionIndex=0;
+  totalScore=0;
+  levelScore=0;
+  streak=0;
+  unlocked=[true,false,false];
+  levelScores=[null,null,null];
+  startLevel(0);
+}
+
+$("checkButton").addEventListener("click",checkAnswer);
+$("hintButton").addEventListener("click",showHint);
+$("restartButton").addEventListener("click",()=>{
+  if(confirm("Restart the challenge and clear your scores?")) restart();
+});
+$("continueButton").addEventListener("click",()=>{
+  if(levelIndex<2) startLevel(levelIndex+1);
+});
+$("againButton").addEventListener("click",restart);
+for(let i=0;i<3;i++){
+  $("level"+i).addEventListener("click",()=>startLevel(i));
+}
+
+render();
+</script>
+<script src="js/achievement-tracker.js"></script>
+</body>
+</html>

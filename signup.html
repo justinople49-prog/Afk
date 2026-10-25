@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- ==================================================
+         META
+    ================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="ReadQuest - Create your Reading Quest account">
+
+    <meta
+        name="theme-color"
+        content="#081326">
+
+    <title>ReadQuest | Sign Up</title>
+
+
+    <!-- ==================================================
+         GOOGLE FONTS
+    ================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
+
+
+    <!-- ==================================================
+         FONT AWESOME
+    ================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- ==================================================
+         USE THE SAME CSS AS LOGIN
+    ================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/login.css">
+
+
+    <!-- ==================================================
+         SIGN UP SPECIFIC CSS
+    ================================================== -->
+
+    <style>
+
+        /* ================================================
+           SIGN UP FORM
+        ================================================ */
+
+        #signupForm {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 18px;
+
+        }
+
+
+        /* ================================================
+           SIGN UP HEADER
+        ================================================ */
+
+        .signup-header {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .signup-header h2 {
+
+            font-size: 2.2rem;
+
+            margin-bottom: 10px;
+
+            color: var(--white);
+
+        }
+
+
+        .signup-header p {
+
+            color: var(--text-light);
+
+            line-height: 1.7;
+
+        }
+
+
+        /* ================================================
+           SIGN UP INPUT GROUP
+        ================================================ */
+
+        #signupForm .input-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+        }
+
+
+        #signupForm .input-group label {
+
+            font-size: .9rem;
+
+            font-weight: 500;
+
+            color: var(--text);
+
+        }
+
+
+        /* ================================================
+           SIGN UP INPUT BOX
+        ================================================ */
+
+        #signupForm .input-box {
+
+            display: flex;
+
+            align-items: center;
+
+            width: 100%;
+
+            height: 56px;
+
+            padding: 0 18px;
+
+            border-radius: var(--radius-md);
+
+            background: rgba(255,255,255,.05);
+
+            border: 1px solid rgba(255,255,255,.08);
+
+            transition: .35s ease;
+
+        }
+
+
+        #signupForm .input-box:hover {
+
+            border-color: rgba(255,255,255,.18);
+
+        }
+
+
+        #signupForm .input-box:focus-within {
+
+            border-color: var(--primary);
+
+            box-shadow:
+
+                0 0 0 4px rgba(78,141,255,.12);
+
+        }
+
+
+        /* ================================================
+           ICONS
+        ================================================ */
+
+        #signupForm .input-box > i {
+
+            width: 22px;
+
+            color: var(--gold);
+
+            font-size: 17px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* ================================================
+           INPUTS
+        ================================================ */
+
+        #signupForm .input-box input {
+
+            flex: 1;
+
+            width: 100%;
+
+            height: 100%;
+
+            margin-left: 15px;
+
+            background: transparent;
+
+            border: none;
+
+            outline: none;
+
+            color: var(--white);
+
+            font-size: .95rem;
+
+        }
+
+
+        #signupForm .input-box input::placeholder {
+
+            color: rgba(255,255,255,.45);
+
+        }
+
+
+        /* ================================================
+           PASSWORD TOGGLE
+        ================================================ */
+
+        #signupForm .toggle-password {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            border-radius: 50%;
+
+            color: rgba(255,255,255,.6);
+
+            flex-shrink: 0;
+
+            transition: .3s ease;
+
+        }
+
+
+        #signupForm .toggle-password:hover {
+
+            color: var(--white);
+
+            background: rgba(255,255,255,.08);
+
+        }
+
+
+        /* ================================================
+           SIGN UP BUTTON
+        ================================================ */
+
+        .signup-btn {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 12px;
+
+            width: 100%;
+
+            height: 58px;
+
+            margin-top: 5px;
+
+            border-radius: var(--radius-md);
+
+            background: var(--primary);
+
+            color: var(--white);
+
+            font-size: 1rem;
+
+            font-weight: 600;
+
+            transition: .35s ease;
+
+        }
+
+
+        .signup-btn:hover {
+
+            background: var(--primary-hover);
+
+            transform: translateY(-3px);
+
+            box-shadow:
+
+                0 15px 35px rgba(78,141,255,.30);
+
+        }
+
+
+        .signup-btn:active {
+
+            transform: scale(.98);
+
+        }
+
+
+        /* ================================================
+           LOGIN LINK
+        ================================================ */
+
+        .login-text {
+
+            text-align: center;
+
+            color: var(--text-light);
+
+        }
+
+
+        .login-text a {
+
+            color: var(--gold);
+
+            font-weight: 600;
+
+            transition: .3s ease;
+
+        }
+
+
+        .login-text a:hover {
+
+            color: var(--white);
+
+        }
+
+
+        /* ================================================
+           MAKE CARD TALLER FOR SIGN UP
+        ================================================ */
+
+        .signup-card {
+
+            min-height: 760px;
+
+        }
+
+
+        /* ================================================
+           TABLET
+        ================================================ */
+
+        @media screen and (max-width: 992px) {
+
+            .signup-card {
+
+                min-height: auto;
+
+            }
+
+        }
+
+
+        /* ================================================
+           MOBILE
+        ================================================ */
+
+        @media screen and (max-width: 768px) {
+
+            .signup-card {
+
+                min-height: auto;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================================
+         LOADING SCREEN
+    ================================================== -->
+
+    <div id="loader">
+
+        <div class="loader-logo">
+            ReadQuest
+        </div>
+
+        <div class="loader-spinner"></div>
+
+    </div>
+
+
+    <!-- ==================================================
+         CURSOR GLOW
+    ================================================== -->
+
+    <div id="cursorGlow"></div>
+
+
+    <!-- ==================================================
+         BACKGROUND
+    ================================================== -->
+
+    <div class="pixel-background">
+
+        <img
+            src="images/background/1-Sky.png"
+            alt=""
+            class="bg sky">
+
+        <img
+            src="images/background/2-Stars.png"
+            alt=""
+            class="bg stars">
+
+        <img
+            src="images/background/3-Sky.png"
+            alt=""
+            class="bg clouds">
+
+        <img
+            src="images/background/4-Moon.png"
+            alt=""
+            class="bg moon">
+
+        <img
+            src="images/background/5-BG Mountains.png"
+            alt=""
+            class="bg bgmountains">
+
+        <img
+            src="images/background/6-Mountains.png"
+            alt=""
+            class="bg mountains">
+
+        <img
+            src="images/background/7-Forests.png"
+            alt=""
+            class="bg forest">
+
+        <img
+            src="images/background/10-Floating Castle.png"
+            alt=""
+            class="bg castle">
+
+        <img
+            src="images/background/9-Ground.png"
+            alt=""
+            class="bg ground">
+
+
+        <div class="fireflies">
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         MAIN
+    ================================================== -->
+
+    <main class="login-page">
+
+        <section class="login-card signup-card">
+
+
+            <!-- ============================================
+                 LEFT PANEL
+            ============================================= -->
+
+            <aside class="login-left">
+
+                <h1>
+                    ReadQuest
+                </h1>
+
+
+                <p>
+
+                    Embark on a magical reading adventure where every lesson
+                    unlocks new knowledge, earns experience, and brings you
+                    closer to becoming a Reading Hero.
+
+                </p>
+
+
+                <div class="feature-list">
+
+
+                    <div>
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                        <span>
+                            Interactive Lessons
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-gamepad"></i>
+
+                        <span>
+                            Mini Games
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-ranking-star"></i>
+
+                        <span>
+                            Leaderboards
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-trophy"></i>
+
+                        <span>
+                            Achievements
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </aside>
+
+
+            <!-- ============================================
+                 RIGHT PANEL
+            ============================================= -->
+
+            <section class="login-right">
+
+
+                <header class="signup-header">
+
+                    <h2>
+                        Create Account
+                    </h2>
+
+                    <p>
+                        Join the ReadQuest community.
+                    </p>
+
+                </header>
+
+
+                <!-- ========================================
+                     SIGN UP FORM
+                ========================================= -->
+
+                <form
+                    id="signupForm"
+                    novalidate>
+
+
+                    <!-- USERNAME -->
+
+                    <div class="input-group">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                id="username"
+                                name="username"
+                                type="text"
+                                placeholder="Choose a username"
+                                autocomplete="username"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DISPLAY NAME -->
+
+                    <div class="input-group">
+
+                        <label for="displayName">
+                            Display Name
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-id-card"></i>
+
+                            <input
+                                id="displayName"
+                                name="displayName"
+                                type="text"
+                                placeholder="Choose your display name"
+                                autocomplete="nickname"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="input-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="input-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                required>
+
+                            <button
+                                id="togglePassword"
+                                class="toggle-password"
+                                type="button"
+                                aria-label="Show Password">
+
+                                <i class="fa-solid fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="input-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                type="password"
+                                placeholder="Confirm your password"
+                                autocomplete="new-password"
+                                required>
+
+                            <button
+                                id="toggleConfirmPassword"
+                                class="toggle-password"
+                                type="button"
+                                aria-label="Show Confirm Password">
+
+                                <i class="fa-solid fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SIGN UP BUTTON -->
+
+                    <button
+                        class="signup-btn"
+                        type="submit">
+
+                        <span>
+                            Sign Up
+                        </span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+                    <!-- DIVIDER -->
+
+                    <div class="divider">
+
+                        <span>
+                            or
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOGIN LINK -->
+
+                    <p class="login-text">
+
+                        Already have an account?
+
+                        <a href="login.html">
+                            Login
+                        </a>
+
+                    </p>
+
+
+                </form>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==================================================
+         TOASTS
+    ================================================== -->
+
+    <div id="toastContainer"></div>
+
+
+    <!-- ==================================================
+         NOTIFICATIONS
+    ================================================== -->
+
+    <div id="notificationContainer"></div>
+
+
+    <!-- ==================================================
+         JAVASCRIPT
+    ================================================== -->
+
+    <script type="module" src="js/signup.js"></script>
+
+</body>
+
+</html>

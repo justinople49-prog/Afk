@@ -1,0 +1,258 @@
+/* ==========================================
+   RESET
+========================================== */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+
+/* ==========================================
+   PAGE
+========================================== */
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-family:
+
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            #173c68 0%,
+            #081522 55%,
+            #03080d 100%
+        );
+
+    color:white;
+
+}
+
+
+/* ==========================================
+   MAIN
+========================================== */
+
+.page{
+
+    width:min(
+        900px,
+        92%
+    );
+
+    text-align:center;
+
+}
+
+
+/* ==========================================
+   TITLE
+========================================== */
+
+h1{
+
+    font-size:36px;
+
+    margin-bottom:10px;
+
+    color:#FFD54F;
+
+}
+
+
+.subtitle{
+
+    color:#B9C9DA;
+
+    margin-bottom:35px;
+
+}
+
+
+/* ==========================================
+   CHARACTER STAGE
+========================================== */
+
+.character-stage{
+
+    width:420px;
+
+    height:500px;
+
+    margin:0 auto 30px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:30px;
+
+    background:
+
+        radial-gradient(
+            circle at center 55%,
+            rgba(46,148,255,.25),
+            transparent 55%
+        ),
+
+        rgba(8,20,35,.75);
+
+    border:2px solid
+        rgba(88,166,255,.25);
+
+    box-shadow:
+
+        0 30px 80px
+        rgba(0,0,0,.5);
+
+}
+
+
+/* ==========================================
+   CHARACTER SPRITE
+========================================== */
+
+.hero-sprite{
+
+    width:384px;
+
+    height:500px;
+
+    position:relative;
+
+    background-image:
+        url("../images/hero/bully.png");
+
+    background-repeat:no-repeat;
+
+    /*
+    The image has 4 frames horizontally.
+    */
+
+    background-size:
+        1536px 1024px;
+
+    /*
+    Current frame moves horizontally.
+    */
+
+    background-position:
+        calc(var(--frame) * -384px) -250px;
+
+    image-rendering:auto;
+
+    transform:
+
+        scale(.72);
+
+    transform-origin:center;
+
+}
+
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.controls{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+
+.controls button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:13px 25px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #1687ff,
+            #28d6f2
+        );
+
+    transition:
+
+        transform .2s,
+        box-shadow .2s;
+
+}
+
+
+.controls button:hover{
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+
+        0 10px 25px
+        rgba(40,214,242,.3);
+
+}
+
+
+/* ==========================================
+   FRAME NUMBER
+========================================== */
+
+.frame-info{
+
+    color:#AFC4D8;
+
+    font-size:15px;
+
+}
+
+
+#frameNumber{
+
+    color:#FFD54F;
+
+    font-weight:bold;
+
+}

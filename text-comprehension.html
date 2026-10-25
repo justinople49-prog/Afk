@@ -1,0 +1,1132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101b35">
+  <title>Text Detective | ReadQuest</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --navy: #101b35;
+      --navy-light: #1a2a4c;
+      --gold: #ffd166;
+      --gold-dark: #e9ac32;
+      --cream: #fffaf0;
+      --white: #ffffff;
+      --muted: #aab6ce;
+      --green: #35b779;
+      --red: #e96868;
+      --border: rgba(255,255,255,.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--white);
+      font-family: "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(255,209,102,.09), transparent 28%),
+        var(--navy);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 18px clamp(16px, 5vw, 64px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .brand-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .grade-badge {
+      padding: 8px 14px;
+      border: 1px solid rgba(255,209,102,.5);
+      border-radius: 99px;
+      color: var(--gold);
+      font-size: .85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    main {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 60px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 9px 0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .panel {
+      padding: clamp(18px, 4vw, 30px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255,255,255,.045);
+      box-shadow: 0 16px 45px rgba(0,0,0,.12);
+    }
+
+    .section-title {
+      margin: 0 0 7px;
+      font-size: 1.2rem;
+    }
+
+    .section-description {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.7;
+    }
+
+    .difficulty-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .difficulty-button {
+      padding: 17px 10px;
+      color: var(--white);
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--navy-light);
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+
+    .difficulty-button:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+
+    .difficulty-button.active {
+      border: 2px solid var(--gold);
+      background: rgba(255,209,102,.1);
+    }
+
+    .difficulty-button strong,
+    .difficulty-button span {
+      display: block;
+    }
+
+    .difficulty-button strong {
+      margin-bottom: 5px;
+    }
+
+    .difficulty-button span {
+      color: var(--muted);
+      font-size: .76rem;
+      line-height: 1.5;
+    }
+
+    .primary-button,
+    .secondary-button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+    }
+
+    .primary-button {
+      color: var(--navy);
+      background: var(--gold);
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-button {
+      color: var(--white);
+      border: 1px solid var(--border);
+      background: var(--navy-light);
+    }
+
+    .full-button {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .game-layout {
+      display: grid;
+      gap: 18px;
+    }
+
+    .game-status {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .case-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .case-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      color: var(--navy);
+      background: var(--gold);
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .stat {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.07);
+      font-size: .82rem;
+      font-weight: 600;
+    }
+
+    .stat i {
+      margin-right: 5px;
+      color: var(--gold);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      margin: 14px 0 24px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255,255,255,.1);
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--gold);
+      transition: width .3s ease;
+    }
+
+    .story-card {
+      padding: clamp(20px, 4vw, 30px);
+      color: #26324a;
+      border-radius: 18px;
+      background: var(--cream);
+    }
+
+    .story-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: #8b6216;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .story-card h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 4vw, 1.8rem);
+    }
+
+    .story-text {
+      margin: 0;
+      font-size: .97rem;
+      line-height: 2;
+      white-space: pre-line;
+    }
+
+    .story-reminder {
+      margin: 15px 0 0;
+      color: #68738a;
+      font-size: .8rem;
+    }
+
+    .question-card {
+      padding: clamp(20px, 4vw, 28px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .question-type {
+      padding: 6px 11px;
+      color: var(--navy);
+      border-radius: 8px;
+      background: var(--gold);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .question-count {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .question-text {
+      margin: 0 0 20px;
+      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      line-height: 1.6;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answer-button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 13px 15px;
+      color: var(--white);
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--navy-light);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+
+    .answer-button:hover:not(:disabled) {
+      border-color: var(--gold);
+    }
+
+    .answer-letter {
+      display: grid;
+      flex: 0 0 30px;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.09);
+      font-size: .85rem;
+      font-weight: 800;
+    }
+
+    .answer-button.correct {
+      border-color: var(--green);
+      background: rgba(53,183,121,.17);
+    }
+
+    .answer-button.wrong {
+      border-color: var(--red);
+      background: rgba(233,104,104,.15);
+    }
+
+    .answer-button:disabled {
+      cursor: default;
+    }
+
+    .feedback {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: .88rem;
+      line-height: 1.7;
+    }
+
+    .feedback.good {
+      color: #b8f2d4;
+      border: 1px solid rgba(53,183,121,.4);
+      background: rgba(53,183,121,.1);
+    }
+
+    .feedback.bad {
+      color: #ffd0d0;
+      border: 1px solid rgba(233,104,104,.4);
+      background: rgba(233,104,104,.1);
+    }
+
+    .question-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    .hint-text {
+      margin-top: 12px;
+      padding: 12px;
+      color: #f8dfa2;
+      border-radius: 10px;
+      background: rgba(255,209,102,.08);
+      font-size: .85rem;
+      line-height: 1.7;
+    }
+
+    .result-card {
+      padding: clamp(24px, 5vw, 40px);
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .result-icon {
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-size: 3.2rem;
+    }
+
+    .result-stars {
+      margin: 18px 0;
+      color: var(--gold);
+      font-size: 2rem;
+      letter-spacing: 5px;
+    }
+
+    .result-score {
+      margin: 12px 0;
+      font-size: clamp(2.3rem, 7vw, 3.6rem);
+      font-weight: 800;
+    }
+
+    .result-message {
+      max-width: 540px;
+      margin: 0 auto 24px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .result-review {
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .review-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .88rem;
+      line-height: 1.7;
+    }
+
+    .review-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .review-correct {
+      color: #8be0b6;
+    }
+
+    .review-wrong {
+      color: #ffaaaa;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .demo-note {
+      margin-top: 22px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .76rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 560px) {
+      .topbar {
+        padding: 14px 16px;
+      }
+
+      .brand {
+        font-size: .88rem;
+      }
+
+      .brand-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      main {
+        padding-top: 25px;
+      }
+
+      .difficulty-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .difficulty-button {
+        padding: 13px;
+      }
+
+      .game-status {
+        align-items: flex-start;
+      }
+
+      .question-actions > button {
+        flex: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+      <span>READQUEST</span>
+    </div>
+    <div class="grade-badge" id="gradeBadge">GRADE 7</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Read carefully. Think like a detective.</div>
+      <h1>Text Detective <span aria-hidden="true">🕵️</span></h1>
+      <p>
+        Every story hides important clues. Read the passage, answer the
+        comprehension questions, and crack the case!
+      </p>
+    </section>
+
+    <section class="panel" id="setupPanel">
+      <h2 class="section-title">Choose Your Case Difficulty</h2>
+      <p class="section-description">
+        Select a level before opening your case. Each round has a short story
+        and six questions about Who, What, When, Where, Why, and How.
+      </p>
+
+      <div class="difficulty-grid" role="group" aria-label="Difficulty">
+        <button class="difficulty-button active" data-level="easy" type="button" aria-pressed="true">
+          <strong><i class="fa-solid fa-feather" aria-hidden="true"></i> Easy</strong>
+          <span>Clear details and direct answers</span>
+        </button>
+        <button class="difficulty-button" data-level="normal" type="button" aria-pressed="false">
+          <strong><i class="fa-solid fa-book-open" aria-hidden="true"></i> Normal</strong>
+          <span>More details to connect</span>
+        </button>
+        <button class="difficulty-button" data-level="hard" type="button" aria-pressed="false">
+          <strong><i class="fa-solid fa-brain" aria-hidden="true"></i> Hard</strong>
+          <span>Careful reading and inference</span>
+        </button>
+      </div>
+
+      <button class="primary-button full-button" id="startButton" type="button">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        Open My Case
+      </button>
+
+      <p class="demo-note">
+        Practice version: your score appears at the end of the round. This
+        page does not change or save your existing XP system.
+      </p>
+    </section>
+
+    <section class="game-layout hidden" id="gamePanel" aria-live="polite">
+      <div class="panel">
+        <div class="game-status">
+          <div class="case-label">
+            <span class="case-icon"><i class="fa-solid fa-fingerprint" aria-hidden="true"></i></span>
+            <div>
+              <div id="caseTitle">Case File #001</div>
+              <small style="color:var(--muted)" id="caseSubtitle">Reading comprehension</small>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat"><i class="fa-solid fa-star" aria-hidden="true"></i><span id="scoreValue">0</span> pts</div>
+            <div class="stat"><i class="fa-solid fa-fire" aria-hidden="true"></i><span id="streakValue">0</span> streak</div>
+          </div>
+        </div>
+
+        <div class="progress-track" role="progressbar" aria-label="Question progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="progressTrack">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <article class="story-card">
+          <div class="story-label"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Read the story first</div>
+          <h2 id="storyTitle">The Missing Lunchbox</h2>
+          <p class="story-text" id="storyText"></p>
+          <p class="story-reminder"><i class="fa-regular fa-lightbulb" aria-hidden="true"></i> You may refer to the story while answering.</p>
+        </article>
+      </div>
+
+      <section class="question-card" aria-labelledby="questionText">
+        <div class="question-top">
+          <span class="question-type" id="questionType">WHO</span>
+          <span class="question-count" id="questionCount">Question 1 of 6</span>
+        </div>
+
+        <h2 class="question-text" id="questionText">Who is in the story?</h2>
+        <div class="answers" id="answersContainer"></div>
+
+        <div id="hintText" class="hint-text hidden" role="status"></div>
+        <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
+
+        <div class="question-actions">
+          <button class="secondary-button" id="hintButton" type="button">
+            <i class="fa-regular fa-lightbulb" aria-hidden="true"></i> Get a Hint
+          </button>
+          <button class="primary-button" id="nextButton" type="button" disabled>
+            Check Answer First <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <section class="result-card hidden" id="resultPanel" aria-live="polite">
+      <div class="result-icon"><i class="fa-solid fa-award" aria-hidden="true"></i></div>
+      <div class="eyebrow">Case report</div>
+      <h2 id="resultTitle">Case Completed!</h2>
+      <div class="result-stars" id="resultStars" aria-label="Stars earned">★★★</div>
+      <div class="result-score"><span id="finalScore">0</span> pts</div>
+      <p class="result-message" id="resultMessage"></p>
+
+      <div class="panel result-review">
+        <h3 class="section-title">Your Answer Report</h3>
+        <p class="section-description">Review the clues and explanations to strengthen your reading skills.</p>
+        <div id="reviewContainer"></div>
+      </div>
+
+      <div class="footer-actions">
+        <button class="primary-button" id="retryButton" type="button">
+          <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Try Another Case
+        </button>
+        <button class="secondary-button" id="backButton" type="button">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Categories
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const params = new URLSearchParams(window.location.search);
+    const gradeParam = Number(params.get("grade"));
+    const grade = [7, 8, 9, 10].includes(gradeParam) ? gradeParam : 7;
+
+    document.getElementById("gradeBadge").textContent = `GRADE ${grade}`;
+
+    const stories = {
+      7: {
+        easy: {
+          title: "The Missing Lunchbox",
+          text: "Mia arrived at school on Monday morning and placed her blue lunchbox on a bench near the garden. During recess, she went to play with her classmates. When the bell rang, her lunchbox was gone. Mia asked her friend Leo to help her search. They looked near the classroom and finally found it beside a flowerpot. The school cat had nudged the lunchbox off the bench. Mia thanked Leo and returned to class.",
+          questions: [
+            { type: "WHO", question: "Who helped Mia search for her lunchbox?", answers: ["Her teacher", "Leo", "Her sister", "The gardener"], correct: 1, hint: "Look for the friend Mia asked for help.", explanation: "Leo helped Mia search for the missing lunchbox." },
+            { type: "WHAT", question: "What was missing?", answers: ["A notebook", "A water bottle", "A blue lunchbox", "A school bag"], correct: 2, hint: "It was something Mia brought for lunch.", explanation: "The missing item was Mia's blue lunchbox." },
+            { type: "WHEN", question: "When did Mia place the lunchbox on the bench?", answers: ["Monday morning", "Friday evening", "Tuesday night", "Sunday afternoon"], correct: 0, hint: "The first sentence tells you the day and time.", explanation: "Mia arrived and placed it there on Monday morning." },
+            { type: "WHERE", question: "Where did Mia leave the lunchbox?", answers: ["Inside the library", "At the school gate", "Near the canteen", "On a bench near the garden"], correct: 3, hint: "Remember the place mentioned at the beginning.", explanation: "She left it on a bench near the garden." },
+            { type: "WHY", question: "Why was the lunchbox no longer on the bench?", answers: ["Leo took it home", "The cat nudged it off", "Mia threw it away", "The teacher locked it up"], correct: 1, hint: "Look for the explanation of how it moved.", explanation: "The school cat had nudged the lunchbox off the bench." },
+            { type: "HOW", question: "How did Mia solve the problem?", answers: ["She bought a new lunchbox", "She called the principal", "She searched with Leo", "She went home"], correct: 2, hint: "What did Mia and Leo do together?", explanation: "Mia and Leo searched until they found it beside a flowerpot." }
+          ]
+        },
+        normal: {
+          title: "The Garden Project",
+          text: "On Wednesday afternoon, Class 7 planted vegetables in the school garden. Their teacher, Ms. Ramos, divided the class into small teams. Carlo's team planted tomato seeds beside the fence, while another team watered the seedlings. After a week of dry weather, the leaves began to droop. Carlo suggested collecting rainwater in clean containers. The class followed his idea, and soon the plants looked healthier. Their teacher praised them for working together and caring for the garden.",
+          questions: [
+            { type: "WHO", question: "Who suggested collecting rainwater?", answers: ["Ms. Ramos", "Carlo", "The principal", "A gardener"], correct: 1, hint: "Find the student who proposed an idea.", explanation: "Carlo suggested collecting rainwater in clean containers." },
+            { type: "WHAT", question: "What did the class plant?", answers: ["Flowers only", "Fruit trees", "Vegetables", "Grass"], correct: 2, hint: "The first sentence names what they planted.", explanation: "The class planted vegetables in the school garden." },
+            { type: "WHEN", question: "When did the class begin the project?", answers: ["Wednesday afternoon", "Monday evening", "Friday morning", "Sunday afternoon"], correct: 0, hint: "Check the opening sentence.", explanation: "The project began on Wednesday afternoon." },
+            { type: "WHERE", question: "Where did Carlo's team plant the tomato seeds?", answers: ["By the classroom door", "Behind the library", "Near the canteen", "Beside the fence"], correct: 3, hint: "Look for the location of the tomato seeds.", explanation: "Carlo's team planted the seeds beside the fence." },
+            { type: "WHY", question: "Why did the plants begin to droop?", answers: ["They had too much shade", "The weather had been dry", "Students picked the leaves", "The soil was frozen"], correct: 1, hint: "The story mentions a week of a certain kind of weather.", explanation: "A week of dry weather left the plants needing water." },
+            { type: "HOW", question: "How did the class help the plants recover?", answers: ["They moved the garden", "They stopped planting", "They collected rainwater", "They removed every leaf"], correct: 2, hint: "They used Carlo's suggestion.", explanation: "They collected rainwater and used it to care for the plants." }
+          ]
+        },
+        hard: {
+          title: "The Library Notice",
+          text: "Before the school reading fair, Ana noticed that several books were missing from the display table. The fair would begin the next morning, and the librarian had already arranged the posters. Instead of accusing anyone, Ana checked the return cart and found the books stacked beneath a large dictionary. She informed the librarian, who thanked her for checking carefully. Ana then helped organize the display so visitors could find books by topic. The fair opened on time, and many students discovered new stories.",
+          questions: [
+            { type: "WHO", question: "Who discovered where the missing books were?", answers: ["The principal", "The librarian", "Ana", "A visitor"], correct: 2, hint: "Who checked the return cart?", explanation: "Ana checked the return cart and found the books." },
+            { type: "WHAT", question: "What was Ana helping prepare?", answers: ["A sports tournament", "A reading fair", "A science exam", "A class trip"], correct: 1, hint: "The event is named in the first sentence.", explanation: "Ana was helping prepare the school reading fair." },
+            { type: "WHEN", question: "When was the fair scheduled to begin?", answers: ["That afternoon", "Next week", "The previous day", "The next morning"], correct: 3, hint: "Notice the time reference in the first paragraph.", explanation: "The fair was scheduled for the next morning." },
+            { type: "WHERE", question: "Where did Ana find the books?", answers: ["Beneath a large dictionary on the return cart", "In the school yard", "Inside the principal's office", "At the front gate"], correct: 0, hint: "She found them while checking a cart.", explanation: "The books were beneath a large dictionary on the return cart." },
+            { type: "WHY", question: "Why did Ana avoid accusing anyone?", answers: ["She did not care about the books", "She wanted to cancel the fair", "She checked for evidence first", "She had already gone home"], correct: 2, hint: "Think about the action she took before speaking.", explanation: "Ana investigated first rather than blaming someone without evidence." },
+            { type: "HOW", question: "How did Ana help the fair succeed?", answers: ["She bought new posters", "She organized the books by topic", "She asked students to leave", "She changed the event date"], correct: 1, hint: "What did she do after informing the librarian?", explanation: "Ana helped arrange the display so visitors could find books by topic." }
+          ]
+        }
+      },
+      8: {
+        easy: {
+          title: "The Rainy-Day Delivery",
+          text: "On Friday morning, Ben noticed that dark clouds covered his neighborhood. His neighbor, Mrs. Cruz, needed her medicine from the pharmacy but could not leave home because of the rain. Ben placed the medicine in a waterproof bag and walked carefully to her house. He arrived before noon and handed it to her. Mrs. Cruz thanked him and gave him a warm drink before he returned home.",
+          questions: [
+            { type: "WHO", question: "Who needed medicine delivered?", answers: ["Ben's teacher", "Mrs. Cruz", "The pharmacist", "Ben's cousin"], correct: 1, hint: "She is Ben's neighbor.", explanation: "Mrs. Cruz needed her medicine delivered." },
+            { type: "WHAT", question: "What did Ben bring to Mrs. Cruz?", answers: ["A book", "Groceries", "Medicine", "A raincoat"], correct: 2, hint: "It was the item she needed from the pharmacy.", explanation: "Ben brought her medicine." },
+            { type: "WHEN", question: "When did Ben make the delivery?", answers: ["Friday morning", "Saturday night", "Monday afternoon", "Sunday evening"], correct: 0, hint: "The first sentence gives the day and time.", explanation: "Ben began the delivery on Friday morning." },
+            { type: "WHERE", question: "Where did Ben take the medicine?", answers: ["To the school clinic", "To the market", "To the bus station", "To Mrs. Cruz's house"], correct: 3, hint: "He delivered it to his neighbor.", explanation: "He brought the medicine to Mrs. Cruz's house." },
+            { type: "WHY", question: "Why did Mrs. Cruz need help?", answers: ["She had lost her keys", "The rain made it difficult for her to leave", "She was at school", "The pharmacy was closed forever"], correct: 1, hint: "Look at the reason she could not leave home.", explanation: "She could not leave home because of the rain." },
+            { type: "HOW", question: "How did Ben protect the medicine?", answers: ["He hid it in a drawer", "He wrapped it in newspaper", "He placed it in a waterproof bag", "He left it under a tree"], correct: 2, hint: "The story describes the container he used.", explanation: "Ben put the medicine in a waterproof bag." }
+          ]
+        },
+        normal: {
+          title: "A Better Bus Stop",
+          text: "Every afternoon, students waited for the bus beside a narrow road. When heavy rain fell, the muddy ground became slippery, and people crowded under a small tree. Eighth-grader Liza took notes about the problem for a school community project. She and her classmates drew a simple shelter plan and presented it to the neighborhood council. The council agreed to install a bench and a covered waiting area. A month later, students had a safer place to wait for their rides.",
+          questions: [
+            { type: "WHO", question: "Who documented the bus-stop problem?", answers: ["The bus driver", "The council leader", "Liza", "A shop owner"], correct: 2, hint: "She was an eighth-grader working on a project.", explanation: "Liza took notes about the problem." },
+            { type: "WHAT", question: "What did the students propose?", answers: ["A covered waiting area", "A new school building", "A longer school day", "A wider classroom"], correct: 0, hint: "They drew a plan to improve the waiting place.", explanation: "They proposed a shelter and presented the plan to the council." },
+            { type: "WHEN", question: "When did the students usually wait for the bus?", answers: ["Before sunrise", "Every afternoon", "At midnight", "Only on Sundays"], correct: 1, hint: "The opening sentence tells you.", explanation: "Students waited for the bus every afternoon." },
+            { type: "WHERE", question: "Where did students wait before the improvement?", answers: ["Inside the library", "At a train platform", "In the school gym", "Beside a narrow road"], correct: 3, hint: "Look at the setting described in the first sentence.", explanation: "They waited beside a narrow road." },
+            { type: "WHY", question: "Why was the old waiting place unsafe during rain?", answers: ["The buses stopped running permanently", "The road was always empty", "The ground became slippery and crowded", "Students had no school bags"], correct: 2, hint: "Consider what happened to the ground and the people.", explanation: "Rain made the ground slippery, while people crowded under a tree." },
+            { type: "HOW", question: "How did the students help improve the situation?", answers: ["They stopped using the bus", "They presented a shelter plan to the council", "They built a road alone", "They moved to another town"], correct: 1, hint: "What action did they take with their plan?", explanation: "They presented their proposal to the neighborhood council." }
+          ]
+        },
+        hard: {
+          title: "The Quiet Announcement",
+          text: "The school debate team was due to meet in the auditorium, but a rehearsal had been moved there without notice. Team captain Noor discovered the conflict when she arrived with her teammates. Rather than interrupting the rehearsal, she checked the activity calendar and found that the debate meeting room was available. She asked the office to confirm the change, then guided her team to the correct room. The meeting began only a few minutes late, and Noor suggested that future schedule changes be posted in two places.",
+          questions: [
+            { type: "WHO", question: "Who discovered the scheduling conflict?", answers: ["The office assistant", "The rehearsal director", "A teacher", "Noor"], correct: 3, hint: "Who arrived with the debate team?", explanation: "Noor discovered the conflict when she arrived." },
+            { type: "WHAT", question: "What problem did Noor encounter?", answers: ["The team had no debate topic", "The auditorium was being used for a rehearsal", "The school was closed", "The calendar was missing all events"], correct: 1, hint: "The auditorium was occupied by another activity.", explanation: "A rehearsal had been moved to the auditorium." },
+            { type: "WHEN", question: "When did Noor discover the conflict?", answers: ["When she arrived with her teammates", "At the end of the school year", "The night before", "During lunch the previous week"], correct: 0, hint: "The passage states exactly when she noticed it.", explanation: "She discovered the conflict on arriving with her teammates." },
+            { type: "WHERE", question: "Where was the debate team originally supposed to meet?", answers: ["In the cafeteria", "At the sports field", "In the auditorium", "In the library"], correct: 2, hint: "Look at the first sentence.", explanation: "The debate team was due to meet in the auditorium." },
+            { type: "WHY", question: "Why did Noor check the calendar?", answers: ["To cancel the debate team", "To find an available room and confirm the schedule", "To add a rehearsal", "To leave school early"], correct: 1, hint: "She needed to solve the room conflict.", explanation: "The calendar helped her find an available room." },
+            { type: "HOW", question: "How did Noor prevent a similar problem in the future?", answers: ["She ended all meetings", "She blamed the rehearsal team", "She removed the calendar", "She suggested posting changes in two places"], correct: 3, hint: "Consider her final suggestion.", explanation: "Noor suggested that future schedule changes be posted in two places." }
+          ]
+        }
+      },
+      9: {
+        easy: {
+          title: "The Science Fair Model",
+          text: "On Tuesday, Grade 9 student Marco prepared a model of a water filter for the school science fair. He used a plastic bottle, clean sand, small stones, and cotton. During the first test, the water flowed too slowly because the cotton was packed too tightly. Marco loosened the cotton and tried again. The water passed through more easily. His science teacher reminded the class that the model demonstrated filtration but did not automatically make water safe to drink.",
+          questions: [
+            { type: "WHO", question: "Who built the water-filter model?", answers: ["Marco", "The principal", "A visitor", "Marco's brother"], correct: 0, hint: "The student is named in the first sentence.", explanation: "Marco prepared the water-filter model." },
+            { type: "WHAT", question: "What was Marco's project about?", answers: ["Solar panels", "Plant growth", "Water filtration", "Wind energy"], correct: 2, hint: "It was a model designed to filter water.", explanation: "Marco's model demonstrated water filtration." },
+            { type: "WHEN", question: "When did Marco prepare the model?", answers: ["Saturday", "Tuesday", "Sunday", "Thursday night"], correct: 1, hint: "Check the opening words.", explanation: "He prepared the model on Tuesday." },
+            { type: "WHERE", question: "Where would Marco present the model?", answers: ["At a city parade", "In a hospital", "At a sports event", "At the school science fair"], correct: 3, hint: "The first sentence names the event.", explanation: "He prepared it for the school science fair." },
+            { type: "WHY", question: "Why did the water flow too slowly at first?", answers: ["The bottle was missing", "The cotton was packed too tightly", "The stones were too large to see", "The teacher turned off a pump"], correct: 1, hint: "The story explains what Marco changed.", explanation: "The tightly packed cotton slowed the water." },
+            { type: "HOW", question: "How did Marco improve the flow?", answers: ["He removed all the sand", "He used a bigger bottle", "He loosened the cotton", "He stopped the test"], correct: 2, hint: "What did he change before trying again?", explanation: "Loosening the cotton allowed water to pass more easily." }
+          ]
+        },
+        normal: {
+          title: "The Community Survey",
+          text: "For a social studies project, Janelle and her classmates surveyed residents about recycling. They visited homes on Saturday morning and asked which materials people found difficult to recycle. Many residents said they were unsure where to bring used batteries. The group checked the local government's public information and learned that a collection point operated at the community center every second Saturday. They included the information in a clear poster and displayed it at school and the center.",
+          questions: [
+            { type: "WHO", question: "Who conducted the recycling survey?", answers: ["Local shopkeepers", "Janelle and her classmates", "The bus drivers", "Only the mayor"], correct: 1, hint: "The project group is named in the first sentence.", explanation: "Janelle and her classmates surveyed residents." },
+            { type: "WHAT", question: "What information did the group share on its poster?", answers: ["A sports schedule", "A list of exam scores", "Directions to a battery collection point", "A restaurant menu"], correct: 2, hint: "Residents were unsure where to take a specific item.", explanation: "The poster explained where used batteries could be collected." },
+            { type: "WHEN", question: "When did the group visit residents?", answers: ["Saturday morning", "Monday evening", "Wednesday night", "Sunday afternoon"], correct: 0, hint: "Look for the time they visited homes.", explanation: "They visited residents on Saturday morning." },
+            { type: "WHERE", question: "Where was the battery collection point?", answers: ["At the school gate", "At the public market", "At the bus terminal", "At the community center"], correct: 3, hint: "The government information named the location.", explanation: "The collection point operated at the community center." },
+            { type: "WHY", question: "Why did the group create the poster?", answers: ["To stop all recycling", "To help residents find reliable recycling information", "To advertise a new store", "To replace their teacher"], correct: 1, hint: "Think about the information residents lacked.", explanation: "The poster helped residents learn where to bring used batteries." },
+            { type: "HOW", question: "How did the group check its information?", answers: ["They guessed the answer", "They asked one passing student", "They consulted the local government's public information", "They copied an unrelated poster"], correct: 2, hint: "The story tells you which source they consulted.", explanation: "They checked public information from the local government." }
+          ]
+        },
+        hard: {
+          title: "The Unfinished Interview",
+          text: "Student journalist Paolo planned to interview the school librarian about reading habits. Halfway through the interview, the librarian was called away to assist a student. Paolo saved his notes and asked whether they could continue later. Before rescheduling, he reviewed the answers already recorded and noticed that he had not asked how the library chose its new books. When the interview resumed the following afternoon, he asked the missing question and confirmed two dates with the librarian. His article included both the librarian's answers and the interview date.",
+          questions: [
+            { type: "WHO", question: "Who was Paolo interviewing?", answers: ["The school librarian", "The school nurse", "The debate coach", "A bus driver"], correct: 0, hint: "The interview subject appears in the first sentence.", explanation: "Paolo planned to interview the school librarian." },
+            { type: "WHAT", question: "What important question had Paolo forgotten to ask?", answers: ["Where students parked", "Who won a sports match", "How the library chose new books", "When the school opened"], correct: 2, hint: "He noticed the missing topic while reviewing his notes.", explanation: "He had not asked how the library chose its new books." },
+            { type: "WHEN", question: "When did the interview resume?", answers: ["That same morning", "The following afternoon", "One month later", "During the weekend"], correct: 1, hint: "The passage states when they continued.", explanation: "They resumed the interview the following afternoon." },
+            { type: "WHERE", question: "Where did the interview take place?", answers: ["At a shopping center", "In a city hall", "At a bus stop", "At the school library"], correct: 3, hint: "Consider the librarian's workplace and the setting of the story.", explanation: "The interview was with the school librarian about library matters." },
+            { type: "WHY", question: "Why did Paolo review his notes before rescheduling?", answers: ["To identify missing information", "To erase every answer", "To cancel the article", "To change schools"], correct: 0, hint: "Reviewing helped him notice something incomplete.", explanation: "He found a question he still needed to ask." },
+            { type: "HOW", question: "How did Paolo make his article more reliable?", answers: ["He invented extra quotes", "He left out the interview date", "He asked the missing question and confirmed dates", "He avoided reviewing his notes"], correct: 2, hint: "Look at the steps he took when the interview resumed.", explanation: "He asked the missing question and confirmed dates with the librarian." }
+          ]
+        }
+      },
+      10: {
+        easy: {
+          title: "The Power Outage",
+          text: "On Thursday evening, a sudden power outage affected Nina's neighborhood. She was finishing a school presentation when her computer turned off. Nina had saved her slides earlier that afternoon, so she used a flashlight to find her printed notes. She checked on her younger brother and helped him stay calm. When the electricity returned an hour later, Nina checked the saved file before continuing her work.",
+          questions: [
+            { type: "WHO", question: "Who was preparing a school presentation?", answers: ["Nina", "Her neighbor", "Her teacher", "Her cousin"], correct: 0, hint: "The main character is named in the first sentence.", explanation: "Nina was preparing her school presentation." },
+            { type: "WHAT", question: "What interrupted Nina's work?", answers: ["A phone call", "A power outage", "A school announcement", "A broken window"], correct: 1, hint: "Her computer suddenly turned off.", explanation: "A power outage interrupted her work." },
+            { type: "WHEN", question: "When did the outage happen?", answers: ["Monday morning", "Saturday afternoon", "Thursday evening", "Sunday at noon"], correct: 2, hint: "The opening sentence gives the time.", explanation: "The outage happened on Thursday evening." },
+            { type: "WHERE", question: "Where did the outage occur?", answers: ["At the library", "At the school gym", "At a restaurant", "In Nina's neighborhood"], correct: 3, hint: "The location is given in the first sentence.", explanation: "The outage affected Nina's neighborhood." },
+            { type: "WHY", question: "Why could Nina continue using her notes during the outage?", answers: ["She had saved her slides and had printed notes", "The computer never turned off", "Her teacher sent a new computer", "The electricity returned immediately"], correct: 0, hint: "What had she prepared before the outage?", explanation: "She had saved her slides and could use her printed notes." },
+            { type: "HOW", question: "How did Nina help her younger brother?", answers: ["She sent him to school", "She helped him stay calm", "She asked him to fix the computer", "She left him alone outside"], correct: 1, hint: "The passage says what she did after finding her notes.", explanation: "Nina checked on her brother and helped him stay calm." }
+          ]
+        },
+        normal: {
+          title: "The Debate Preparation",
+          text: "The Grade 10 debate team had three days to prepare for a discussion about public transportation. Team member Elise gathered information from local reports, while Ramon interviewed commuters at the station. Their first draft included many statistics but did not explain how the numbers affected daily travel. During a team meeting on Tuesday, their coach asked them to connect each statistic to a real example. The students revised their arguments and practiced answering questions from opposing viewpoints before the event.",
+          questions: [
+            { type: "WHO", question: "Who interviewed commuters?", answers: ["Elise", "The debate coach", "Ramon", "The station manager"], correct: 2, hint: "Each team member had a different research task.", explanation: "Ramon interviewed commuters at the station." },
+            { type: "WHAT", question: "What was the debate topic?", answers: ["Public transportation", "School uniforms", "Online shopping", "School lunch menus"], correct: 0, hint: "The topic is named in the first sentence.", explanation: "The team prepared for a discussion about public transportation." },
+            { type: "WHEN", question: "When did the coach give feedback on the draft?", answers: ["On Friday", "During a team meeting on Tuesday", "On the event day only", "The following month"], correct: 1, hint: "Find the day mentioned in the middle of the story.", explanation: "The coach gave feedback during Tuesday's team meeting." },
+            { type: "WHERE", question: "Where did Ramon interview commuters?", answers: ["In a classroom", "At the town library", "In the school cafeteria", "At the station"], correct: 3, hint: "The location is stated with Ramon's task.", explanation: "Ramon interviewed commuters at the station." },
+            { type: "WHY", question: "Why did the team revise its arguments?", answers: ["The debate was canceled", "They wanted fewer examples", "The statistics needed real-life connections", "They had no topic"], correct: 2, hint: "Their first draft had numbers but lacked an important connection.", explanation: "The coach wanted them to explain how statistics affected daily travel." },
+            { type: "HOW", question: "How did the team improve its preparation?", answers: ["They removed all evidence", "They linked statistics to examples and practiced opposing questions", "They skipped the team meeting", "They changed the topic without discussion"], correct: 1, hint: "Think about what they did after receiving feedback.", explanation: "They revised their arguments and practiced responding to opposing viewpoints." }
+          ]
+        },
+        hard: {
+          title: "The River Monitoring Report",
+          text: "For a school environmental report, Mika's group compared river observations collected over four weeks. Their earliest notes described clear water, while later entries recorded increased cloudiness after several days of heavy rain. One member wanted to conclude that a nearby construction site was responsible. Mika argued that the observations alone could not prove the cause, so the group checked rainfall records and reviewed publicly available water-quality guidance. Their final report separated measured observations from possible explanations and recommended further sampling before drawing a firm conclusion.",
+          questions: [
+            { type: "WHO", question: "Who argued against making an immediate claim about the cause?", answers: ["The construction manager", "Mika", "A river visitor", "The school principal"], correct: 1, hint: "She emphasized what the observations could and could not prove.", explanation: "Mika argued that the observations alone could not prove the cause." },
+            { type: "WHAT", question: "What change did the group observe in the river?", answers: ["The river disappeared", "The water became warmer every day", "The river changed its course", "The water became cloudier after heavy rain"], correct: 3, hint: "Compare the earliest notes with the later entries.", explanation: "Later entries recorded increased cloudiness after heavy rain." },
+            { type: "WHEN", question: "Over what period did the group collect observations?", answers: ["Four weeks", "One afternoon", "Six months", "A single day"], correct: 0, hint: "The duration appears in the first sentence.", explanation: "The group compared observations collected over four weeks." },
+            { type: "WHERE", question: "Where were the observations collected?", answers: ["At a mountain campsite", "In a school laboratory only", "At a river", "Inside a shopping mall"], correct: 2, hint: "The report's subject tells you the location.", explanation: "The group collected observations about the river." },
+            { type: "WHY", question: "Why did Mika oppose blaming the construction site immediately?", answers: ["She wanted to cancel the report", "The observations did not prove the cause", "She had never seen a river", "The group had no measurements"], correct: 1, hint: "She was concerned about what the available evidence could establish.", explanation: "The group lacked enough evidence to prove a specific cause." },
+            { type: "HOW", question: "How did the group make its final report more careful?", answers: ["They ignored all rainfall data", "They named a cause without evidence", "They removed their observations", "They separated observations from explanations and recommended more sampling"], correct: 3, hint: "Look at the two main steps described in the final sentence.", explanation: "They distinguished measurements from possible causes and recommended further sampling." }
+          ]
+        }
+      }
+    };
+
+    const questionTypes = ["WHO", "WHAT", "WHEN", "WHERE", "WHY", "HOW"];
+    const difficultyNames = {
+      easy: "Easy Case",
+      normal: "Standard Case",
+      hard: "Expert Case"
+    };
+
+    let selectedDifficulty = "easy";
+    let activeStory = null;
+    let questionIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let hintUsed = false;
+    let answered = false;
+    let answerHistory = [];
+
+    const setupPanel = document.getElementById("setupPanel");
+    const gamePanel = document.getElementById("gamePanel");
+    const resultPanel = document.getElementById("resultPanel");
+    const startButton = document.getElementById("startButton");
+    const answersContainer = document.getElementById("answersContainer");
+    const feedback = document.getElementById("feedback");
+    const hintText = document.getElementById("hintText");
+    const hintButton = document.getElementById("hintButton");
+    const nextButton = document.getElementById("nextButton");
+
+    document.querySelectorAll(".difficulty-button").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedDifficulty = button.dataset.level;
+
+        document.querySelectorAll(".difficulty-button").forEach(item => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+      });
+    });
+
+    startButton.addEventListener("click", startGame);
+    hintButton.addEventListener("click", showHint);
+    nextButton.addEventListener("click", handleNext);
+    document.getElementById("retryButton").addEventListener("click", () => {
+      setupPanel.classList.remove("hidden");
+      resultPanel.classList.add("hidden");
+      gamePanel.classList.add("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("backButton").addEventListener("click", () => {
+      window.location.href = `assessment-categories.html?grade=${grade}`;
+    });
+
+    function startGame() {
+      activeStory = stories[grade][selectedDifficulty];
+      questionIndex = 0;
+      score = 0;
+      streak = 0;
+      answerHistory = [];
+
+      document.getElementById("caseTitle").textContent = `Case File #${String(grade).padStart(2, "0")}${selectedDifficulty === "easy" ? "1" : selectedDifficulty === "normal" ? "2" : "3"}`;
+      document.getElementById("caseSubtitle").textContent = `${difficultyNames[selectedDifficulty]} · Grade ${grade}`;
+      document.getElementById("storyTitle").textContent = activeStory.title;
+      document.getElementById("storyText").textContent = activeStory.text;
+
+      document.getElementById("scoreValue").textContent = "0";
+      document.getElementById("streakValue").textContent = "0";
+      setupPanel.classList.add("hidden");
+      resultPanel.classList.add("hidden");
+      gamePanel.classList.remove("hidden");
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderQuestion() {
+      const question = activeStory.questions[questionIndex];
+
+      answered = false;
+      hintUsed = false;
+
+      document.getElementById("questionType").textContent = question.type;
+      document.getElementById("questionCount").textContent = `Question ${questionIndex + 1} of ${activeStory.questions.length}`;
+      document.getElementById("questionText").textContent = question.question;
+
+      const progress = (questionIndex / activeStory.questions.length) * 100;
+      document.getElementById("progressFill").style.width = `${progress}%`;
+      document.getElementById("progressTrack").setAttribute("aria-valuenow", String(questionIndex));
+
+      feedback.className = "feedback hidden";
+      feedback.textContent = "";
+      hintText.classList.add("hidden");
+      hintText.textContent = "";
+
+      hintButton.disabled = false;
+      hintButton.classList.remove("hidden");
+      nextButton.disabled = true;
+      nextButton.innerHTML = 'Check Answer First <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+
+      answersContainer.replaceChildren();
+
+      question.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "answer-button";
+
+        const letter = document.createElement("span");
+        letter.className = "answer-letter";
+        letter.textContent = String.fromCharCode(65 + index);
+
+        const label = document.createElement("span");
+        label.textContent = answer;
+
+        button.append(letter, label);
+        button.addEventListener("click", () => selectAnswer(index));
+        answersContainer.appendChild(button);
+      });
+    }
+
+    function showHint() {
+      if (answered || hintUsed) return;
+
+      hintUsed = true;
+      const question = activeStory.questions[questionIndex];
+
+      hintText.textContent = `Detective hint: ${question.hint}`;
+      hintText.classList.remove("hidden");
+      hintButton.disabled = true;
+    }
+
+    function selectAnswer(selectedIndex) {
+      if (answered) return;
+
+      answered = true;
+      const question = activeStory.questions[questionIndex];
+      const isCorrect = selectedIndex === question.correct;
+      const answerButtons = [...answersContainer.querySelectorAll(".answer-button")];
+
+      answerButtons.forEach((button, index) => {
+        button.disabled = true;
+
+        if (index === question.correct) {
+          button.classList.add("correct");
+        }
+
+        if (index === selectedIndex && !isCorrect) {
+          button.classList.add("wrong");
+        }
+      });
+
+      if (isCorrect) {
+        const earnedPoints = hintUsed ? 50 : 100;
+        score += earnedPoints;
+        streak += 1;
+        feedback.className = "feedback good";
+        feedback.textContent = `Correct! +${earnedPoints} points. ${question.explanation}`;
+      } else {
+        streak = 0;
+        feedback.className = "feedback bad";
+        feedback.textContent = `Not quite. The correct answer is "${question.answers[question.correct]}". ${question.explanation}`;
+      }
+
+      answerHistory.push({
+        type: question.type,
+        question: question.question,
+        selected: question.answers[selectedIndex],
+        correctAnswer: question.answers[question.correct],
+        isCorrect,
+        explanation: question.explanation,
+        earnedPoints: isCorrect ? (hintUsed ? 50 : 100) : 0
+      });
+
+      feedback.classList.remove("hidden");
+      document.getElementById("scoreValue").textContent = String(score);
+      document.getElementById("streakValue").textContent = String(streak);
+
+      hintButton.disabled = true;
+      nextButton.disabled = false;
+      nextButton.innerHTML = questionIndex === activeStory.questions.length - 1
+        ? 'View Case Report <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>'
+        : 'Next Question <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+
+      document.getElementById("progressFill").style.width =
+        `${((questionIndex + 1) / activeStory.questions.length) * 100}%`;
+      document.getElementById("progressTrack").setAttribute("aria-valuenow", String(questionIndex + 1));
+    }
+
+    function handleNext() {
+      if (!answered) return;
+
+      if (questionIndex < activeStory.questions.length - 1) {
+        questionIndex += 1;
+        renderQuestion();
+        document.getElementById("questionText").focus?.();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      gamePanel.classList.add("hidden");
+      resultPanel.classList.remove("hidden");
+
+      const correctCount = answerHistory.filter(item => item.isCorrect).length;
+      const total = activeStory.questions.length;
+      const stars = correctCount === 6 ? 3 : correctCount >= 4 ? 2 : correctCount >= 2 ? 1 : 0;
+
+      document.getElementById("progressFill").style.width = "100%";
+      document.getElementById("progressTrack").setAttribute("aria-valuenow", String(total));
+      document.getElementById("finalScore").textContent = String(score);
+      document.getElementById("resultStars").textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
+      document.getElementById("resultStars").setAttribute("aria-label", `${stars} out of 3 stars`);
+
+      document.getElementById("resultTitle").textContent =
+        correctCount === total ? "Case Cracked!" :
+        correctCount >= 4 ? "Great Detective Work!" :
+        correctCount >= 2 ? "You're Getting Closer!" : "Keep Investigating!";
+
+      document.getElementById("resultMessage").textContent =
+        `You answered ${correctCount} out of ${total} questions correctly and earned ${score} points. ` +
+        (correctCount === total
+          ? "Excellent reading! You found every clue."
+          : "Review the explanations, then try another case to practice your comprehension skills.");
+
+      const reviewContainer = document.getElementById("reviewContainer");
+      reviewContainer.replaceChildren();
+
+      answerHistory.forEach((item, index) => {
+        const review = document.createElement("div");
+        review.className = "review-item";
+
+        const title = document.createElement("strong");
+        title.textContent = `${index + 1}. ${item.type}: ${item.question}`;
+
+        const result = document.createElement("div");
+        result.className = item.isCorrect ? "review-correct" : "review-wrong";
+        result.textContent = item.isCorrect
+          ? `Your answer: ${item.selected} (+${item.earnedPoints} points)`
+          : `Your answer: ${item.selected} · Correct answer: ${item.correctAnswer}`;
+
+        const explanation = document.createElement("div");
+        explanation.textContent = item.explanation;
+
+        review.append(title, result, explanation);
+        reviewContainer.appendChild(review);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (typeof window.reportAchievementCompletion === "function") {
+    window.reportAchievementCompletion("text_detective")
+        .then(result => {
+            console.log("Text Detective achievement saved:", result);
+        })
+        .catch(error => {
+            console.error("Failed to save Text Detective achievement:", error);
+        });
+}
+    }
+  </script>
+  <script src="js/achievement-tracker.js"></script>
+
+</body>
+</html>

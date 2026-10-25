@@ -1,0 +1,1362 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReadQuest | Lexi-Labyrinth</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+:root{
+  --bg:#091321;
+  --panel:#111f31;
+  --panel2:#172b40;
+  --line:#2b4860;
+  --cyan:#25e4d0;
+  --gold:#ffc857;
+  --text:#f2f7ff;
+  --muted:#a9bdd0;
+  --green:#53e3a0;
+  --red:#ff7885;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  background:radial-gradient(ellipse at top,#173653 0%,#091321 70%);
+  font-family:Poppins,"Segoe UI",sans-serif;
+}
+button,a{font:inherit}
+button:focus-visible,a:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+}
+.topbar{
+  background:#08111e;
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  width:min(1050px,94%);
+  margin:auto;
+  padding:16px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand{
+  font-family:"Press Start 2P",monospace;
+  color:var(--cyan);
+  font-size:clamp(10px,2vw,15px);
+  line-height:1.8;
+}
+.brand span{color:#fff}
+.top-link{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:.85rem;
+}
+main{width:min(1000px,94%);margin:24px auto 45px}
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:15px 15px 0 0;
+  background:#101d2d;
+}
+.header-title{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+.game-icon{
+  display:grid;
+  place-items:center;
+  width:48px;height:48px;
+  border-radius:10px;
+  background:var(--cyan);
+  color:#082329;
+  font-size:1.5rem;
+  box-shadow:0 0 18px #25e4d044;
+}
+h1{margin:0;font-size:1.05rem}
+.subtitle{margin:6px 0 0;color:var(--muted);font-size:.84rem}
+.stats{display:flex;flex-wrap:wrap;gap:8px}
+.stat{
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px 11px;
+  color:var(--gold);
+  background:#17283a;
+  font-size:.85rem;
+  white-space:nowrap;
+}
+.level-tabs{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  padding:12px;
+  background:#0d1928;
+  border:1px solid var(--line);
+  border-top:0;
+}
+.level-tab{
+  min-width:0;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#132438;
+  color:var(--muted);
+  text-align:left;
+  cursor:pointer;
+}
+.level-tab strong{display:block;color:var(--text);margin-bottom:5px}
+.level-tab small{font-size:.72rem}
+.level-tab.active{border-color:var(--cyan);background:#123a42}
+.level-tab.active strong{color:var(--cyan)}
+.level-tab:disabled{opacity:.45;cursor:not-allowed}
+.progress-track{height:5px;background:#25374a}
+#progressBar{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+  transition:width .25s;
+}
+.panel{
+  margin-top:16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(145deg,#122237,#0d1928);
+  overflow:hidden;
+}
+.intro-panel{padding:20px}
+.eyebrow{
+  color:var(--cyan);
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  margin:0 0 10px;
+}
+.intro-panel h2{margin:0 0 10px;font-size:1.3rem}
+.intro-panel p{color:var(--muted);line-height:1.8;margin:0}
+.maze-panel{padding:15px}
+.maze-heading{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;margin:0 0 12px;
+}
+.maze-heading strong{font-size:.9rem}
+.maze-heading span{font-size:.78rem;color:var(--muted)}
+.maze{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(9,minmax(0,1fr));
+  gap:3px;
+  width:100%;
+  padding:8px;
+  border:2px solid #31546d;
+  border-radius:10px;
+  background:#07111e;
+  overflow:hidden;
+}
+.tile{
+  position:relative;
+  display:grid;
+  place-items:center;
+  aspect-ratio:1;
+  min-width:0;
+  border-radius:3px;
+  background:#183148;
+  color:#c6f7ef;
+  font-size:clamp(9px,2.3vw,19px);
+  transition:background .2s,transform .2s;
+}
+.tile.wall{
+  background:
+    linear-gradient(135deg,#29516a 25%,transparent 25%) 0 0/8px 8px,
+    linear-gradient(315deg,#1b3a52 25%,#23465d 25%) 0 0/8px 8px;
+  border:1px solid #315b72;
+}
+.tile.path{background:#10253a}
+.tile.visited{background:#164a4b}
+.tile.player{
+  background:#1a6a65;
+  box-shadow:inset 0 0 0 2px var(--cyan),0 0 12px #25e4d055;
+  animation:playerPulse .8s steps(2,end) infinite;
+  z-index:1;
+}
+.tile.player::after{content:"🧑‍🚀";font-size:clamp(10px,2.5vw,21px)}
+.tile.exit{
+  background:#594b1e;
+  box-shadow:inset 0 0 0 2px var(--gold);
+}
+.tile.exit::after{content:"🚪";font-size:clamp(10px,2.5vw,20px)}
+.tile.treasure{background:#514019;color:var(--gold)}
+.tile.treasure::after{content:"★"}
+@keyframes playerPulse{
+  50%{filter:brightness(1.4);transform:translateY(-1px)}
+}
+.maze-legend{
+  display:flex;flex-wrap:wrap;gap:12px;
+  margin-top:10px;color:var(--muted);font-size:.72rem;
+}
+.maze-legend span{display:flex;align-items:center;gap:5px}
+.legend-chip{width:13px;height:13px;border-radius:3px;display:inline-block}
+.question-panel{padding:22px}
+.question-top{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:10px;
+}
+.tag{
+  display:inline-block;padding:8px 11px;
+  background:var(--gold);color:#25200e;
+  border-radius:7px;font-size:.72rem;font-weight:900;
+}
+.counter{color:var(--muted);font-size:.82rem}
+.target-card{
+  margin-top:17px;
+  padding:17px;
+  border:1px solid #24616a;
+  border-radius:11px;
+  background:linear-gradient(120deg,#11333d,#12283c);
+}
+.target-label{
+  color:var(--cyan);
+  font-size:.7rem;font-weight:800;
+  letter-spacing:1.2px;text-transform:uppercase;
+}
+#targetWord{
+  margin:7px 0;
+  font-size:clamp(1.5rem,5vw,2.1rem);
+  font-weight:800;
+  color:#fff;
+}
+#contextSentence{margin:0;color:#c5d7e7;line-height:1.7}
+#questionText{font-size:1.12rem;line-height:1.65;margin:20px 0}
+.choices{display:grid;grid-template-columns:1fr;gap:10px}
+.choice{
+  display:flex;align-items:center;gap:11px;
+  width:100%;min-height:57px;padding:12px;
+  border:1px solid var(--line);border-radius:10px;
+  background:#132438;color:var(--text);
+  text-align:left;cursor:pointer;
+  transition:border-color .15s,background .15s,transform .15s;
+}
+.choice:hover:not(:disabled){
+  border-color:var(--cyan);background:#19364a;transform:translateY(-1px);
+}
+.choice:disabled{cursor:default}
+.letter{
+  flex:0 0 31px;width:31px;height:31px;
+  display:grid;place-items:center;border-radius:8px;
+  background:#213950;color:var(--cyan);font-weight:900;
+}
+.choice.correct{border-color:var(--green);background:#12372f}
+.choice.correct .letter{background:var(--green);color:#08251b}
+.choice.incorrect{border-color:var(--red);background:#3a202c}
+.choice.incorrect .letter{background:var(--red);color:#2b0d13}
+.hint,.feedback{
+  display:none;margin-top:14px;padding:14px;
+  border-radius:10px;line-height:1.7;
+}
+.hint.show{display:block;border:1px solid #78602c;background:#332b18;color:#ffe3a3}
+.feedback.show{display:block;border:1px solid var(--line);background:#14273a}
+.feedback.good{border-color:#287a50}
+.feedback.try{border-color:#a8772c}
+.actions{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;margin-top:18px;
+}
+.button-group{display:flex;flex-wrap:wrap;gap:9px}
+.btn{
+  padding:12px 15px;border:1px solid transparent;border-radius:9px;
+  font-weight:800;cursor:pointer;transition:filter .15s,transform .15s;
+}
+.btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--cyan);color:#062a2a}
+.btn-secondary{background:#192c40;border-color:#35516a;color:var(--text)}
+#resultScreen{display:none;padding:25px;text-align:center}
+.result-icon{font-size:3rem}
+#resultTitle{font-size:1.6rem;margin:12px 0}
+.final-score{font-size:clamp(2rem,7vw,3rem);font-weight:900;color:var(--gold);margin:16px 0}
+.result-message{color:var(--muted);line-height:1.8}
+.result-row{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:13px;margin:9px 0;border:1px solid var(--line);
+  border-radius:9px;background:#0e1c2c;text-align:left;
+}
+.navigation{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px}
+.navigation a{
+  padding:11px 14px;border:1px solid var(--line);
+  border-radius:9px;background:#102237;color:var(--text);
+  text-decoration:none;font-size:.85rem;
+}
+.navigation a:hover{border-color:var(--cyan);color:var(--cyan)}
+.hidden{display:none!important}
+@media(min-width:650px){.choices{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){
+  main{margin-top:14px}
+  .header{align-items:flex-start;flex-direction:column}
+  .intro-panel,.question-panel{padding:16px}
+  .level-tabs{padding:8px;gap:5px}
+  .level-tab{padding:9px 6px}
+  .level-tab small{font-size:.62rem}
+  .actions{align-items:stretch;flex-direction:column}
+  .button-group{width:100%}
+  .button-group .btn,.actions>.btn{flex:1}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+
+/* ===== LEXI-LABYRINTH VISUAL UPGRADE ===== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.topbar {
+  position: relative !important;
+  top: auto !important;
+  z-index: 20;
+  width: 100%;
+}
+
+.topbar-inner {
+  width: min(1000px, 94%) !important;
+  min-height: 62px;
+  margin: 0 auto !important;
+  padding: 12px 0 !important;
+  flex-wrap: wrap;
+}
+
+main {
+  width: min(1000px, 94%) !important;
+  max-width: 1000px;
+  margin: 22px auto 40px !important;
+  padding: 0 !important;
+}
+
+#gameScreen {
+  width: 100%;
+  min-width: 0;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 17px;
+  border-radius: 14px;
+}
+
+.header-title {
+  min-width: 0;
+  flex: 1 1 220px;
+}
+
+.header-title h1 {
+  overflow-wrap: anywhere;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.level-tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 10px;
+}
+
+.level-tab {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.panel {
+  position: relative;
+  margin-top: 13px;
+  border-radius: 13px;
+}
+
+.intro-panel {
+  padding: 17px 19px;
+}
+
+.maze-panel {
+  padding: 15px;
+}
+
+/* Compact maze instead of giant tiles */
+.maze {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 7px;
+  gap: 3px;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  border: 2px solid #3a718b;
+  border-radius: 10px;
+  background: #06101d;
+  box-shadow: 0 0 24px #25e4d01a;
+}
+
+.tile {
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  font-size: clamp(9px, 1.5vw, 15px);
+  overflow: hidden;
+}
+
+.tile.wall {
+  background:
+    linear-gradient(135deg, #28516b 25%, transparent 25%) 0 0 / 7px 7px,
+    linear-gradient(315deg, #193b54 25%, #234960 25%) 0 0 / 7px 7px;
+  border: 1px solid #376681;
+  box-shadow: inset 0 0 4px #06101d88;
+}
+
+.tile.path {
+  background: #10263a;
+  border: 1px solid #19364b;
+}
+
+.tile.visited {
+  background: #12484a;
+  border-color: #1a6968;
+  animation: pathReveal .25s ease-out;
+}
+
+/* Animated pixel explorer */
+.tile.player {
+  position: relative;
+  z-index: 2;
+  background: #075c59;
+  border: 2px solid #40ffdc;
+  box-shadow: 0 0 12px #25e4d099, inset 0 0 8px #25e4d055;
+  animation: explorerBounce .65s ease-in-out infinite alternate;
+}
+
+.tile.player::after {
+  content: none;
+  font-size: clamp(12px, 2vw, 20px);
+  filter: drop-shadow(0 2px 2px #0008);
+}
+
+/* Glowing exit door */
+.tile.exit {
+  position: relative;
+  background: #493818;
+  border: 2px solid #ffd166;
+  box-shadow: 0 0 12px #ffc85766, inset 0 0 8px #ffc85733;
+  animation: exitGlow 1.5s ease-in-out infinite alternate;
+}
+
+.tile.exit::after {
+  content: "🚪";
+  font-size: clamp(12px, 2vw, 20px);
+  filter: drop-shadow(0 0 4px #ffc857);
+}
+
+.tile.treasure {
+  background: #503d16;
+  border: 1px solid #ffdc78;
+  animation: treasureShine 1.4s ease-in-out infinite alternate;
+}
+
+.tile.treasure::after {
+  content: "★";
+  color: #ffe58a;
+  font-size: clamp(11px, 1.8vw, 18px);
+  text-shadow: 0 0 8px #ffc857;
+}
+
+.question-panel {
+  padding: 19px;
+}
+
+.choice {
+  min-height: 50px;
+  transition: background .2s, border-color .2s, transform .2s,
+              box-shadow .2s;
+}
+
+.choice:hover:not(:disabled) {
+  box-shadow: 0 0 14px #25e4d022;
+}
+
+.btn {
+  transition: background .2s, transform .2s, box-shadow .2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 0 17px #25e4d055;
+}
+
+@keyframes explorerBounce {
+  from { transform: translateY(1px); }
+  to { transform: translateY(-3px); }
+}
+
+@keyframes exitGlow {
+  from { box-shadow: 0 0 6px #ffc85744; }
+  to { box-shadow: 0 0 19px #ffc857bb; }
+}
+
+@keyframes treasureShine {
+  from { filter: brightness(.85); }
+  to { filter: brightness(1.35); }
+}
+
+@keyframes pathReveal {
+  from { opacity: .45; transform: scale(.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+  main {
+    width: 94% !important;
+    margin-top: 14px !important;
+  }
+
+  .header {
+    padding: 13px;
+  }
+
+  .level-tabs {
+    padding: 7px;
+    gap: 5px;
+  }
+
+  .level-tab {
+    padding: 9px 5px;
+  }
+
+  .level-tab strong {
+    font-size: .76rem;
+  }
+
+  .level-tab small {
+    font-size: .65rem;
+  }
+
+  .maze-panel {
+    padding: 9px;
+  }
+
+  .maze {
+    padding: 5px;
+    gap: 2px;
+  }
+
+  .intro-panel,
+  .question-panel {
+    padding: 14px;
+  }
+
+  .stats {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile.player,
+  .tile.exit,
+  .tile.treasure,
+  .tile.visited {
+    animation: none !important;
+  }
+}
+
+/* FIX: Lexi-Labyrinth header overlapping level tabs */
+
+.header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin-bottom: 18px !important;
+  padding: 18px !important;
+  position: relative !important;
+}
+
+.header-title {
+  position: static !important;
+  display: block !important;
+  flex: 1 1 220px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.header-title h1,
+.header-title p {
+  position: static !important;
+  margin-top: 0 !important;
+  transform: none !important;
+}
+
+.stats {
+  position: static !important;
+  display: flex !important;
+  flex: 0 1 auto !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.level-tabs {
+  position: relative !important;
+  clear: both !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 18px 0 !important;
+  padding: 10px !important;
+  transform: none !important;
+}
+
+.level-tab {
+  position: relative !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 75px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.panel,
+.intro-panel,
+.maze-panel,
+.question-panel {
+  position: relative !important;
+  clear: both !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin-top: 14px !important;
+  transform: none !important;
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .stats {
+    width: 100% !important;
+  }
+
+  .level-tabs {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* Make selected answers clearly visible */
+.choice {
+  position: relative;
+  border: 2px solid #2b4860;
+  background: #132438;
+  color: #f2f7ff;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.choice.selected {
+  background: #124b52 !important;
+  border: 2px solid #25e4d0 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 3px #25e4d033, 0 0 15px #25e4d055;
+  transform: translateY(-2px);
+}
+
+.choice.selected .letter {
+  background: #25e4d0 !important;
+  color: #082329 !important;
+}
+
+.choice:focus-visible {
+  outline: 3px solid #ffc857;
+  outline-offset: 3px;
+}
+
+.choice:disabled {
+  cursor: default;
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">READ<span>QUEST</span></div>
+    <a class="top-link" id="topBack" href="easy-lessons.html">← Word Builder</a>
+  </div>
+</header>
+
+<main>
+<section id="gameScreen">
+  <header class="header">
+    <div class="header-title">
+      <div class="game-icon" aria-hidden="true">🧩</div>
+      <div>
+        <h1>Lexi-Labyrinth</h1>
+        <p class="subtitle" id="subtitle">Level 1 · Synonym Search</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat">⭐ <span id="score">0</span> pts</div>
+      <div class="stat">🔥 <span id="streak">0</span> streak</div>
+    </div>
+  </header>
+
+  <div class="level-tabs">
+    <button class="level-tab active" id="level0" type="button">
+      <strong>Level 1</strong><small>Synonym Search</small>
+    </button>
+    <button class="level-tab" id="level1" type="button" disabled>
+      <strong>Level 2</strong><small>Antonym Alley</small>
+    </button>
+    <button class="level-tab" id="level2" type="button" disabled>
+      <strong>Level 3</strong><small>Meaning Maze</small>
+    </button>
+  </div>
+  <div class="progress-track"><div id="progressBar"></div></div>
+
+  <article class="panel intro-panel">
+    <p class="eyebrow">✦ Your mission</p>
+    <h2 id="missionTitle">Find the synonym path!</h2>
+    <p id="missionText">Choose the word closest in meaning to the target word. Correct answers help your pixel explorer reach the exit.</p>
+  </article>
+
+  <section class="panel maze-panel">
+    <div class="maze-heading">
+      <strong>🗺️ Pixel Maze</strong>
+      <span id="mazeStatus">Find the exit!</span>
+    </div>
+    <div class="maze" id="maze" role="img" aria-label="Pixel maze with a player and exit"></div>
+    <div class="maze-legend">
+      <span><i class="legend-chip" style="background:#1a6a65"></i> Player</span>
+      <span><i class="legend-chip" style="background:#514019"></i> Treasure</span>
+      <span><i class="legend-chip" style="background:#594b1e"></i> Exit</span>
+      <span><i class="legend-chip" style="background:#23465d"></i> Wall</span>
+    </div>
+  </section>
+
+  <section class="panel question-panel">
+    <div class="question-top">
+      <span class="tag" id="skillTag">SYNONYM</span>
+      <span class="counter" id="counter">Question 1 of 10</span>
+    </div>
+
+    <div class="target-card">
+      <div class="target-label">Target vocabulary</div>
+      <div id="targetWord">Brave</div>
+      <p id="contextSentence">The brave child helped rescue the lost kitten.</p>
+    </div>
+
+    <h2 id="questionText">Which word is closest in meaning to brave?</h2>
+    <div class="choices" id="choices"></div>
+    <div class="hint" id="hint" role="status"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+    <div class="actions">
+      <div class="button-group">
+        <button class="btn btn-secondary" id="hintButton" type="button">💡 Get a Hint</button>
+        <button class="btn btn-secondary" id="restartButton" type="button">↻ Restart</button>
+      </div>
+      <button class="btn btn-primary" id="checkButton" type="button" disabled>Check Path →</button>
+    </div>
+  </section>
+</section>
+
+<section class="panel" id="resultScreen" aria-live="polite">
+  <div style="padding:18px">
+    <div class="result-icon">🏆</div>
+    <p class="eyebrow">Explorer report</p>
+    <h2 id="resultTitle">Level Complete!</h2>
+    <div class="final-score" id="finalScore">0 points</div>
+    <p class="result-message" id="resultMessage"></p>
+    <div id="levelResults"></div>
+    <div class="actions" style="justify-content:center">
+      <button class="btn btn-primary" id="continueButton" type="button">Next Level →</button>
+      <button class="btn btn-secondary" id="againButton" type="button">Play Again</button>
+    </div>
+  </div>
+</section>
+
+<nav class="navigation" aria-label="Game navigation">
+  <a href="lessons.html">← Back to Lessons</a>
+  <a href="easy-lessons.html">Word Builder Menu</a>
+</nav>
+</main>
+
+<script>
+
+
+const levelData = [
+  {
+    title: "Level 1: Synonym Search",
+    subtitle: "Find a word with a similar meaning.",
+    questions: [
+      { word: "HAPPY", sentence: "Mia felt happy after receiving her gift.", question: "Which word means almost the same as happy?", choices: ["Sad", "Joyful", "Angry", "Tired"], answer: 1, hint: "Think of a word that means feeling good.", explanation: "Joyful means feeling great happiness." },
+      { word: "QUICK", sentence: "The quick rabbit crossed the path.", question: "Which word means almost the same as quick?", choices: ["Slow", "Fast", "Quiet", "Small"], answer: 1, hint: "Think of something that happens in little time.", explanation: "Fast means moving quickly." },
+      { word: "BRAVE", sentence: "The brave girl spoke in front of the class.", question: "Which word means almost the same as brave?", choices: ["Courageous", "Careless", "Shy", "Sleepy"], answer: 0, hint: "A brave person faces fear.", explanation: "Courageous means showing bravery." },
+      { word: "TINY", sentence: "A tiny insect sat on the leaf.", question: "Which word means almost the same as tiny?", choices: ["Huge", "Wide", "Small", "Tall"], answer: 2, hint: "Think of something very little.", explanation: "Small means little in size." },
+      { word: "BEGIN", sentence: "We will begin the activity soon.", question: "Which word means almost the same as begin?", choices: ["Finish", "Start", "Forget", "Stop"], answer: 1, hint: "It is what you do at the beginning.", explanation: "Start means to begin." },
+      { word: "CLEVER", sentence: "The clever student solved the puzzle.", question: "Which word means almost the same as clever?", choices: ["Smart", "Weak", "Late", "Loud"], answer: 0, hint: "A clever person thinks well.", explanation: "Smart means intelligent." },
+      { word: "QUIET", sentence: "The library was quiet during reading time.", question: "Which word means almost the same as quiet?", choices: ["Noisy", "Silent", "Busy", "Bright"], answer: 1, hint: "Think of a place without noise.", explanation: "Silent means making little or no sound." },
+      { word: "ANGRY", sentence: "He was angry when his toy broke.", question: "Which word means almost the same as angry?", choices: ["Furious", "Cheerful", "Calm", "Proud"], answer: 0, hint: "Think of a very strong feeling of anger.", explanation: "Furious means extremely angry." },
+      { word: "NEAT", sentence: "Her desk was neat and organized.", question: "Which word means almost the same as neat?", choices: ["Messy", "Tidy", "Broken", "Empty"], answer: 1, hint: "A neat room is organized.", explanation: "Tidy means clean and organized." },
+      { word: "HUGE", sentence: "A huge ship sailed across the sea.", question: "Which word means almost the same as huge?", choices: ["Tiny", "Narrow", "Enormous", "Short"], answer: 2, hint: "Think of something extremely large.", explanation: "Enormous means very large." }
+    ]
+  },
+  {
+    title: "Level 2: Antonym Alley",
+    subtitle: "Find a word with the opposite meaning.",
+    questions: [
+      { word: "HOT", sentence: "The soup was hot when it arrived.", question: "What is the opposite of hot?", choices: ["Warm", "Cold", "Spicy", "Boiling"], answer: 1, hint: "Think of ice.", explanation: "Cold is the opposite of hot." },
+      { word: "EARLY", sentence: "We arrived early for class.", question: "What is the opposite of early?", choices: ["Soon", "Quick", "Late", "First"], answer: 2, hint: "What happens when you miss the expected time?", explanation: "Late is the opposite of early." },
+      { word: "EMPTY", sentence: "The bottle was empty.", question: "What is the opposite of empty?", choices: ["Full", "Open", "Clean", "Dry"], answer: 0, hint: "A bottle with lots of water is not empty.", explanation: "Full is the opposite of empty." },
+      { word: "STRONG", sentence: "The strong athlete lifted the box.", question: "What is the opposite of strong?", choices: ["Powerful", "Healthy", "Weak", "Brave"], answer: 2, hint: "Think of having little strength.", explanation: "Weak is the opposite of strong." },
+      { word: "NOISY", sentence: "The noisy room made it hard to study.", question: "What is the opposite of noisy?", choices: ["Loud", "Quiet", "Busy", "Crowded"], answer: 1, hint: "Think of a library during quiet reading.", explanation: "Quiet is the opposite of noisy." },
+      { word: "ACCEPT", sentence: "She chose to accept the invitation.", question: "What is the opposite of accept?", choices: ["Receive", "Welcome", "Decline", "Agree"], answer: 2, hint: "What do you do when you say no to an offer?", explanation: "Decline means to refuse an offer." },
+      { word: "ANCIENT", sentence: "The museum displayed an ancient bowl.", question: "What is the opposite of ancient?", choices: ["Old", "Historic", "Modern", "Dusty"], answer: 2, hint: "Think of something new or from today.", explanation: "Modern is the opposite of ancient." },
+      { word: "POLITE", sentence: "The polite child said thank you.", question: "What is the opposite of polite?", choices: ["Kind", "Rude", "Helpful", "Gentle"], answer: 1, hint: "Think of someone who behaves disrespectfully.", explanation: "Rude is the opposite of polite." },
+      { word: "INCREASE", sentence: "The school plans to increase its reading time.", question: "What is the opposite of increase?", choices: ["Grow", "Add", "Expand", "Decrease"], answer: 3, hint: "Think of making something smaller or less.", explanation: "Decrease means to reduce." },
+      { word: "SUCCESS", sentence: "Finishing the project was a success.", question: "What is the opposite of success?", choices: ["Victory", "Failure", "Progress", "Reward"], answer: 1, hint: "It means not achieving the intended result.", explanation: "Failure is the opposite of success." }
+    ]
+  },
+  {
+    title: "Level 3: Meaning Maze",
+    subtitle: "Use clues in the sentence to understand a word.",
+    questions: [
+      { word: "FRAGILE", sentence: "The fragile glass must be carried carefully so it will not break.", question: "What does fragile mean?", choices: ["Easy to break", "Very heavy", "Hard to clean", "Full of water"], answer: 0, hint: "Look for the clue about breaking.", explanation: "Fragile describes something that can break easily." },
+      { word: "EXHAUSTED", sentence: "After running for an hour, Ben was exhausted and needed to rest.", question: "What does exhausted mean?", choices: ["Excited", "Very tired", "Hungry", "Confused"], answer: 1, hint: "What might you feel after a long run?", explanation: "Exhausted means extremely tired." },
+      { word: "GENEROUS", sentence: "Lina was generous and shared her snacks with everyone.", question: "What does generous mean?", choices: ["Willing to share", "Always late", "Very nervous", "Easily annoyed"], answer: 0, hint: "Notice what Lina did with her snacks.", explanation: "Generous people willingly give or share with others." },
+      { word: "SCARCE", sentence: "Water became scarce during the long drought, so families saved every drop.", question: "What does scarce mean?", choices: ["Easy to find", "Very cold", "Limited or hard to find", "Not important"], answer: 2, hint: "Families had to save water because there was not much.", explanation: "Scarce means available only in small amounts." },
+      { word: "RELUCTANT", sentence: "Jay was reluctant to speak, but his teacher encouraged him.", question: "What does reluctant mean?", choices: ["Unwilling or hesitant", "Very eager", "Completely ready", "Extremely proud"], answer: 0, hint: "Jay needed encouragement before speaking.", explanation: "Reluctant means hesitant or unwilling." },
+      { word: "OBSERVE", sentence: "The class used magnifying glasses to observe the tiny insects.", question: "What does observe mean?", choices: ["Ignore", "Look at carefully", "Catch quickly", "Draw from memory"], answer: 1, hint: "The magnifying glasses helped them see details.", explanation: "Observe means to watch or examine carefully." },
+      { word: "PREDICT", sentence: "By studying the dark clouds, Ana could predict that rain was coming.", question: "What does predict mean?", choices: ["Describe the past", "Make an educated guess about the future", "Change the weather", "Measure the clouds"], answer: 1, hint: "Ana used clues to say what might happen next.", explanation: "Predict means to say what you think will happen." },
+      { word: "RELIEVE", sentence: "Drinking water helped relieve his thirst after the game.", question: "What does relieve mean?", choices: ["Make worse", "Hide completely", "Reduce or ease", "Create suddenly"], answer: 2, hint: "His thirst improved after drinking.", explanation: "Relieve means to reduce discomfort or difficulty." },
+      { word: "CAUTIOUS", sentence: "The cautious hiker checked the path before crossing the slippery bridge.", question: "What does cautious mean?", choices: ["Careful to avoid danger", "Eager to hurry", "Unaware of risk", "Ready to argue"], answer: 0, hint: "The hiker checked the path before moving.", explanation: "Cautious means careful because something may be risky." },
+      { word: "BENEFIT", sentence: "One benefit of reading daily is that it can improve vocabulary.", question: "What does benefit mean?", choices: ["A problem", "A punishment", "An advantage or good result", "A difficult question"], answer: 2, hint: "Improving vocabulary is a positive result.", explanation: "A benefit is an advantage or helpful result." }
+    ]
+  }
+];
+
+const mazeLayout = [
+  "#########",
+  "#S......#",
+  "#######.#",
+  "#.......#",
+  "#.#######",
+  "#.......#",
+  "#######.#",
+  "#......E#",
+  "#########"
+];
+
+const maze = document.getElementById("maze");
+const mazeStatus = document.getElementById("mazeStatus");
+const gameScreen = document.getElementById("gameScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const elements = {
+  subtitle: document.getElementById("subtitle"),
+  missionTitle: document.getElementById("missionTitle"),
+  missionText: document.getElementById("missionText"),
+  skillTag: document.getElementById("skillTag"),
+  targetWord: document.getElementById("targetWord"),
+  contextSentence: document.getElementById("contextSentence"),
+  questionText: document.getElementById("questionText"),
+  counter: document.getElementById("counter"),
+  progressBar: document.getElementById("progressBar"),
+  score: document.getElementById("score"),
+  streak: document.getElementById("streak"),
+  choices: document.getElementById("choices"),
+  hint: document.getElementById("hint"),
+  feedback: document.getElementById("feedback"),
+  finalScore: document.getElementById("finalScore"),
+  resultTitle: document.getElementById("resultTitle"),
+  resultMessage: document.getElementById("resultMessage"),
+  levelResults: document.getElementById("levelResults")
+};
+
+let currentLevel = 0;
+let questionIndex = 0;
+let score = 0;
+let streak = 0;
+let levelCorrect = 0;
+let selectedAnswer = null;
+let answered = false;
+let playerProgress = 0;
+let levelScores = [0, 0, 0];
+let levelCorrectCounts = [0, 0, 0];
+let totalCorrect = 0;
+let gameFinished = false;
+
+function findRoute() {
+  const start = { r: 1, c: 1 };
+  const queue = [[start]];
+  const visited = new Set([`${start.r},${start.c}`]);
+  const directions = [
+    { r: -1, c: 0 },
+    { r: 1, c: 0 },
+    { r: 0, c: -1 },
+    { r: 0, c: 1 }
+  ];
+
+  while (queue.length) {
+    const route = queue.shift();
+    const current = route[route.length - 1];
+
+    if (mazeLayout[current.r][current.c] === "E") {
+      return route;
+    }
+
+    for (const direction of directions) {
+      const r = current.r + direction.r;
+      const c = current.c + direction.c;
+      const key = `${r},${c}`;
+
+      if (
+        r < 0 ||
+        r >= mazeLayout.length ||
+        c < 0 ||
+        c >= mazeLayout[r].length ||
+        mazeLayout[r][c] === "#" ||
+        visited.has(key)
+      ) {
+        continue;
+      }
+
+      visited.add(key);
+      queue.push([...route, { r, c }]);
+    }
+  }
+
+  return [];
+}
+
+const route = findRoute();
+
+function renderMaze() {
+  if (!maze) return;
+
+  maze.innerHTML = "";
+  maze.style.display = "grid";
+  maze.style.gridTemplateColumns = `repeat(${mazeLayout[0].length}, minmax(0, 1fr))`;
+
+  const routePositions = new Map();
+  route.forEach((position, index) => {
+    routePositions.set(`${position.r},${position.c}`, index);
+  });
+
+  mazeLayout.forEach((row, r) => {
+    [...row].forEach((cell, c) => {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+
+      const key = `${r},${c}`;
+      const routeIndex = routePositions.get(key);
+
+      if (cell === "#") {
+        tile.classList.add("wall");
+        tile.setAttribute("aria-label", "Wall");
+      } else {
+        tile.classList.add("path");
+
+        if (routeIndex !== undefined && routeIndex < playerProgress) {
+          tile.classList.add("visited");
+        }
+
+         if (cell === "E") {
+  tile.classList.add("exit");
+  tile.setAttribute("aria-label", "Exit");
+}
+        if (cell === "S") {
+          tile.classList.add("start");
+          tile.textContent = "🏁";
+        }
+
+         if (routeIndex === playerProgress) {
+  tile.classList.add("player");
+  tile.textContent = "🧑‍🚀";
+  tile.setAttribute("aria-label", "Player");
+}
+
+        if (routeIndex === 5 || routeIndex === 12 || routeIndex === 19) {
+          tile.classList.add("treasure");
+        }
+      }
+
+      maze.appendChild(tile);
+    });
+  });
+
+  if (mazeStatus) {
+    mazeStatus.textContent =
+      playerProgress >= route.length - 1
+        ? "🎉 You reached the exit!"
+        : `🚶 Maze progress: ${Math.round((playerProgress / Math.max(1, route.length - 1)) * 100)}%`;
+  }
+}
+
+function showQuestion() {
+  const level = levelData[currentLevel];
+  const question = level.questions[questionIndex];
+
+  selectedAnswer = null;
+  answered = false;
+
+  if (elements.subtitle) elements.subtitle.textContent = level.subtitle;
+  if (elements.missionTitle) elements.missionTitle.textContent = level.title;
+  if (elements.missionText) {
+    elements.missionText.textContent = `Answer the questions to guide your character to the exit.`;
+  }
+  if (elements.skillTag) elements.skillTag.textContent = `LEVEL ${currentLevel + 1}`;
+  if (elements.targetWord) elements.targetWord.textContent = question.word;
+  if (elements.contextSentence) elements.contextSentence.textContent = question.sentence;
+  if (elements.questionText) elements.questionText.textContent = question.question;
+  if (elements.counter) {
+    elements.counter.textContent = `Question ${questionIndex + 1} of ${level.questions.length}`;
+  }
+  if (elements.progressBar) {
+    elements.progressBar.style.width = `${(questionIndex / level.questions.length) * 100}%`;
+  }
+  if (elements.score) elements.score.textContent = String(score);
+  if (elements.streak) elements.streak.textContent = String(streak);
+  if (elements.hint) elements.hint.textContent = "";
+  if (elements.feedback) {
+    elements.feedback.textContent = "";
+    elements.feedback.className = "feedback";
+  }
+
+  if (elements.choices) {
+    elements.choices.innerHTML = "";
+
+    question.choices.forEach((choice, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "choice";
+      button.textContent = `${String.fromCharCode(65 + index)}. ${choice}`;
+      button.addEventListener("click", () => selectAnswer(index));
+      elements.choices.appendChild(button);
+    });
+  }
+
+  const checkButton = document.getElementById("checkButton");
+  if (checkButton) {
+    checkButton.disabled = false;
+    checkButton.textContent = "Check Answer";
+  }
+
+  renderMaze();
+}
+
+function selectAnswer(index) {
+  if (answered) return;
+
+  selectedAnswer = index;
+
+  if (elements.choices) {
+    [...elements.choices.querySelectorAll("button")].forEach((button, i) => {
+      button.classList.toggle("selected", i === index);
+      button.setAttribute("aria-pressed", String(i === index));
+    });
+  }
+}
+
+function checkAnswer() {
+  if (answered || selectedAnswer === null) {
+    if (elements.feedback && selectedAnswer === null) {
+      elements.feedback.textContent = "Choose an answer first!";
+      elements.feedback.className = "feedback incorrect";
+    }
+    return;
+  }
+
+  answered = true;
+
+  const question = levelData[currentLevel].questions[questionIndex];
+  const correct = selectedAnswer === question.answer;
+
+  if (elements.choices) {
+    [...elements.choices.querySelectorAll("button")].forEach((button, i) => {
+      button.disabled = true;
+      if (i === question.answer) button.classList.add("correct");
+      if (i === selectedAnswer && !correct) button.classList.add("incorrect");
+    });
+  }
+
+  if (correct) {
+    score += 10;
+    levelScores[currentLevel] += 10;
+    levelCorrect++;
+    levelCorrectCounts[currentLevel]++;
+    totalCorrect++;
+    streak++;
+
+    // Progress is based on the number of correct answers in this level.
+    playerProgress = Math.round(
+      (levelCorrect / levelData[currentLevel].questions.length) * (route.length - 1)
+    );
+
+    if (elements.feedback) {
+      elements.feedback.textContent = `✔️ Correct! ${question.explanation}`;
+      elements.feedback.className = "feedback correct";
+    }
+  } else {
+    streak = 0;
+
+    if (elements.feedback) {
+      elements.feedback.textContent = `Not quite. ${question.explanation}`;
+      elements.feedback.className = "feedback incorrect";
+    }
+  }
+
+  if (elements.score) elements.score.textContent = String(score);
+  if (elements.streak) elements.streak.textContent = String(streak);
+
+  const checkButton = document.getElementById("checkButton");
+  if (checkButton) {
+    checkButton.disabled = true;
+    checkButton.textContent = "Answer Checked";
+  }
+
+  renderMaze();
+
+  questionIndex++;
+
+  window.setTimeout(() => {
+    if (questionIndex < levelData[currentLevel].questions.length) {
+      showQuestion();
+    } else {
+      finishLevel();
+    }
+  }, 1100);
+}
+
+function finishLevel() {
+  // If all 10 answers are correct, ensure the character reaches the exit.
+  if (levelCorrect === levelData[currentLevel].questions.length) {
+    playerProgress = route.length - 1;
+  }
+
+  renderMaze();
+
+  if (gameScreen) gameScreen.style.display = "none";
+  if (resultScreen) resultScreen.style.display = "block";
+
+  const perfectLevel = levelCorrect === levelData[currentLevel].questions.length;
+
+  if (elements.resultTitle) {
+    elements.resultTitle.textContent = perfectLevel
+      ? "🎉 You reached the exit!"
+      : "Level Complete!";
+  }
+
+  if (elements.finalScore) {
+    elements.finalScore.textContent = `${levelScores[currentLevel]} XP`;
+  }
+
+  if (elements.resultMessage) {
+    elements.resultMessage.textContent = perfectLevel
+      ? "Amazing! You answered every question correctly and reached the door."
+      : `You answered ${levelCorrect} out of ${levelData[currentLevel].questions.length} questions correctly. Keep practicing to improve your score!`;
+  }
+
+  const continueButton = document.getElementById("continueButton");
+  if (continueButton) {
+    if (currentLevel < levelData.length - 1) {
+      continueButton.textContent = "Next Level →";
+      continueButton.style.display = "inline-block";
+    } else {
+      continueButton.textContent = "See Final Results";
+      continueButton.style.display = "inline-block";
+    }
+  }
+
+  const againButton = document.getElementById("againButton");
+  if (againButton) {
+    againButton.textContent = "Play Again";
+    againButton.style.display = "inline-block";
+  }
+
+  if (elements.levelResults) {
+    elements.levelResults.innerHTML = levelData.map((level, index) => {
+      const completed = index <= currentLevel;
+      return `
+        <div class="level-result">
+          <strong>${level.title}</strong>
+          <span>${completed ? `${levelCorrectCounts[index]}/10 correct · ${levelScores[index]} XP` : "🔒 Not played yet"}</span>
+        </div>
+      `;
+    }).join("");
+  }
+}
+
+function showFinalResults() {
+  gameFinished = true;
+
+  if (gameScreen) gameScreen.style.display = "none";
+  if (resultScreen) resultScreen.style.display = "block";
+
+  if (elements.resultTitle) elements.resultTitle.textContent = "🏆 Lexi-Labyrinth Complete!";
+  if (elements.finalScore) elements.finalScore.textContent = `${score} XP`;
+
+  if (elements.resultMessage) {
+    elements.resultMessage.textContent =
+      `You answered ${totalCorrect} out of 30 questions correctly. Great effort!`;
+  }
+
+  const continueButton = document.getElementById("continueButton");
+  if (continueButton) continueButton.style.display = "none";
+
+  if (elements.levelResults) {
+    elements.levelResults.innerHTML = levelData.map((level, index) => `
+      <div class="level-result">
+        <strong>${level.title}</strong>
+        <span>${levelCorrectCounts[index]}/10 correct · ${levelScores[index]} XP</span>
+      </div>
+    `).join("");
+  }
+  if (typeof window.reportAchievementCompletion === "function") {
+    window.reportAchievementCompletion("lexi_labyrinth")
+        .then(result => {
+            console.log("Lexi-Labyrinth achievement saved:", result);
+        })
+        .catch(error => {
+            console.error(
+                "Failed to save Lexi-Labyrinth achievement:",
+                error
+            );
+        });
+}
+}
+
+function startLevel(levelIndex) {
+  if (levelIndex < 0 || levelIndex >= levelData.length) return;
+
+  currentLevel = levelIndex;
+  questionIndex = 0;
+  levelCorrect = 0;
+  streak = 0;
+  selectedAnswer = null;
+  answered = false;
+  playerProgress = 0;
+  gameFinished = false;
+
+  if (gameScreen) gameScreen.style.display = "block";
+  if (resultScreen) resultScreen.style.display = "none";
+
+  document.querySelectorAll("[id^='level']").forEach(button => {
+    if (/^level[0-2]$/.test(button.id)) {
+      button.classList.toggle(button.id === `level${levelIndex}`, true);
+      button.classList.toggle(button.id !== `level${levelIndex}`, false);
+    }
+  });
+
+  showQuestion();
+}
+
+function restartGame() {
+  currentLevel = 0;
+  questionIndex = 0;
+  score = 0;
+  streak = 0;
+  levelCorrect = 0;
+  selectedAnswer = null;
+  answered = false;
+  playerProgress = 0;
+  levelScores = [0, 0, 0];
+  levelCorrectCounts = [0, 0, 0];
+  totalCorrect = 0;
+  gameFinished = false;
+  startLevel(0);
+}
+
+const hintButton = document.getElementById("hintButton");
+if (hintButton) {
+  hintButton.addEventListener("click", () => {
+    const question = levelData[currentLevel].questions[questionIndex];
+    if (elements.hint) elements.hint.textContent = `💡 Hint: ${question.hint}`;
+  });
+}
+
+const checkButton = document.getElementById("checkButton");
+if (checkButton) {
+  checkButton.addEventListener("click", checkAnswer);
+}
+
+const restartButton = document.getElementById("restartButton");
+if (restartButton) {
+  restartButton.addEventListener("click", restartGame);
+}
+
+const continueButton = document.getElementById("continueButton");
+if (continueButton) {
+  continueButton.addEventListener("click", () => {
+    if (currentLevel < levelData.length - 1) {
+      startLevel(currentLevel + 1);
+    } else {
+      showFinalResults();
+    }
+  });
+}
+
+const againButton = document.getElementById("againButton");
+if (againButton) {
+  againButton.addEventListener("click", restartGame);
+}
+
+document.querySelectorAll("[id^='level']").forEach(button => {
+  const match = button.id.match(/^level([0-2])$/);
+  if (match) {
+    button.addEventListener("click", () => startLevel(Number(match[1])));
+  }
+});
+
+if (!route.length) {
+  if (mazeStatus) {
+    mazeStatus.textContent = "Maze route error: check the maze layout in the JavaScript.";
+  }
+  console.error("Lexi-Labyrinth: no connected route from start to exit.");
+} else {
+  startLevel(0);
+}
+
+</script>
+<script src="js/achievement-tracker.js"></script>
+</body>
+</html>

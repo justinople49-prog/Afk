@@ -1,0 +1,1406 @@
+/* dashboard. html, lessons.html, ang naka connect sa css nato*/
+
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* COLORS */
+
+:root{--bg:#081326;  --nav:#0B1733;    --card:#101D3D;   --border:#2A4A8F;   --primary:#4E8DFF;   --gold:#FFD54A;  --text:#F5F8FF; --sub:#A9B8DA;}
+
+/* BODY */
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Poppins,sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* DEFAULT */
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+ul{
+    list-style:none;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+img{
+    display:block;
+    max-width:100%;
+}
+
+/* MAIN LAYOUT */
+
+.container{
+    display:flex;
+    align-items:flex-start;
+    width:100%;
+    
+    margin:90px auto 0;
+    
+}
+/* ==================================================
+   STEP 2 - NAVBAR
+================================================== */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:75px;
+    z-index:1000;
+}
+
+.navbar{
+    height:75px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    background:rgba(11,23,51,.95);
+    backdrop-filter:blur(10px);
+    border-bottom:2px solid var(--border);
+    padding-left: 90px;
+}
+
+.logo h2{
+    font-family:"Press Start 2P", cursive;
+    color:var(--gold);
+    font-size:18px;
+    letter-spacing:2px;
+    margin-left:60px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.nav-avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--primary);
+}
+
+#userName{
+    font-weight:600;
+    color:var(--text);
+}
+
+/* ==================================================
+   STEP 3 - SIDEBAR
+================================================== */
+.sidebar{
+    width:250px;
+    background:#0c1734;
+    border-right:2px solid var(--border);
+    transition:.35s ease;
+    overflow:hidden;
+
+    position:fixed;
+    top:75px;
+    left:-250px;
+    height:calc(100vh - 75px);
+    z-index:999;
+}
+
+
+.sidebar h3{
+    font-family:"Press Start 2P", cursive;
+    font-size:11px;
+    color:var(--gold);
+    padding:30px 20px;
+    line-height:1.6;
+}
+
+.sidebar ul{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.sidebar li{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px 20px;
+    cursor:pointer;
+    transition:.25s;
+    white-space:nowrap;
+    border-radius:10px;
+    margin:0;
+}
+
+.sidebar li:hover{
+    background:#173266;
+}
+
+.sidebar li i{
+    width:22px;
+    text-align:center;
+    color:var(--primary);
+    font-size:18px;
+}
+
+.sidebar li span{
+    display:none;
+}
+
+/* =====================================
+   MENU BUTTON
+===================================== */
+
+.menu-btn{
+    position:fixed;
+    top:18px;
+    left:18px;
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:#173266;
+    color:white;
+    font-size:22px;
+    z-index:2000;
+}
+
+.menu-btn:hover{
+    background:var(--primary);
+}
+
+/* ==================================================
+   STEP 4 - DASHBOARD
+================================================== */
+
+.dashboard{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    padding:25px;
+}
+
+/* Welcome Section */
+
+.welcome{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:40px;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:35px;
+    margin-bottom:30px;
+
+}
+
+.hero-text{
+    flex:1;
+}
+
+.hero-text h1{
+    font-family:"Press Start 2P", cursive;
+    font-size:22px;
+    color:var(--gold);
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    color:var(--sub);
+    line-height:1.8;
+}
+
+.hero-character{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+#heroSprite{
+    width:79px;
+    height:128px;
+    background:url("../images/hero/school-idle.png") no-repeat;
+    image-rendering:pixelated;
+    animation:heroIdle .8s steps(4) infinite;
+}
+
+@keyframes heroIdle{
+    from{
+        background-position:0 0;
+    }
+
+    to{
+        background-position:-316px 0;
+    }
+
+}
+
+.hero-info{
+    min-width:220px;
+}
+
+.hero-info h3{
+    color:var(--gold);
+    margin-bottom:10px;
+}
+
+.hero-info p{
+    color:var(--sub);
+    margin-bottom:18px;
+}
+
+/* ==================================================
+   STEP 5 - XP BAR
+================================================== */
+
+.xp-bar{
+    width:220px;
+    height:18px;
+    background:#081326;
+    border:2px solid var(--border);
+    border-radius:30px;
+    overflow:hidden;
+}
+
+.xp-fill{
+    width:30%;
+    height:100%;
+    background:linear-gradient(90deg,#44D7FF,  #4E8DFF );
+    transition:.4s;
+}
+
+.hero-info small{
+    display:block;
+    margin-top:10px;
+    color:var(--sub);
+}
+
+/* ==================================================
+   STEP 6 - DASHBOARD CARDS
+================================================== */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+    margin:35px 0;
+}
+
+.card{
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:18px;
+    padding:30px;
+    transition:.3s;
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:var(--primary);
+    box-shadow:0 10px 30px rgba(78,141,255,.35);
+}
+
+.card h3{
+    font-family:"Press Start 2P", cursive;
+    font-size:14px;
+    color:var(--gold);
+    margin-bottom:18px;
+
+}
+
+.card p{
+    color:var(--sub);
+    line-height:1.8;
+}
+
+/* ==================================================
+   STEP 7 - PROGRESS CARD
+================================================== */
+
+.progress-card{
+    margin-top:35px;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+}
+
+.progress-card h2{
+    font-family:"Press Start 2P", cursive;
+    font-size:16px;
+    color:var(--gold);
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    width:100%;
+    height:20px;
+    background:#081326;
+    border:2px solid var(--border);
+    border-radius:30px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    width:35%;
+    height:100%;
+    background:linear-gradient(90deg,#00D2FF,#4E8DFF);
+}
+
+/* ==================================================
+   STEP 8 - PROFILE & LEADERBOARD
+================================================== */
+
+.dashboard-row{
+    display:flex;
+    gap:30px;
+    margin:35px 0;
+    align-items:stretch;
+}
+
+/* ==========================
+   PROFILE CARD
+========================== */
+
+.profile-card{
+    flex:2.3;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+    min-height:350px;
+}
+
+.profile-content{
+    display:flex;
+    gap:30px;
+    align-items:center;
+}
+
+.profile-avatar{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+}
+
+#profileImage{
+    width:160px;
+    height:160px;
+    object-fit:cover;
+    border-radius:50%;
+    border:4px solid var(--gold);
+}
+
+#changeAvatar{
+    width:160px;
+    padding:12px;
+    border-radius:10px;
+    background:var(--primary);
+    color:white;
+    font-weight:600;
+    transition:.3s;
+}
+
+#changeAvatar:hover{
+    background:#69b8ff;
+}
+
+.profile-details{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:16px;
+}
+
+.profile-details input{
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#081326;
+    color:white;
+    font-size:15px;
+}
+#saveProfile{
+    width:100%;
+    padding:14px;
+    border-radius:10px;
+    background:var(--primary);
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+#saveProfile:hover{
+    background:#69b8ff;
+}
+
+/* ==================================================
+   STEP 9 - LEADERBOARD
+================================================== */
+
+.leaderboard{
+    flex:1.2;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+    min-height:350px;
+}
+
+.leaderboard h2{
+    text-align:center;
+    margin-bottom:20px;
+    font-family:"Press Start 2P", cursive;
+    font-size:14px;
+    color:var(--gold);
+}
+
+.leaderboard-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:14px;
+    background:rgba(255,255,255,.05);
+    transition:.3s;
+}
+
+.leaderboard-item:hover{
+    background:rgba(255,255,255,.12);
+    transform:translateX(6px);
+}
+
+.leaderboard-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.rank{
+    width:40px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    color:var(--gold);
+}
+
+.leaderboard-avatar{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--gold);
+}
+
+.player-info{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.player-info small{
+    color:var(--sub);
+}
+
+.player-xp{
+    color:var(--gold);
+    font-weight:bold;
+    font-size:15px;
+}
+
+/* ==================================================
+   READING KINGDOM
+================================================== */
+
+.kingdom{
+    margin-top:35px;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+}
+
+.kingdom h2{
+    font-family:"Press Start 2P", cursive;
+    font-size:16px;
+    color:var(--gold);
+    margin-bottom:30px;
+}
+
+/* 4 equal location boxes */
+.kingdom-map{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:25px;
+    align-items:stretch;
+}
+
+/* Every kingdom location gets the same box */
+.location{
+    min-height:180px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(255,255,255,.05);
+    border:2px solid transparent;
+    border-radius:18px;
+    padding:20px;
+
+    text-align:center;
+    cursor:pointer;
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        background .3s ease;
+}
+
+/* Move the whole box when hovering */
+.location:hover{
+    transform:translateY(-8px);
+    border-color:var(--primary);
+    background:rgba(255,255,255,.10);
+}
+
+/* Location image */
+.location img{
+    width:110px;
+    height:110px;
+    object-fit:contain;
+    image-rendering:pixelated;
+
+    transition:transform .3s ease;
+
+    filter:
+        drop-shadow(0 0 14px rgba(255,230,120,.35));
+}
+
+/* Image moves slightly more */
+.location:hover img{
+    transform:scale(1.08);
+}
+
+/* Location name */
+.location span{
+    display:block;
+    margin-top:15px;
+    color:var(--text);
+    font-weight:600;
+}
+
+/* Remove the old absolute positioning */
+.library,
+.forest,
+.castle,
+.academy{
+    position:static;
+    left:auto;
+    right:auto;
+    top:auto;
+    bottom:auto;
+}
+
+/* Responsive */
+@media (max-width:1100px){
+    .kingdom-map{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media (max-width:600px){
+    .kingdom-map{
+        grid-template-columns:1fr;
+    }
+}
+
+/* ==================================================
+   STEP 11 - RECENT ACTIVITY
+================================================== */
+
+.activity{
+    margin-top:35px;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:30px;
+}
+
+.activity h2{
+    font-family:"Press Start 2P", cursive;
+    font-size:16px;
+    color:var(--gold);
+    margin-bottom:25px;
+
+}
+
+.activity ul{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.activity li{
+    padding:15px;
+    background:rgba(255,255,255,.05);
+    border-radius:12px;
+}
+
+/* ==================================================
+   STEP 12 - PIXEL BACKGROUND
+================================================== */
+
+.pixel-background{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+}
+
+.bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    pointer-events:none;
+}
+
+.moon{
+    animation:moonFloat 3s ease-in-out infinite;
+}
+
+.castle{
+    animation:castleFloat 1.6s ease-in-out infinite;
+}
+
+.clouds{
+    animation:cloudMove 5s linear infinite;
+}
+
+.stars{
+    animation:twinkle 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes moonFloat{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+    100%{transform:translateY(0);}
+}
+
+@keyframes castleFloat{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+    100%{transform:translateY(0);}
+}
+
+@keyframes cloudMove{
+    from{transform:translateX(0);}
+    to{transform:translateX(60px);}
+}
+
+@keyframes twinkle{
+    from{opacity:.6;}
+    to{opacity:1;}
+}
+
+/* ==================================================
+   STEP 13 - COLLAPSIBLE SIDEBAR
+================================================== */
+
+.sidebar{
+    transition:.35s ease;
+}
+
+.sidebar.expanded{
+
+    width:250px;
+
+}
+
+.sidebar.collapsed{
+    width:0;
+    overflow:hidden;
+    border-right:none;
+}
+
+.sidebar.expanded li{
+
+    justify-content:flex-start;
+
+    padding:15px 20px;
+
+}
+
+.sidebar.expanded li span{
+
+    display:inline;
+
+}
+
+/* ==================================================
+   STEP 14 - RESPONSIVE
+================================================== */
+
+@media (max-width:1100px){
+    .dashboard-row{
+        flex-direction:column;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .kingdom-map{
+    grid-template-columns:repeat(4, 1fr);
+    gap:15px;
+   }
+
+    .location{
+        padding:15px;
+    }
+
+    .location img{
+        width:75px;
+        height:75px;
+    }
+}
+
+@media (max-width:768px){
+    .sidebar{
+        position:fixed;
+        left:-250px;
+        top:75px;
+        height:100%;
+        z-index:999;
+    }
+
+    .sidebar.active{
+        left:0;
+    }
+
+    .container{
+        margin-top:75px;
+    }
+
+    .welcome{
+        flex-direction:column;
+        text-align:center;
+    }
+
+}
+
+.sidebar.expanded{
+    left:0;
+}
+
+/* =========================================
+   LITERACY LESSONS
+========================================= */
+
+.lessons-page{
+    flex:1;
+    max-width:1200px;
+    margin:0 auto;
+    padding:35px;
+}
+
+.lesson-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(10,20,45,.88);
+    border:2px solid #2A4A8F;
+    border-radius:18px;
+    padding:25px 35px;
+    margin-bottom:35px;
+    backdrop-filter:blur(8px);
+}
+
+.lesson-title h1{
+    color:var(--gold);
+    font-family:"Press Start 2P";
+    font-size:18px;
+    margin-bottom:18px;
+}
+
+.lesson-title p{
+    color:#d8e7ff;
+    max-width:650px;
+    line-height:1.7;
+}
+
+.lesson-character{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:170px;
+}
+
+.category-title{
+    color:var(--gold);
+    font-size:24px;
+    margin:35px 0 20px;
+}
+
+.lesson-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+    margin-bottom:40px;
+}
+
+.lesson-card{
+    background:rgba(10,20,45,.90);
+    border:2px solid #2A4A8F;
+    border-radius:18px;
+    padding:25px;
+    transition:.35s;
+}
+
+.lesson-card:hover{
+    transform:translateY(-8px);
+    border-color:#69b8ff;
+    box-shadow:0 0 25px rgba(105,184,255,.35);
+}
+
+.lesson-card h3{
+    color:#FFD54A;
+    margin-bottom:15px;
+}
+
+.lesson-card p{
+    color:#d9e6ff;
+    line-height:1.7;
+    min-height:65px;
+}
+
+.lesson-info{
+    display:flex;
+    justify-content:space-between;
+    margin:18px 0;
+    color:#FFD54A;
+    font-weight:600;
+}
+
+.lesson-card button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:#2D8CFF;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.lesson-card button:hover{
+    background:#4fa7ff;
+    transform:scale(1.03);
+}
+
+.profile-details p{
+    font-size:15px;
+    color:var(--text);
+}
+
+.profile-details label{
+    color:var(--gold);
+    font-weight:600;
+}
+
+/* =========================================
+   CURRENT PLAYER
+========================================= */
+
+.current-player{
+    border:2px solid #FFD54A;
+    background:rgba(255,213,74,.12);
+    box-shadow:0 0 15px rgba(255,213,74,.35);
+}
+.current-player .player-info strong{
+    color:#FFD54A;
+}
+
+/* ==========================
+   PROFILE RANK
+========================== */
+
+#profileRank{
+    color:var(--gold);
+    font-size:16px;
+    font-weight:600;
+}
+
+/* ==========================
+   PROFILE STATS
+========================== */
+
+.profile-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:10px 0 20px;
+}
+
+.profile-stat{
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    text-align:center;
+    transition:.3s;
+}
+
+.profile-stat:hover{
+    transform:translateY(-3px);
+    border-color:var(--primary);
+}
+
+.profile-stat i{
+    font-size:20px;
+    color:var(--gold);
+    margin-bottom:8px;
+}
+
+.profile-stat small{
+    display:block;
+    color:var(--sub);
+    font-size:12px;
+}
+
+.profile-stat strong{
+    display:block;
+    margin-top:5px;
+    font-size:18px;
+    color:var(--text);
+}
+
+/* ==========================
+   FLOATING KINGDOM
+========================== */
+
+.location{
+    animation: floating 3s ease-in-out infinite;
+    transition: .3s;
+}
+
+.location:hover{
+    transform: translateY(-8px) scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(255,215,0,.7));
+    cursor: pointer;
+}
+
+@keyframes floating{
+
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-10px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+
+}
+
+.library{
+    animation-delay:0s;
+}
+
+.forest{
+    animation-delay:.8s;
+}
+
+.castle{
+    animation-delay:1.6s;
+}
+
+.academy{
+    animation-delay:2.4s;
+}
+
+/* ==========================
+   ACTIVE SIDEBAR
+========================== */
+
+.sidebar ul li.active{
+    background:#22385f;
+    color:#FFD54A;
+    border-left:4px solid #FFD54A;
+}
+
+.sidebar ul li.active i{
+    color:#FFD54A;
+}
+
+/* ===========================
+   ANSWER POPUP
+=========================== */
+
+.answer-popup{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:9999;
+
+    animation:fadeIn .25s;
+}
+
+.answer-popup.hidden{
+
+    display:none;
+
+}
+
+.popup-card{
+
+    width:420px;
+    max-width:90%;
+
+    background:#1e2344;
+
+    border:3px solid #49f6ff;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 0 25px rgba(73,246,255,.45);
+
+}
+
+.popup-card h2{
+
+    font-size:30px;
+
+    margin-bottom:15px;
+
+}
+
+.popup-card p{
+
+    font-size:20px;
+
+    color:white;
+
+    line-height:1.6;
+
+}
+
+.popup-correct{
+
+    color:#49ff8a;
+
+}
+
+.popup-wrong{
+
+    color:#ff6565;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+        transform:scale(.8);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:scale(1);
+
+    }
+
+}
+
+/*==========================================
+    MOBILE DASHBOARD
+==========================================*/
+
+@media screen and (max-width:768px){
+
+    .kingdom-map{
+
+    grid-template-columns:1fr;
+
+}
+
+    .profile-content{
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:center;
+
+        text-align:center;
+
+    }
+
+    .profile-avatar{
+
+        width:100%;
+
+    }
+
+    #profileImage{
+
+        width:150px;
+
+        height:150px;
+
+    }
+
+    .profile-details{
+
+        width:100%;
+
+    }
+
+    .profile-details input{
+
+        width:100%;
+
+    }
+
+    .profile-stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+/*=====================================
+            BACK BUTTON
+=====================================*/
+
+.back-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px 22px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        #2F80ED,
+        #4FC3F7
+    );
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:
+        0 10px 25px rgba(47,128,237,.35);
+
+}
+
+.back-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 18px 35px rgba(47,128,237,.45);
+
+}
+
+.back-btn i{
+
+    font-size:15px;
+
+}
+
+.kingdom-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.kingdom-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.13);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.kingdom-card img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.kingdom-card span {
+    text-align: center;
+}
+
+
+
+
+/* =========================================================
+   READING KINGDOM - FINAL LOCATION ANIMATION
+========================================================= */
+
+.kingdom-map .location {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 180px;
+
+    cursor: pointer;
+
+    transform: translateY(0);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease;
+}
+
+/* MOVE THE WHOLE BOX */
+.kingdom-map .location:hover {
+    transform: translateY(-15px) scale(1.03);
+
+    border-color: #4de8ff;
+
+    background: rgba(77, 232, 255, 0.12);
+
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(77, 232, 255, 0.35);
+}
+
+/* LOCATION IMAGE */
+.kingdom-map .location img {
+    width: 110px;
+    height: 110px;
+
+    object-fit: contain;
+
+    transition:
+        transform 0.35s ease,
+        filter 0.35s ease;
+}
+
+/* IMAGE ALSO GROWS */
+.kingdom-map .location:hover img {
+    transform: scale(1.12);
+
+    filter:
+        drop-shadow(0 0 18px rgba(255, 230, 120, 0.7));
+}
+
+/* LOCATION NAME */
+.kingdom-map .location span {
+    margin-top: 12px;
+
+    color: white;
+
+    text-align: center;
+}
+
+/* MOON MUST NEVER TAKE A GRID SPACE */
+.kingdom-map .map-moon {
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    right: 20px;
+    top: 15px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+/* LOCATIONS MUST BE ABOVE THE MOON */
+.kingdom-map .location {
+    z-index: 2;
+}

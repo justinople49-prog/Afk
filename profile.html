@@ -1,0 +1,887 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#071a42">
+
+    <title>Player Profile - ReadQuest</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root {
+            --profile-bg: #071a42;
+            --profile-panel: #0d2a60;
+            --profile-panel-light: #173e7b;
+            --profile-gold: #ffd34d;
+            --profile-cyan: #00dff5;
+            --profile-white: #ffffff;
+            --profile-muted: #d2e0ff;
+            --profile-border: #32aaff70;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--profile-white);
+            font-family: Arial, sans-serif;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        a:focus-visible {
+            outline: 3px solid var(--profile-cyan);
+            outline-offset: 3px;
+        }
+
+        .profile-page {
+            width: min(1100px, 94%);
+            margin: 30px auto 50px;
+        }
+
+        .profile-topbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border: 1px solid var(--profile-gold);
+            border-radius: 12px;
+            background: #081c4c;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background .2s;
+        }
+
+        .back-button:hover {
+            background: #173e7b;
+        }
+
+        .profile-main {
+            display: grid;
+            grid-template-columns: 300px minmax(0, 1fr);
+            overflow: hidden;
+            border: 2px solid #ffd34d99;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #051846, #0f2e69);
+            box-shadow: 0 0 25px #00b4ff20;
+        }
+
+        /* LEFT PROFILE PANEL */
+
+        .profile-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 45px 20px;
+            border-right: 1px solid #ffffff20;
+            text-align: center;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 190px;
+            height: 190px;
+            flex-shrink: 0;
+            padding: 6px;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                #ffe04c,
+                #00eaff,
+                #ff5bea
+            );
+            box-shadow: 0 0 28px #00eaff55;
+        }
+
+        #profileImage {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #061b4d;
+        }
+
+        .avatar-add-button {
+            position: absolute;
+            right: -3px;
+            bottom: 3px;
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border: 3px solid #0b2352;
+            border-radius: 50%;
+            background: var(--profile-cyan);
+            color: #062052;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 4px 14px #0005;
+            transition: transform .2s, background .2s;
+        }
+
+        .avatar-add-button:hover {
+            transform: scale(1.08);
+            background: #69f4ff;
+        }
+
+        .profile-name {
+            max-width: 100%;
+            margin: 24px 0 7px;
+            font-size: 28px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-title {
+            margin: 0;
+            color: var(--profile-gold);
+            font-weight: bold;
+        }
+
+        .profile-hint {
+            max-width: 220px;
+            margin: 14px 0 0;
+            color: #b9cdef;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* RIGHT PROFILE PANEL */
+
+        .profile-right {
+            min-width: 0;
+            padding: 32px;
+        }
+
+        .information-title {
+            margin: 0 0 22px;
+            color: var(--profile-gold);
+            font-size: 27px;
+        }
+
+        .information-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .information-box,
+        .level-panel,
+        .stat-box {
+            min-width: 0;
+            padding: 17px;
+            border: 1px solid var(--profile-border);
+            border-radius: 15px;
+            background: #183f8780;
+        }
+
+        .information-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbdcff;
+            font-size: 14px;
+        }
+
+        .information-value {
+            font-size: 17px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .level-panel {
+            margin-bottom: 18px;
+        }
+
+        .level-header,
+        .xp-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .level-header {
+            margin-bottom: 12px;
+        }
+
+        .level-number {
+            color: var(--profile-gold);
+            font-weight: bold;
+        }
+
+        .xp-bar {
+            height: 15px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #071735;
+        }
+
+        .xp-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(
+                90deg,
+                #00dff5,
+                #27f4ff
+            );
+            transition: width .3s;
+        }
+
+        .xp-details {
+            margin-top: 9px;
+            font-size: 13px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 23px;
+        }
+
+        .stat-number {
+            margin-top: 6px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            margin-top: 5px;
+            color: #d8e5ff;
+            font-size: 13px;
+        }
+
+        /* DISPLAY NAME FORM */
+
+        .section-title {
+            display: block;
+            margin: 25px 0 9px;
+            color: var(--profile-gold);
+            font-size: 20px;
+        }
+
+        .section-description {
+            margin: 0 0 15px;
+            color: #dbe7ff;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        #newDisplayName {
+            display: block;
+            width: 100%;
+            min-height: 48px;
+            padding: 13px 15px;
+            border: 1px solid #32aaffaa;
+            border-radius: 11px;
+            background: #031437;
+            color: white;
+            font-size: 16px;
+        }
+
+        #newDisplayName:focus {
+            border-color: var(--profile-cyan);
+        }
+
+        #saveBtn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px 18px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--profile-cyan);
+            color: #062052;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        #saveBtn:hover {
+            background: #5befff;
+        }
+
+        #saveBtn:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        #statusMessage {
+            min-height: 22px;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        #statusMessage.error {
+            color: #ffaaaa;
+        }
+
+        #statusMessage.success {
+            color: #9dffca;
+        }
+
+        /* AVATAR PICKER POPUP */
+
+        .avatar-modal[hidden] {
+            display: none !important;
+        }
+
+        .avatar-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: grid;
+            place-items: center;
+            overflow-y: auto;
+            padding: 18px;
+            background: #020817c7;
+            backdrop-filter: blur(6px);
+            animation: modalFadeIn .18s ease-out;
+        }
+
+        .avatar-modal-panel {
+            width: min(440px, 100%);
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 22px;
+            border: 1px solid #32aaff99;
+            border-radius: 20px;
+            background: linear-gradient(
+                145deg,
+                #071b45,
+                #12366f
+            );
+            box-shadow: 0 20px 70px #0008;
+            animation: modalPopIn .2s ease-out;
+        }
+
+        .avatar-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .avatar-modal-header h3 {
+            margin: 0;
+            color: var(--profile-gold);
+            font-size: 21px;
+        }
+
+        .avatar-close-button {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border: 1px solid #ffffff35;
+            border-radius: 50%;
+            background: #ffffff12;
+            color: white;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .avatar-close-button:hover {
+            background: #ffffff25;
+        }
+
+        .avatar-modal-description {
+            margin: 0 0 17px;
+            color: #dbe7ff;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .avatar-option {
+            min-width: 0;
+            padding: 9px;
+            border: 2px solid #32aaff66;
+            border-radius: 14px;
+            background: #0b285a;
+            color: white;
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+        }
+
+        .avatar-option:hover {
+            border-color: var(--profile-cyan);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--profile-gold);
+            background: #174582;
+            box-shadow: 0 0 0 2px #ffd34d33;
+        }
+
+        .avatar-option img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .avatar-option span {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .selected-label {
+            display: block;
+            min-height: 15px;
+            margin-top: 4px;
+            color: var(--profile-gold);
+            font-size: 11px;
+        }
+
+        .avatar-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .avatar-modal-actions button {
+            flex: 1;
+            min-height: 43px;
+            padding: 10px;
+            border: 0;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #cancelAvatarBtn {
+            border: 1px solid #ffffff35;
+            background: #ffffff18;
+            color: white;
+        }
+
+        #cancelAvatarBtn:hover {
+            background: #ffffff28;
+        }
+
+        #confirmAvatarBtn {
+            background: var(--profile-cyan);
+            color: #062052;
+        }
+
+        #confirmAvatarBtn:hover {
+            background: #5befff;
+        }
+
+        /* READING KINGDOM LINKS */
+
+        .kingdom-progress {
+            margin-top: 20px;
+            padding: 25px;
+            border: 2px solid #ffd34ddd;
+            border-radius: 20px;
+            background: #051b48eb;
+        }
+
+        .kingdom-title {
+            margin: 0 0 8px;
+            color: var(--profile-gold);
+            font-size: 22px;
+        }
+
+        .progress-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .progress-link {
+            padding: 10px 15px;
+            border: 1px solid #00cce8;
+            border-radius: 999px;
+            background: #0e458aa6;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background .2s;
+        }
+
+        .progress-link:hover {
+            background: #1762a8;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalPopIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .profile-main {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-left {
+                padding: 30px 20px;
+                border-right: 0;
+                border-bottom: 1px solid #ffffff20;
+            }
+
+            .profile-right {
+                padding: 25px 22px;
+            }
+
+            .avatar-wrapper {
+                width: 165px;
+                height: 165px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .profile-page {
+                width: 94%;
+                margin-top: 18px;
+            }
+
+            .profile-right {
+                padding: 22px 15px;
+            }
+
+            .information-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                gap: 7px;
+            }
+
+            .stat-box {
+                padding: 11px 5px;
+            }
+
+            .stat-number {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 11px;
+            }
+
+            .information-title {
+                font-size: 23px;
+            }
+
+            .avatar-modal {
+                padding: 12px;
+            }
+
+            .avatar-modal-panel {
+                padding: 16px;
+            }
+
+            .avatar-grid {
+                gap: 7px;
+            }
+
+            .avatar-option {
+                padding: 6px;
+            }
+
+            .avatar-modal-header h3 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<main class="profile-page">
+
+    <div class="profile-topbar">
+        <a href="dashboard.html" class="back-button">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <section class="profile-main">
+
+        <!-- LEFT: PROFILE AVATAR -->
+        <aside class="profile-left">
+
+            <div class="avatar-wrapper">
+                <img
+                    id="profileImage"
+                    src="images/hero/bear.png"
+                    alt="Selected profile avatar"
+                >
+
+                <button
+                    id="openAvatarBtn"
+                    class="avatar-add-button"
+                    type="button"
+                    aria-label="Choose profile avatar"
+                    aria-haspopup="dialog"
+                    aria-controls="avatarModal"
+                >+</button>
+            </div>
+
+            <h1 id="profileName" class="profile-name">Loading...</h1>
+
+            <p class="profile-title">⭐ Story Explorer</p>
+
+            <p class="profile-hint">
+                Click the + button to change your avatar.
+            </p>
+
+        </aside>
+
+        <!-- RIGHT: PROFILE INFORMATION -->
+        <section class="profile-right">
+
+            <h2 class="information-title">
+                Adventurer Information
+            </h2>
+
+            <div class="information-grid">
+
+                <div class="information-box">
+                    <span class="information-label">Display Name</span>
+                    <span id="displayName" class="information-value">
+                        Loading...
+                    </span>
+                </div>
+
+                <div class="information-box">
+                    <span class="information-label">Email</span>
+                    <span id="email" class="information-value">
+                        Loading...
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- LEVEL AND XP -->
+            <div class="level-panel">
+
+                <div class="level-header">
+                    <strong>⭐ Adventurer Level</strong>
+                    <span id="levelDisplay" class="level-number">
+                        Level 1
+                    </span>
+                </div>
+
+                <div
+                    id="xpProgress"
+                    class="xp-bar"
+                    role="progressbar"
+                    aria-label="XP progress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                >
+                    <div id="xpFill" class="xp-fill"></div>
+                </div>
+
+                <div class="xp-details">
+                    <span id="xpCurrent">0 XP</span>
+                    <span id="xpRequired">0 / 100</span>
+                </div>
+
+            </div>
+
+            <!-- PLAYER STATS -->
+            <div class="stats-grid">
+
+                <div class="stat-box">
+                    <div class="stat-icon">📚</div>
+                    <div id="lessonsDisplay" class="stat-number">0</div>
+                    <div class="stat-label">Lessons</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-icon">🎮</div>
+                    <div id="gamesDisplay" class="stat-number">0</div>
+                    <div class="stat-label">Games</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-icon">🏆</div>
+                    <div id="achievementsDisplay" class="stat-number">0</div>
+                    <div class="stat-label">Achievements</div>
+                </div>
+
+            </div>
+
+            <!-- PROFILE EDIT FORM -->
+            <form id="profileForm">
+
+                <label for="newDisplayName" class="section-title">
+                    Change Display Name
+                </label>
+
+                <input
+                    id="newDisplayName"
+                    type="text"
+                    maxlength="30"
+                    autocomplete="nickname"
+                    placeholder="Enter your display name"
+                    required
+                >
+
+                <!-- The avatar choices now live in the popup,
+                     not permanently on the profile page. -->
+
+                <button id="saveBtn" type="submit">
+                    💾 Save Profile
+                </button>
+
+                <p
+                    id="statusMessage"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+            </form>
+
+        </section>
+    </section>
+
+    <!-- READING KINGDOM PROGRESS -->
+    <section class="kingdom-progress">
+
+        <h2 class="kingdom-title">
+            🌙 Reading Kingdom Progress
+        </h2>
+
+        <p class="section-description">
+            Continue your reading adventure and unlock new areas of the kingdom.
+        </p>
+
+        <div class="progress-links">
+            <a href="lessons.html" class="progress-link">
+                📚 Reading Adventures
+            </a>
+
+            <a href="achievements.html" class="progress-link">
+                🏆 Achievements
+            </a>
+
+            <a href="dashboard.html" class="progress-link">
+                ⭐ XP Progress
+            </a>
+        </div>
+
+    </section>
+
+</main>
+
+<!-- AVATAR PICKER MODAL -->
+<div
+    id="avatarModal"
+    class="avatar-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="avatarModalTitle"
+    hidden
+>
+    <div class="avatar-modal-panel">
+
+        <div class="avatar-modal-header">
+            <h3 id="avatarModalTitle">Choose Your Avatar</h3>
+
+            <button
+                id="closeAvatarBtn"
+                class="avatar-close-button"
+                type="button"
+                aria-label="Close avatar picker"
+            >&times;</button>
+        </div>
+
+        <p class="avatar-modal-description">
+            Choose your favorite avatar for your ReadQuest profile.
+        </p>
+
+        <div id="avatarGrid" class="avatar-grid">
+            <p>Loading avatars...</p>
+        </div>
+
+        <div class="avatar-modal-actions">
+
+            <button id="cancelAvatarBtn" type="button">
+                Cancel
+            </button>
+
+            <button id="confirmAvatarBtn" type="button">
+                Use Avatar
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<script type="module" src="js/profile.js"></script>
+
+</body>
+</html>

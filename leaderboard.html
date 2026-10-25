@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Leaderboard - ReadQuest</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        /* =========================================
+           LEADERBOARD PAGE
+        ========================================= */
+
+        .leaderboard-page {
+
+            width: min(1000px, 92%);
+
+            margin: 40px auto 80px;
+
+        }
+
+
+        .leaderboard-header {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .leaderboard-header h1 {
+
+            margin: 0;
+
+            color: #ffe66d;
+
+            font-size: 32px;
+
+        }
+
+
+        .leaderboard-header p {
+
+            margin-top: 8px;
+
+            color: #ffffff;
+
+            opacity: .85;
+
+        }
+
+
+        /* =========================================
+           RANKING PANEL
+        ========================================= */
+
+        .leaderboard-panel {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(20, 31, 83, .96),
+                    rgba(24, 45, 110, .94)
+                );
+
+            border: 2px solid rgba(255, 230, 109, .7);
+
+            border-radius: 20px;
+
+            padding: 24px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.35);
+
+        }
+
+
+        .leaderboard-title-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .leaderboard-title-row h2 {
+
+            margin: 0;
+
+            color: #ffe66d;
+
+        }
+
+
+        .player-count {
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,.1);
+
+            color: #ffffff;
+
+            border: 1px solid rgba(255,255,255,.2);
+
+            font-size: 14px;
+
+        }
+
+
+        /* =========================================
+           TABLE HEADER
+        ========================================= */
+
+        .leaderboard-columns {
+
+            display: grid;
+
+            grid-template-columns:
+                80px
+                1fr
+                120px;
+
+            align-items: center;
+
+            padding: 12px 18px;
+
+            margin-bottom: 8px;
+
+            background: rgba(0,0,0,.2);
+
+            border-radius: 10px;
+
+            color: #ffffff;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =========================================
+           PLAYER ROW
+        ========================================= */
+
+        .leaderboard-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+        }
+
+
+        .leaderboard-item {
+
+            display: grid;
+
+            grid-template-columns:
+                80px
+                1fr
+                120px;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 14px 18px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,.07);
+
+            border: 1px solid rgba(255,255,255,.12);
+
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                border-color .2s ease;
+
+        }
+
+
+        .leaderboard-item:hover {
+
+            transform: translateY(-2px);
+
+            background: rgba(255,255,255,.11);
+
+        }
+
+
+        .leaderboard-item.current-player {
+
+            border-color: #ffe66d;
+
+            background:
+                rgba(255,230,109,.12);
+
+            box-shadow:
+                0 0 18px rgba(255,230,109,.15);
+
+        }
+
+
+        /* =========================================
+           RANK
+        ========================================= */
+
+        .leaderboard-rank {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #ffe66d;
+
+            text-align: center;
+
+        }
+
+
+        /* =========================================
+           PLAYER INFORMATION
+        ========================================= */
+
+        .leaderboard-player {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            min-width: 0;
+
+        }
+
+
+        .leaderboard-avatar {
+
+            width: 52px;
+
+            height: 52px;
+
+            min-width: 52px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 2px solid rgba(255,230,109,.8);
+
+            background: #182d6e;
+
+        }
+
+
+        .leaderboard-player-info {
+
+            min-width: 0;
+
+        }
+
+
+        .leaderboard-player-info strong {
+
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+        }
+
+
+        .leaderboard-player-info small {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color: #b9c7ff;
+
+        }
+
+
+        /* =========================================
+           XP
+        ========================================= */
+
+        .leaderboard-xp {
+
+            text-align: right;
+
+            color: #ffe66d;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =========================================
+           LOADING / ERROR
+        ========================================= */
+
+        .leaderboard-message {
+
+            text-align: center;
+
+            padding: 35px 15px;
+
+            color: #ffffff;
+
+            opacity: .85;
+
+        }
+
+
+        /* =========================================
+           BACK BUTTON
+        ========================================= */
+
+        .back-dashboard {
+
+            display: block;
+
+            width: fit-content;
+
+            margin: 25px auto 0;
+
+            padding: 11px 22px;
+
+            border-radius: 12px;
+
+            background: #24d7ef;
+
+            color: #08204d;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            transition: .2s ease;
+
+        }
+
+
+        .back-dashboard:hover {
+
+            transform: translateY(-2px);
+
+            filter: brightness(1.08);
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 650px) {
+
+            .leaderboard-page {
+
+                width: 94%;
+
+                margin-top: 25px;
+
+            }
+
+
+            .leaderboard-panel {
+
+                padding: 15px;
+
+            }
+
+
+            .leaderboard-columns {
+
+                grid-template-columns:
+                    55px
+                    1fr
+                    85px;
+
+                padding: 10px;
+
+                font-size: 13px;
+
+            }
+
+
+            .leaderboard-item {
+
+                grid-template-columns:
+                    55px
+                    1fr
+                    85px;
+
+                padding: 11px 10px;
+
+            }
+
+
+            .leaderboard-avatar {
+
+                width: 44px;
+
+                height: 44px;
+
+                min-width: 44px;
+
+            }
+
+
+            .leaderboard-player {
+
+                gap: 9px;
+
+            }
+
+
+            .leaderboard-xp {
+
+                font-size: 13px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =========================================
+         MENU BUTTON
+    ========================================== -->
+
+    <button
+        id="menu-btn"
+        class="menu-btn"
+        type="button"
+    >
+        ☰
+    </button>
+
+
+    <div
+        id="overlay"
+        class="overlay"
+    ></div>
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <div class="container">
+
+        <aside
+            class="sidebar collapsed"
+            id="sidebar"
+        >
+
+            <h3>Reading Kingdom</h3>
+
+            <ul>
+
+                <li onclick="location.href='dashboard.html'">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Home</span>
+
+                </li>
+
+
+                <li onclick="location.href='lessons.html'">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>Lessons</span>
+
+                </li>
+
+
+                <li>
+
+                    <i class="fa-solid fa-gamepad"></i>
+
+                    <span>Mini Games</span>
+
+                </li>
+
+
+                <li>
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Progress</span>
+
+                </li>
+
+
+                <li onclick="location.href='achievements.html'">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                    <span>Achievements</span>
+
+                </li>
+
+
+                <li class="active">
+
+                    <i class="fa-solid fa-ranking-star"></i>
+
+                    <span>Leaderboard</span>
+
+                </li>
+
+
+                <li>
+
+                    <i class="fa-solid fa-user-group"></i>
+
+                    <span>Friends</span>
+
+                </li>
+
+
+                <li onclick="location.href='profile.html'">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span>Profile</span>
+
+                </li>
+
+
+                <li id="logoutBtn">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- =========================================
+             MAIN
+        ========================================== -->
+
+        <main class="leaderboard-page">
+
+
+            <div class="leaderboard-header">
+
+                <h1>🏆 Leaderboard</h1>
+
+                <p>
+                    Compete with other ReadQuest adventurers!
+                </p>
+
+            </div>
+
+
+            <section class="leaderboard-panel">
+
+
+                <div class="leaderboard-title-row">
+
+                    <h2>⭐ Chief Rankings</h2>
+
+                    <span
+                        id="playerCount"
+                        class="player-count"
+                    >
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <div class="leaderboard-columns">
+
+                    <span>Rank</span>
+
+                    <span>Player</span>
+
+                    <span>XP</span>
+
+                </div>
+
+
+                <div
+                    id="leaderboardList"
+                    class="leaderboard-list"
+                >
+
+                    <div class="leaderboard-message">
+
+                        Loading leaderboard...
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <a href="dashboard.html" class="back-dashboard">
+                ← Back to Dashboard
+            </a>
+
+
+        </main>
+
+    </div>
+
+
+   <script type="module" src="js/leaderboard.js"></script>
+</body>
+
+</html>

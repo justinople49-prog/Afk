@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ReadQuest Achievements</title>
+
+    <!-- =========================================
+         FONTS
+    ========================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================
+         FONT AWESOME
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- =========================================
+         MAIN READQUEST CSS
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        html,
+        body {
+
+            width: 100%;
+
+            min-height: 100%;
+
+            margin: 0;
+
+            padding: 0;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            overflow: hidden;
+
+            font-family: Poppins, sans-serif;
+
+        }
+
+
+        /* =========================================
+           BACKGROUND
+        ========================================= */
+
+        .pixel-background {
+
+            position: fixed;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            z-index: 0;
+
+            overflow: hidden;
+
+        }
+
+
+        .pixel-background .bg {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            pointer-events: none;
+
+            user-select: none;
+
+        }
+
+
+        /* =========================================
+           DARK OVERLAY
+        ========================================= */
+
+        .achievement-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 100;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            box-sizing: border-box;
+
+            padding: 30px;
+
+            background:
+                rgba(3, 7, 25, 0.68);
+
+        }
+
+
+        /* =========================================
+           MAIN ACHIEVEMENT WINDOW
+        ========================================= */
+
+        .achievement-window {
+
+            position: relative;
+
+            width: min(850px, 100%);
+
+            height: min(720px, 88vh);
+
+            display: grid;
+
+            grid-template-rows:
+                auto
+                auto
+                minmax(0, 1fr)
+                auto;
+
+            box-sizing: border-box;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(20, 35, 82, 0.98),
+                    rgba(8, 18, 48, 0.98)
+                );
+
+            border:
+                2px solid
+                rgba(255, 216, 77, 0.65);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.55);
+
+            overflow: hidden;
+
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .achievement-header {
+
+            position: relative;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding:
+                25px
+                70px
+                22px;
+
+            text-align: center;
+
+            background:
+                rgba(10, 20, 55, 0.94);
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+        }
+
+
+        /* =========================================
+           HEADER TITLE
+        ========================================= */
+
+        .achievement-header h1 {
+
+            margin: 0;
+
+            color: #ffd84d;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 22px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =========================================
+           HEADER DESCRIPTION
+        ========================================= */
+
+        .achievement-header p {
+
+            margin:
+                10px
+                0
+                0;
+
+            color: #d9e1ff;
+
+            font-family:
+                Poppins,
+                sans-serif;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =========================================
+           CLOSE BUTTON
+        ========================================= */
+
+        #closeAchievements {
+
+            position: absolute;
+
+            top: 12px;
+
+            right: 15px;
+
+            width: 44px;
+
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 0;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 30px;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+        }
+
+
+        #closeAchievements:hover {
+
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            color: #ffd84d;
+
+        }
+
+
+        /* =========================================
+           COUNTER AREA
+           
+           IMPORTANT:
+           This is OUTSIDE the header.
+        ========================================== */
+
+        .achievement-counter-wrapper {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                14px
+                22px
+                12px;
+
+            background:
+                rgba(8, 18, 48, 0.75);
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+        }
+
+
+        /* =========================================
+           COUNTER
+        ========================================== */
+
+        .achievement-counter {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            box-sizing: border-box;
+
+            padding:
+                8px
+                20px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255, 216, 77, 0.12);
+
+            border:
+                1px solid
+                rgba(255, 216, 77, 0.55);
+
+            color: #ffd84d;
+
+            font-family:
+                Poppins,
+                sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            line-height: 1.2;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =========================================
+           CONTENT AREA
+        ========================================== */
+
+        .achievement-content {
+
+            min-height: 0;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding:
+                20px
+                24px
+                22px;
+
+            overflow-y: auto;
+
+        }
+
+
+        /* =========================================
+           ACHIEVEMENT GRID
+        ========================================== */
+
+        .achievements-list {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 15px;
+
+            box-sizing: border-box;
+
+        }
+
+
+        /* =========================================
+           ACHIEVEMENT CARD
+        ========================================== */
+
+        .achievement-card {
+
+            width: 100%;
+
+            min-width: 0;
+
+            min-height: 112px;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(35, 52, 103, 0.78);
+
+            border:
+                1px solid
+                rgba(130, 155, 230, 0.25);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+
+        }
+
+
+        /* =========================================
+           COMPLETED ACHIEVEMENT
+        ========================================== */
+
+        .achievement-card.completed {
+
+            border-color:
+                rgba(255, 216, 77, 0.75);
+
+            background:
+                rgba(66, 67, 115, 0.85);
+
+        }
+
+
+        /* =========================================
+           CARD HOVER
+        ========================================== */
+
+        .achievement-card:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        /* =========================================
+           ACHIEVEMENT ICON
+        ========================================== */
+
+        .achievement-icon {
+
+            width: 58px;
+
+            height: 58px;
+
+            min-width: 58px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            box-sizing: border-box;
+
+            border-radius: 50%;
+
+            background:
+                rgba(0, 0, 0, 0.28);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            font-size: 27px;
+
+        }
+
+
+        /* =========================================
+           COMPLETED ICON
+        ========================================== */
+
+        .achievement-card.completed
+        .achievement-icon {
+
+            background: #ffd84d;
+
+            color: #182348;
+
+            border-color: #ffe98a;
+
+        }
+
+
+        /* =========================================
+           ACHIEVEMENT INFORMATION
+        ========================================== */
+
+        .achievement-info {
+
+            min-width: 0;
+
+            flex: 1;
+
+        }
+
+
+        /* =========================================
+           ACHIEVEMENT TITLE
+        ========================================== */
+
+        .achievement-info h3 {
+
+            margin:
+                0
+                0
+                7px;
+
+            color: white;
+
+            font-family:
+                Poppins,
+                sans-serif;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            line-height: 1.35;
+
+        }
+
+
+        /* =========================================
+           ACHIEVEMENT DESCRIPTION
+        ========================================== */
+
+        .achievement-info p {
+
+            margin:
+                0
+                0
+                7px;
+
+            color: #c8d1ee;
+
+            font-family:
+                Poppins,
+                sans-serif;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+        }
+
+
+        /* =========================================
+           STATUS
+        ========================================== */
+
+        .achievement-status {
+
+            color: #9da8c9;
+
+            font-family:
+                Poppins,
+                sans-serif;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =========================================
+           COMPLETED STATUS
+        ========================================== */
+
+        .achievement-card.completed
+        .achievement-status {
+
+            color: #ffd84d;
+
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================== */
+
+        .achievement-footer {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                16px
+                24px
+                20px;
+
+            background:
+                rgba(8, 18, 48, 0.96);
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+        }
+
+
+        /* =========================================
+           BACK BUTTON
+        ========================================== */
+
+        #backButton {
+
+            padding:
+                10px
+                25px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #55b9ff;
+
+            color: white;
+
+            font-family:
+                Poppins,
+                sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+
+        }
+
+
+        #backButton:hover {
+
+            background: #359fe8;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        /* =========================================
+           TABLET
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            .achievement-overlay {
+
+                padding: 15px;
+
+            }
+
+
+            .achievement-window {
+
+                width: 100%;
+
+                height: min(720px, 92vh);
+
+            }
+
+
+            .achievements-list {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .achievement-header h1 {
+
+                font-size: 18px;
+
+            }
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 480px) {
+
+            body {
+
+                overflow: hidden;
+
+            }
+
+
+            .achievement-overlay {
+
+                padding: 8px;
+
+            }
+
+
+            .achievement-window {
+
+                height: 95vh;
+
+                border-radius: 16px;
+
+            }
+
+
+            .achievement-header {
+
+                padding:
+                    21px
+                    50px
+                    20px
+                    20px;
+
+            }
+
+
+            .achievement-header h1 {
+
+                font-size: 15px;
+
+            }
+
+
+            .achievement-header p {
+
+                font-size: 12px;
+
+            }
+
+
+            .achievement-counter-wrapper {
+
+                padding:
+                    12px
+                    14px
+                    10px;
+
+            }
+
+
+            .achievement-counter {
+
+                padding:
+                    7px
+                    15px;
+
+                font-size: 12px;
+
+            }
+
+
+            .achievement-content {
+
+                padding:
+                    16px
+                    14px
+                    16px;
+
+            }
+
+
+            .achievements-list {
+
+                gap: 12px;
+
+            }
+
+
+            .achievement-card {
+
+                min-height: 100px;
+
+                padding: 14px;
+
+            }
+
+
+            .achievement-icon {
+
+                width: 50px;
+
+                height: 50px;
+
+                min-width: 50px;
+
+                font-size: 23px;
+
+            }
+
+
+            .achievement-info h3 {
+
+                font-size: 14px;
+
+            }
+
+
+            .achievement-info p {
+
+                font-size: 12px;
+
+            }
+
+
+            .achievement-status {
+
+                font-size: 11px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     READQUEST BACKGROUND
+========================================= -->
+
+<div class="pixel-background">
+
+
+    <img
+        src="images/background/1-Sky.png"
+        class="bg sky"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/2-Stars.png"
+        class="bg stars"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/3-Sky.png"
+        class="bg clouds"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/4-Moon.png"
+        class="bg moon"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/5-BG Mountains.png"
+        class="bg bgmountains"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/6-Mountains.png"
+        class="bg mountains"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/7-Forests.png"
+        class="bg forest"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/10-Floating Castle.png"
+        class="bg castle"
+        alt=""
+    >
+
+
+    <img
+        src="images/background/9-Ground.png"
+        class="bg ground"
+        alt=""
+    >
+
+</div>
+
+
+<!-- =========================================
+     ACHIEVEMENT OVERLAY
+========================================= -->
+
+<div
+    class="achievement-overlay"
+    id="achievementOverlay"
+>
+
+
+    <!-- =====================================
+         ACHIEVEMENT WINDOW
+    ====================================== -->
+
+    <section
+        class="achievement-window"
+        aria-label="Achievements"
+    >
+
+
+        <!-- =================================
+             HEADER
+        ================================== -->
+
+        <header class="achievement-header">
+
+
+            <button
+                id="closeAchievements"
+                aria-label="Close achievements"
+                type="button"
+            >
+                ×
+            </button>
+
+
+            <h1>
+                🏆 ACHIEVEMENTS
+            </h1>
+
+
+            <p>
+                Complete reading adventures
+                and unlock your achievements!
+            </p>
+
+
+        </header>
+
+
+        <!-- =================================
+             COUNTER
+             
+             IMPORTANT:
+             This is now a separate row.
+        ================================== -->
+
+        <div
+            class="achievement-counter-wrapper"
+        >
+
+
+            <div
+                id="achievementCounter"
+                class="achievement-counter"
+            >
+                Achievements: 0 / 5
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================
+             ACHIEVEMENT CONTENT
+        ================================== -->
+
+        <div
+            class="achievement-content"
+        >
+
+
+            <section
+                id="achievementsList"
+                class="achievements-list"
+            >
+            </section>
+
+
+        </div>
+
+
+        <!-- =================================
+             FOOTER
+        ================================== -->
+
+        <footer
+            class="achievement-footer"
+        >
+
+
+            <button
+                id="backButton"
+                type="button"
+            >
+                ← Back to Dashboard
+            </button>
+
+
+        </footer>
+
+
+    </section>
+
+
+</div>
+
+
+<!-- =========================================
+     ACHIEVEMENT JAVASCRIPT
+========================================= -->
+<script type="module" src="js/achievements.js"></script>
+
+
+<script>
+
+    // =========================================
+    // GET BUTTONS
+    // =========================================
+
+    const closeButton =
+        document.getElementById(
+            "closeAchievements"
+        );
+
+
+    const backButton =
+        document.getElementById(
+            "backButton"
+        );
+
+
+    // =========================================
+    // CLOSE ACHIEVEMENTS
+    // =========================================
+
+    function closeAchievements() {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+
+    // =========================================
+    // CLOSE BUTTON
+    // =========================================
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeAchievements
+        );
+
+    }
+
+
+    // =========================================
+    // BACK BUTTON
+    // =========================================
+
+    if (backButton) {
+
+        backButton.addEventListener(
+            "click",
+            closeAchievements
+        );
+
+    }
+
+
+    // =========================================
+    // ESCAPE KEY
+    // =========================================
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeAchievements();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

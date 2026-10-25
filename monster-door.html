@@ -1,0 +1,847 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReadQuest | Monster Door Challenge</title>
+<style>
+:root {
+  --bg:#091321;
+  --panel:#111f31;
+  --panel2:#172b40;
+  --line:#2b4860;
+  --cyan:#25e4d0;
+  --gold:#ffc857;
+  --text:#f2f7ff;
+  --muted:#a9bdd0;
+  --green:#53e3a0;
+  --red:#ff7885;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#173653 0%,var(--bg) 70%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,a { font:inherit; }
+button:focus-visible,a:focus-visible {
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+}
+.topbar { background:#08111e;border-bottom:1px solid var(--line); }
+.topbar-inner {
+  width:min(1050px,94%);
+  margin:auto;
+  padding:16px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand {
+  font-weight:900;
+  letter-spacing:2px;
+  color:var(--cyan);
+}
+.brand span { color:white; }
+.top-link { color:var(--muted);text-decoration:none;font-size:.9rem; }
+main { width:min(1000px,94%);margin:24px auto 45px; }
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#101d2d;
+}
+.header h1 { margin:0;font-size:clamp(1.15rem,3vw,1.6rem); }
+.subtitle { margin:6px 0 0;color:var(--muted);font-size:.9rem; }
+.stats { display:flex;flex-wrap:wrap;gap:8px; }
+.stat {
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--gold);
+  background:#17283a;
+  font-size:.86rem;
+}
+.level-tabs {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  padding:12px;
+  margin-top:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#0d1928;
+}
+.level-tab {
+  padding:12px 8px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#132438;
+  color:var(--muted);
+  cursor:pointer;
+}
+.level-tab strong,.level-tab small { display:block; }
+.level-tab strong { color:var(--text);margin-bottom:5px; }
+.level-tab small { font-size:.75rem; }
+.level-tab.active { border-color:var(--cyan);background:#123a42; }
+.level-tab.active strong { color:var(--cyan); }
+.level-tab:disabled { opacity:.5;cursor:not-allowed; }
+.progress-track { height:7px;background:#25374a;margin-top:12px;border-radius:20px;overflow:hidden; }
+#progressBar { height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width .3s; }
+.panel {
+  margin-top:14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(145deg,#122237,#0d1928);
+  overflow:hidden;
+}
+.intro { padding:18px 20px; }
+.eyebrow { color:var(--cyan);font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase; }
+.intro h2 { margin:8px 0;font-size:1.2rem; }
+.intro p { margin:0;color:var(--muted);line-height:1.7; }
+.question-panel { padding:20px; }
+.question-top { display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px; }
+.tag { padding:7px 10px;border-radius:7px;background:var(--gold);color:#25200e;font-size:.75rem;font-weight:900; }
+.counter { color:var(--muted);font-size:.85rem; }
+.word-card {
+  margin-top:17px;
+  padding:18px;
+  border:1px solid #24616a;
+  border-radius:12px;
+  background:linear-gradient(120deg,#11333d,#12283c);
+  text-align:center;
+}
+.word-label { color:var(--cyan);font-size:.75rem;font-weight:800;letter-spacing:1px; }
+#targetWord { margin:8px 0;font-size:clamp(2rem,7vw,3rem);font-weight:900;letter-spacing:2px; }
+#questionText { margin:18px 0 8px;font-size:1.08rem;line-height:1.65; }
+.door-instruction { margin:0 0 17px;color:var(--muted);font-size:.9rem; }
+.doors {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.door {
+  min-width:0;
+  min-height:175px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:9px;
+  padding:12px 8px;
+  border:2px solid #38536a;
+  border-radius:12px;
+  background:linear-gradient(180deg,#192c40,#101c2b);
+  color:var(--text);
+  cursor:pointer;
+  transition:transform .2s,border-color .2s,background .2s,box-shadow .2s;
+}
+.door:hover:not(:disabled) {
+  transform:translateY(-4px);
+  border-color:var(--cyan);
+  box-shadow:0 7px 20px #25e4d022;
+}
+.door:disabled { cursor:default; }
+.door-icon {
+  display:grid;
+  place-items:center;
+  width:62px;
+  height:75px;
+  flex:0 0 auto;
+  border:4px solid #bd8a48;
+  border-bottom:6px solid #8d5e31;
+  border-radius:8px 8px 3px 3px;
+  background:linear-gradient(90deg,#744527,#b8793d 50%,#704225);
+  color:#ffe2a5;
+  font-size:2rem;
+  box-shadow:inset 0 0 0 3px #43291f;
+  transition:transform .3s;
+}
+.door-icon::after {
+  content:"";
+  position:absolute;
+}
+.door-label {
+  font-size:.68rem;
+  font-weight:900;
+  letter-spacing:1px;
+  color:var(--gold);
+}
+.door-meaning { font-size:.83rem;line-height:1.4;overflow-wrap:anywhere; }
+.door.selected { border-color:var(--cyan);background:#123b42; }
+.door.correct { border-color:var(--green);background:#12372f; }
+.door.correct .door-icon { border-color:var(--green);background:#27634d; }
+.door.wrong { border-color:var(--red);background:#3a202c; }
+.door.wrong .door-icon { border-color:var(--red); }
+.feedback,.hint {
+  display:none;
+  margin-top:14px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  line-height:1.7;
+}
+.feedback.show,.hint.show { display:block; }
+.feedback.good { border-color:#287a50;background:#12372f; }
+.feedback.try { border-color:#a8772c;background:#332b18; }
+.hint.show { border-color:#78602c;background:#332b18;color:#ffe3a3; }
+.actions { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:17px; }
+.button-group { display:flex;flex-wrap:wrap;gap:9px; }
+.btn {
+  padding:12px 15px;
+  border:1px solid transparent;
+  border-radius:9px;
+  font-weight:800;
+  cursor:pointer;
+  transition:filter .15s,transform .15s;
+}
+.btn:hover:not(:disabled) { filter:brightness(1.1);transform:translateY(-1px); }
+.btn:disabled { opacity:.45;cursor:not-allowed; }
+.btn-primary { background:var(--cyan);color:#062a2a; }
+.btn-secondary { background:#192c40;border-color:#35516a;color:var(--text); }
+#monsterScene {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#020711ed;
+}
+#monsterScene.show { display:flex; }
+.monster-card {
+  width:min(420px,100%);
+  padding:24px;
+  border:2px solid #8d6dff;
+  border-radius:20px;
+  background:linear-gradient(145deg,#231c49,#11182b);
+  text-align:center;
+  box-shadow:0 0 45px #8d6dff44;
+  overflow:hidden;
+}
+.monster-title { margin:0;font-size:1.3rem;color:#dfd2ff; }
+.monster-stage {
+  position:relative;
+  height:190px;
+  margin:12px 0;
+  overflow:hidden;
+}
+.hero {
+  position:absolute;
+  bottom:15px;
+  left:16%;
+  font-size:3.2rem;
+  filter:drop-shadow(0 5px 3px #0005);
+  animation:heroWiggle .4s ease-in-out infinite alternate;
+}
+.monster {
+  position:absolute;
+  right:12%;
+  bottom:10px;
+  font-size:6rem;
+  transform-origin:center bottom;
+  filter:drop-shadow(0 5px 3px #0005);
+}
+.monster.eat { animation:monsterEat 1.5s ease-in-out forwards; }
+.hero.eaten { animation:heroEaten 1.15s ease-in forwards; }
+.chomp {
+  position:absolute;
+  left:50%;
+  top:10px;
+  transform:translateX(-50%);
+  font-size:2rem;
+  opacity:0;
+}
+.chomp.show { animation:chompPop .8s .55s forwards; }
+.monster-caption { color:#d8cafa;line-height:1.6; }
+@keyframes heroWiggle { from{transform:rotate(-5deg)}to{transform:rotate(5deg)} }
+@keyframes monsterEat {
+  0%{transform:scale(1) rotate(0)}
+  25%{transform:scale(1.2) rotate(-8deg)}
+  50%{transform:scale(1.35) rotate(8deg)}
+  75%{transform:scale(1.1) rotate(-5deg)}
+  100%{transform:scale(1) rotate(0)}
+}
+@keyframes heroEaten {
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  45%{transform:translate(100px,-20px) scale(.8);opacity:1}
+  75%{transform:translate(160px,10px) scale(.25);opacity:.8}
+  100%{transform:translate(170px,20px) scale(0);opacity:0}
+}
+@keyframes chompPop {
+  0%{opacity:0;transform:translateX(-50%) scale(.5)}
+  30%{opacity:1;transform:translateX(-50%) scale(1.3)}
+  100%{opacity:1;transform:translateX(-50%) scale(1)}
+}
+#resultScreen { display:none;padding:25px;text-align:center; }
+#resultScreen.show { display:block; }
+.result-icon { font-size:3.5rem; }
+#resultTitle { font-size:1.7rem;margin:12px 0; }
+.final-score { font-size:clamp(2rem,7vw,3rem);font-weight:900;color:var(--gold);margin:15px 0; }
+.result-message { color:var(--muted);line-height:1.8; }
+.result-row {
+  display:flex;justify-content:space-between;gap:10px;
+  padding:13px;margin:9px 0;border:1px solid var(--line);
+  border-radius:9px;background:#0e1c2c;text-align:left;
+}
+.navigation { display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px; }
+.navigation a {
+  padding:11px 14px;border:1px solid var(--line);
+  border-radius:9px;background:#102237;color:var(--text);
+  text-decoration:none;font-size:.85rem;
+}
+.navigation a:hover { border-color:var(--cyan);color:var(--cyan); }
+.hidden { display:none!important; }
+@media(max-width:650px) {
+  .doors { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .door { min-height:155px; }
+  .header { align-items:flex-start; }
+}
+@media(max-width:420px) {
+  .level-tabs { gap:5px;padding:7px; }
+  .level-tab { padding:9px 4px; }
+  .level-tab small { font-size:.65rem; }
+  .question-panel { padding:13px; }
+  .door-icon { width:54px;height:66px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms!important;transition-duration:.01ms!important; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">READ<span>QUEST</span></div>
+    <a class="top-link" href="vocabulary-games.html">← Vocabulary Games</a>
+  </div>
+</header>
+
+<main>
+  <header class="header">
+    <div>
+      <h1>👾 Monster Door Challenge</h1>
+      <p class="subtitle">Choose the right meaning. Don't feed the monster!</p>
+    </div>
+    <div class="stats">
+      <div class="stat">⭐ <span id="score">0</span> XP</div>
+      <div class="stat">❤️ <span id="lives">3</span> lives</div>
+      <div class="stat">🔥 <span id="streak">0</span> streak</div>
+    </div>
+  </header>
+
+  <nav class="level-tabs" aria-label="Game levels">
+    <button class="level-tab active" id="level0" type="button">
+      <strong>Level 1</strong><small>Easy</small>
+    </button>
+    <button class="level-tab" id="level1" type="button" disabled>
+      <strong>Level 2</strong><small>Medium 🔒</small>
+    </button>
+    <button class="level-tab" id="level2" type="button" disabled>
+      <strong>Level 3</strong><small>Hard 🔒</small>
+    </button>
+  </nav>
+
+  <div class="progress-track"><div id="progressBar"></div></div>
+
+  <section class="panel intro">
+    <div class="eyebrow">✦ Your mission</div>
+    <h2 id="missionTitle">Find the right door!</h2>
+    <p id="missionText">Choose the door that matches the vocabulary word. A wrong choice wakes the hungry monster!</p>
+  </section>
+
+  <section class="panel question-panel" id="gameScreen">
+    <div class="question-top">
+      <span class="tag" id="skillTag">EASY LEVEL</span>
+      <span class="counter" id="counter">Question 1 of 10</span>
+    </div>
+
+    <div class="word-card">
+      <div class="word-label">What does this word mean?</div>
+      <div id="targetWord">GENEROUS</div>
+    </div>
+
+    <h2 id="questionText">Choose the door with the correct meaning.</h2>
+    <p class="door-instruction">🚪 Four doors. One correct meaning. Choose wisely!</p>
+
+    <div class="doors" id="doors"></div>
+    <div class="hint" id="hint" role="status"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+    <div class="actions">
+      <div class="button-group">
+        <button class="btn btn-secondary" id="hintButton" type="button">💡 Hint</button>
+        <button class="btn btn-secondary" id="restartButton" type="button">↻ Restart</button>
+      </div>
+      <button class="btn btn-primary" id="continueButton" type="button" disabled>Choose a Door →</button>
+    </div>
+  </section>
+
+  <section class="panel" id="resultScreen" aria-live="polite">
+    <div style="padding:12px">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <p class="eyebrow">Explorer report</p>
+      <h2 id="resultTitle">Level Complete!</h2>
+      <div class="final-score" id="finalScore">0 XP</div>
+      <p class="result-message" id="resultMessage"></p>
+      <div id="levelResults"></div>
+      <div class="actions" style="justify-content:center">
+        <button class="btn btn-primary" id="nextLevelButton" type="button">Next Level →</button>
+        <button class="btn btn-secondary" id="playAgainButton" type="button">Play Again</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="navigation" aria-label="Game navigation">
+    <a href="vocabulary-games.html">← Back to Vocabulary Games</a>
+    <a href="lessons.html">Back to Lessons</a>
+  </nav>
+</main>
+
+<div id="monsterScene" role="dialog" aria-modal="true" aria-labelledby="monsterTitle">
+  <div class="monster-card">
+    <h2 class="monster-title" id="monsterTitle">OH NO! MONSTER SNACK TIME!</h2>
+    <div class="monster-stage">
+      <div class="hero" id="heroEmoji">🧑‍🚀</div>
+      <div class="monster" id="monsterEmoji">👾</div>
+      <div class="chomp" id="chompEmoji">NOM! 😋</div>
+    </div>
+    <p class="monster-caption" id="monsterCaption">The monster gobbled up your character! Try another door next time.</p>
+  </div>
+</div>
+<script>
+const levels = [
+  {
+    name: "Easy Level",
+    description: "Everyday vocabulary",
+    questions: [
+      { word: "HAPPY", meaning: "Feeling joy or pleasure", hint: "You may feel this on your birthday.", choices: ["Feeling joy or pleasure", "Feeling very angry", "Needing some sleep", "Feeling afraid"] },
+      { word: "TINY", meaning: "Very small", hint: "Think of an ant compared with an elephant.", choices: ["Very loud", "Very small", "Very old", "Very cold"] },
+      { word: "QUICK", meaning: "Moving or happening fast", hint: "A rabbit can be this.", choices: ["Moving or happening fast", "Moving very slowly", "Hard to understand", "Easy to break"] },
+      { word: "BRAVE", meaning: "Ready to face danger or difficulty", hint: "A hero often shows this quality.", choices: ["Always feeling sleepy", "Ready to face danger or difficulty", "Unwilling to share", "Moving without sound"] },
+      { word: "NEAT", meaning: "Clean and well organized", hint: "A tidy desk is this.", choices: ["Full of noise", "Very expensive", "Clean and well organized", "Difficult to carry"] },
+      { word: "BEGIN", meaning: "To start something", hint: "The opposite of finish.", choices: ["To forget something", "To start something", "To break something", "To finish something"] },
+      { word: "CLEVER", meaning: "Quick to learn and understand", hint: "A person who solves puzzles well may be this.", choices: ["Quick to learn and understand", "Very hungry", "Always late", "Easy to frighten"] },
+      { word: "QUIET", meaning: "Making little or no noise", hint: "A library is often expected to be this.", choices: ["Making little or no noise", "Full of bright colors", "Very crowded", "Moving very quickly"] },
+      { word: "HUGE", meaning: "Extremely large", hint: "A whale is huge compared with a coin.", choices: ["Extremely small", "Extremely large", "Very weak", "Almost invisible"] },
+      { word: "POLITE", meaning: "Showing good manners and respect", hint: "Saying please and thank you is polite.", choices: ["Showing good manners and respect", "Speaking very loudly", "Refusing to listen", "Acting without care"] }
+    ]
+  },
+  {
+    name: "Medium Level",
+    description: "Synonyms and nuanced meanings",
+    questions: [
+      { word: "GENEROUS", meaning: "Willing to give or share", hint: "Think of someone who shares their things with others.", choices: ["Willing to give or share", "Unwilling to speak", "Very easy to upset", "Eager to win every game"] },
+      { word: "RELUCTANT", meaning: "Hesitant or unwilling", hint: "Someone who is reluctant may need encouragement.", choices: ["Ready and excited", "Hesitant or unwilling", "Extremely cheerful", "Very skillful"] },
+      { word: "FRAGILE", meaning: "Easily broken or damaged", hint: "Handle delicate glass carefully.", choices: ["Easily broken or damaged", "Hard to move", "Extremely colorful", "Able to grow quickly"] },
+      { word: "SCARCE", meaning: "Limited or hard to find", hint: "There may be little water during a drought.", choices: ["Found everywhere", "Limited or hard to find", "Very expensive to repair", "Easy to replace"] },
+      { word: "CAUTIOUS", meaning: "Careful to avoid danger or mistakes", hint: "Check the road before crossing it.", choices: ["Careful to avoid danger or mistakes", "Always in a hurry", "Eager to take risks", "Unable to make a sound"] },
+      { word: "OBSERVE", meaning: "To watch or examine carefully", hint: "Scientists observe things during experiments.", choices: ["To hide something", "To watch or examine carefully", "To change something completely", "To guess without clues"] },
+      { word: "PREDICT", meaning: "To say what may happen in the future", hint: "You might do this after seeing dark clouds.", choices: ["To describe the past", "To say what may happen in the future", "To explain a rule", "To copy an answer"] },
+      { word: "ANCIENT", meaning: "Belonging to the very distant past", hint: "Think of ruins from thousands of years ago.", choices: ["Recently made", "Belonging to the very distant past", "Used every day", "Not yet finished"] },
+      { word: "RELIEVE", meaning: "To reduce pain, worry, or discomfort", hint: "Rest can relieve tiredness.", choices: ["To increase a problem", "To reduce pain, worry, or discomfort", "To make something heavier", "To delay an event"] },
+      { word: "BENEFIT", meaning: "An advantage or helpful result", hint: "Daily reading can improve vocabulary; this is a benefit.", choices: ["A difficult obstacle", "An advantage or helpful result", "An unexpected mistake", "A type of warning"] }
+    ]
+  },
+  {
+    name: "Hard Level",
+    description: "Context and academic vocabulary",
+    questions: [
+      { word: "AMBIGUOUS", meaning: "Having more than one possible meaning", hint: "A sentence may be confusing if its meaning is not clear.", choices: ["Having more than one possible meaning", "Extremely easy to prove", "Written in the past", "Completely unrelated"] },
+      { word: "PERSISTENT", meaning: "Continuing despite difficulty", hint: "Someone who keeps trying after setbacks is persistent.", choices: ["Giving up immediately", "Continuing despite difficulty", "Changing direction every second", "Unable to concentrate at all"] },
+      { word: "INEVITABLE", meaning: "Certain to happen; unavoidable", hint: "Some events cannot be prevented.", choices: ["Certain to happen; unavoidable", "Very unlikely to occur", "Easy to forget", "Open to many choices"] },
+      { word: "SCRUTINIZE", meaning: "To examine very closely", hint: "An editor may do this when checking every detail.", choices: ["To glance briefly", "To examine very closely", "To explain in simple words", "To put away safely"] },
+      { word: "ADVERSITY", meaning: "A difficult or challenging situation", hint: "People may show courage during hard times.", choices: ["A moment of celebration", "A difficult or challenging situation", "A helpful suggestion", "An easy achievement"] },
+      { word: "MITIGATE", meaning: "To make something less severe", hint: "A good plan may reduce the effects of a problem.", choices: ["To make something less severe", "To make something impossible", "To copy a process", "To increase the damage"] },
+      { word: "CREDIBLE", meaning: "Believable and supported by evidence", hint: "Reliable sources are more likely to be this.", choices: ["Believable and supported by evidence", "Impossible to understand", "Entirely imaginary", "Always entertaining"] },
+      { word: "CONTRADICT", meaning: "To state the opposite of a claim", hint: "If evidence disagrees with a statement, it may contradict it.", choices: ["To support with proof", "To state the opposite of a claim", "To repeat exactly", "To avoid discussing"] },
+      { word: "INFER", meaning: "To reach a conclusion using clues and evidence", hint: "Readers infer when they combine clues with what they know.", choices: ["To memorize every word", "To reach a conclusion using clues and evidence", "To ignore the details", "To change a fact intentionally"] },
+      { word: "SIGNIFICANT", meaning: "Important or meaningful", hint: "A significant discovery can have a major effect.", choices: ["Unimportant and unnoticed", "Important or meaningful", "Very short in length", "Difficult to pronounce"] }
+    ]
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+let levelIndex = 0;
+let questionIndex = 0;
+let score = 0;
+let lives = 3;
+let streak = 0;
+let bestStreak = 0;
+let correctAnswers = 0;
+let selectedDoor = null;
+let questionLocked = false;
+let levelScores = [0, 0, 0];
+let levelCorrect = [0, 0, 0];
+let levelLivesLost = [0, 0, 0];
+let gameOver = false;
+let monsterTimer = null;
+let achievementReported = false;
+
+const doorsElement = $("doors");
+
+function shuffle(array) {
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
+
+function getQuestion() {
+  return levels[levelIndex].questions[questionIndex];
+}
+
+function updateStats() {
+  $("score").textContent = score;
+  $("lives").textContent = lives;
+  $("streak").textContent = streak;
+  $("counter").textContent = `Question ${questionIndex + 1} of 10`;
+
+  $("progressBar").style.width =
+    `${((questionIndex + (questionLocked ? 1 : 0)) / 10) * 100}%`;
+}
+
+function updateLevelTabs() {
+  for (let i = 0; i < levels.length; i++) {
+    const button = $(`level${i}`);
+
+    button.classList.toggle("active", i === levelIndex);
+    button.disabled = i > levelIndex;
+
+    button.querySelector("small").textContent =
+      i < levelIndex
+        ? "Completed ✓"
+        : i === 0
+          ? "Easy"
+          : i === 1
+            ? "Medium"
+            : "Hard";
+  }
+}
+
+function renderQuestion() {
+  if (gameOver) return;
+
+  const level = levels[levelIndex];
+  const question = getQuestion();
+
+  selectedDoor = null;
+  questionLocked = false;
+
+  $("gameScreen").style.display = "block";
+  $("resultScreen").classList.remove("show");
+
+  $("missionTitle").textContent = `Level ${levelIndex + 1}: ${level.name}`;
+  $("missionText").textContent =
+    "Find the correct meaning before the monster catches you!";
+
+  $("skillTag").textContent = level.name.toUpperCase();
+  $("targetWord").textContent = question.word;
+  $("questionText").textContent =
+    `What does "${question.word.toLowerCase()}" mean?`;
+
+  $("hint").classList.remove("show");
+  $("hint").textContent = "";
+  $("feedback").className = "feedback";
+  $("feedback").textContent = "";
+
+  $("continueButton").disabled = true;
+  $("continueButton").textContent = "Choose a Door →";
+
+  updateStats();
+  updateLevelTabs();
+
+  doorsElement.replaceChildren();
+
+  shuffle(question.choices).forEach((meaning, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "door";
+    button.dataset.meaning = meaning;
+
+    const icon = document.createElement("span");
+    icon.className = "door-icon";
+    icon.textContent = "🚪";
+
+    const label = document.createElement("span");
+    label.className = "door-label";
+    label.textContent = `DOOR ${String.fromCharCode(65 + index)}`;
+
+    const meaningText = document.createElement("span");
+    meaningText.className = "door-meaning";
+    meaningText.textContent = meaning;
+
+    button.append(icon, label, meaningText);
+    button.addEventListener("click", () => chooseDoor(button, meaning));
+
+    doorsElement.appendChild(button);
+  });
+}
+
+function chooseDoor(button, meaning) {
+  if (questionLocked || gameOver) return;
+
+  const question = getQuestion();
+  selectedDoor = meaning;
+  questionLocked = true;
+
+  const allDoors = [...doorsElement.querySelectorAll(".door")];
+  allDoors.forEach(door => {
+    door.disabled = true;
+  });
+
+  const correct = meaning === question.meaning;
+
+  if (correct) {
+    button.classList.add("correct");
+
+    const points = 10 + Math.min(streak, 5) * 2;
+    score += points;
+    levelScores[levelIndex] += points;
+    levelCorrect[levelIndex]++;
+    correctAnswers++;
+    streak++;
+    bestStreak = Math.max(bestStreak, streak);
+
+    $("feedback").className = "feedback show good";
+    $("feedback").textContent =
+      `✅ Correct! +${points} XP. ${question.meaning}. The door opens!`;
+
+    $("continueButton").textContent =
+      questionIndex === 9 ? "Finish Level →" : "Next Question →";
+    $("continueButton").disabled = false;
+  } else {
+    button.classList.add("wrong");
+
+    const correctDoor = allDoors.find(
+      door => door.dataset.meaning === question.meaning
+    );
+
+    if (correctDoor) correctDoor.classList.add("correct");
+
+    lives--;
+    levelLivesLost[levelIndex]++;
+    streak = 0;
+
+    $("feedback").className = "feedback show try";
+    $("feedback").textContent =
+      `❌ Not quite! The correct meaning is: "${question.meaning}". ${question.hint}`;
+
+    $("continueButton").textContent =
+      questionIndex === 9 ? "Finish Level →" : "Continue →";
+    $("continueButton").disabled = false;
+
+    playMonsterAnimation();
+  }
+
+  updateStats();
+}
+
+function playMonsterAnimation() {
+  clearTimeout(monsterTimer);
+
+  const scene = $("monsterScene");
+  const hero = $("heroEmoji");
+  const monster = $("monsterEmoji");
+  const chomp = $("chompEmoji");
+
+  hero.className = "hero";
+  monster.className = "monster";
+  chomp.className = "chomp";
+
+  scene.classList.add("show");
+
+  // Restart the CSS animation.
+  void monster.offsetWidth;
+
+  monster.classList.add("eat");
+  hero.classList.add("eaten");
+  chomp.classList.add("show");
+
+  $("monsterCaption").textContent =
+    lives > 0
+      ? "NOM NOM! The monster gobbled up your explorer! You can still keep playing."
+      : "NOM NOM! The monster got your last life! Finish this question, then try the level again.";
+
+  monsterTimer = setTimeout(() => {
+    scene.classList.remove("show");
+    hero.className = "hero";
+    monster.className = "monster";
+    chomp.className = "chomp";
+  }, 1800);
+}
+
+function showHint() {
+  if (questionLocked) return;
+
+  $("hint").textContent = `💡 Hint: ${getQuestion().hint}`;
+  $("hint").classList.add("show");
+}
+
+function continueGame() {
+  if (!questionLocked || gameOver) return;
+
+  if (questionIndex < levels[levelIndex].questions.length - 1) {
+    questionIndex++;
+    renderQuestion();
+  } else {
+    finishLevel();
+  }
+}
+
+function reportMonsterDoorAchievement() {
+  if (achievementReported) return;
+
+  if (typeof window.reportAchievementCompletion !== "function") {
+    console.warn(
+      "Achievement tracker is unavailable. Check js/achievement-tracker.js."
+    );
+    return;
+  }
+
+  // Avoid repeated reports from this page session.
+  achievementReported = true;
+
+  window.reportAchievementCompletion("monster_door")
+    .then(result => {
+      console.log("Monster Door achievement saved:", result);
+    })
+    .catch(error => {
+      // Allow a retry if the request fails.
+      achievementReported = false;
+      console.error("Failed to save Monster Door achievement:", error);
+    });
+}
+
+function finishLevel() {
+  $("gameScreen").style.display = "none";
+  $("resultScreen").classList.add("show");
+
+  const perfect = levelCorrect[levelIndex] === 10;
+
+  $("resultIcon").textContent = perfect ? "🏆" : "🎉";
+  $("resultTitle").textContent = perfect
+    ? "Perfect Level!"
+    : `${levels[levelIndex].name} Complete!`;
+
+  $("finalScore").textContent = `${levelScores[levelIndex]} XP`;
+
+  $("resultMessage").textContent =
+    `You answered ${levelCorrect[levelIndex]} out of 10 correctly and lost ${levelLivesLost[levelIndex]} life${levelLivesLost[levelIndex] === 1 ? "" : "s"} in this level.`;
+
+  $("levelResults").innerHTML = levels.map((level, index) => {
+    const status =
+      index < levelIndex
+        ? "Completed ✓"
+        : index === levelIndex
+          ? "Just completed"
+          : "🔒 Locked";
+
+    return `
+      <div class="result-row">
+        <span>
+          <strong>${level.name}</strong><br>
+          <small>${status}</small>
+        </span>
+        <span>
+          ${levelCorrect[index]}/10<br>
+          <strong>${levelScores[index]} XP</strong>
+        </span>
+      </div>`;
+  }).join("");
+
+  if (levelIndex < levels.length - 1) {
+    $("nextLevelButton").style.display = "inline-block";
+    $("nextLevelButton").textContent =
+      `Start ${levels[levelIndex + 1].name} →`;
+  } else {
+    gameOver = true;
+
+    $("nextLevelButton").style.display = "none";
+    $("resultTitle").textContent = "Monster Door Champion!";
+    $("resultIcon").textContent = "👑";
+
+    $("resultMessage").textContent =
+      `You completed all 30 questions! You earned ${score} XP and answered ${correctAnswers} questions correctly.`;
+
+    // Award the achievement only after all three levels are completed.
+    reportMonsterDoorAchievement();
+  }
+}
+
+function startLevel(index) {
+  if (index < 0 || index >= levels.length) return;
+
+  clearTimeout(monsterTimer);
+  $("monsterScene").classList.remove("show");
+
+  levelIndex = index;
+  questionIndex = 0;
+  lives = 3;
+  streak = 0;
+  gameOver = false;
+
+  renderQuestion();
+}
+
+function restartGame() {
+  clearTimeout(monsterTimer);
+  $("monsterScene").classList.remove("show");
+
+  levelIndex = 0;
+  questionIndex = 0;
+  score = 0;
+  lives = 3;
+  streak = 0;
+  bestStreak = 0;
+  correctAnswers = 0;
+  selectedDoor = null;
+  questionLocked = false;
+  levelScores = [0, 0, 0];
+  levelCorrect = [0, 0, 0];
+  levelLivesLost = [0, 0, 0];
+  gameOver = false;
+  achievementReported = false;
+
+  startLevel(0);
+}
+
+$("hintButton").addEventListener("click", showHint);
+$("continueButton").addEventListener("click", continueGame);
+$("restartButton").addEventListener("click", restartGame);
+$("playAgainButton").addEventListener("click", restartGame);
+
+$("nextLevelButton").addEventListener("click", () => {
+  if (levelIndex < levels.length - 1) {
+    startLevel(levelIndex + 1);
+  }
+});
+
+for (let i = 0; i < levels.length; i++) {
+  $(`level${i}`).addEventListener("click", () => {
+    if (i <= levelIndex) startLevel(i);
+  });
+}
+
+renderQuestion();
+</script>
+
+<script src="js/achievement-tracker.js"></script>
+</body>
+</html>

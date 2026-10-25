@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ReadQuest - Friends</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #ffffff;
+            font-family: "Poppins", sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(4, 12, 45, 0.25),
+                    rgba(4, 12, 45, 0.25)
+                ),
+                #07143f;
+        }
+
+
+           /* =====================================================
+   ANIMATED PIXEL BACKGROUND
+===================================================== */
+
+.friends-background {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: -10;
+
+    overflow: hidden;
+
+    background: #07143f;
+
+    pointer-events: none;
+}
+
+
+/* Every background layer */
+.friends-background img {
+    position: absolute;
+
+    inset: -3%;
+
+    width: 106%;
+    height: 106%;
+
+    object-fit: cover;
+
+    pointer-events: none;
+    user-select: none;
+
+    will-change: transform;
+
+    transform-origin: center center;
+}
+
+
+.friends-background img:nth-child(1) {
+    animation: skyDrift 14s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(2) {
+    animation: starsMove 17s ease-in-out infinite alternate,
+               starsGlow 3s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(3) {
+    animation: skyDriftSlow 19s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(4) {
+    animation: moonFloat 1s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(5) {
+    animation: mountainsBack 15s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(6) {
+    animation: mountainsMove 15s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(7) {
+    animation: forestMove 12s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(8) {
+    animation: castleFloat 4.5s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(9) {
+    animation: firefliesFloat 4s ease-in-out infinite alternate,
+               firefliesGlow 2s ease-in-out infinite alternate;
+}
+
+.friends-background img:nth-child(10) {
+    animation: groundMove 9s ease-in-out infinite alternate;
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes skyDrift {
+
+    from {
+        transform: scale(1.03) translate3d(-0.5%, 0, 0);
+    }
+
+    to {
+        transform: scale(1.06) translate3d(0.5%, 0.3%, 0);
+    }
+}
+
+
+@keyframes skyDriftSlow {
+
+    from {
+        transform: scale(1.04) translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: scale(1.08) translate3d(-0.7%, 0.4%, 0);
+    }
+}
+
+
+@keyframes starsMove {
+
+    from {
+        transform:
+            scale(1.04)
+            translate3d(-0.4%, -0.2%, 0);
+    }
+
+    to {
+        transform:
+            scale(1.08)
+            translate3d(0.6%, 0.4%, 0);
+    }
+}
+
+
+@keyframes starsGlow {
+
+    from {
+        opacity: 0.75;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes moonFloat {
+
+    from {
+        transform:
+            scale(1.04)
+            translate3d(0, -0.3%, 0);
+    }
+
+    to {
+        transform:
+            scale(1.06)
+            translate3d(0.4%, 0.7%, 0);
+    }
+}
+
+
+@keyframes mountainsBack {
+
+    from {
+        transform:
+            scale(1.04)
+            translate3d(-0.5%, 0, 0);
+    }
+
+    to {
+        transform:
+            scale(1.07)
+            translate3d(0.7%, 0.3%, 0);
+    }
+}
+
+
+@keyframes mountainsMove {
+
+    from {
+        transform:
+            scale(1.05)
+            translate3d(0.5%, 0, 0);
+    }
+
+    to {
+        transform:
+            scale(1.08)
+            translate3d(-0.6%, 0.4%, 0);
+    }
+}
+
+
+@keyframes forestMove {
+
+    from {
+        transform:
+            scale(1.05)
+            translate3d(-0.7%, 0, 0);
+    }
+
+    to {
+        transform:
+            scale(1.09)
+            translate3d(0.8%, 0.5%, 0);
+    }
+}
+
+
+@keyframes castleFloat {
+
+    from {
+        transform:
+            scale(1.04)
+            translate3d(0, -0.4%, 0);
+    }
+
+    to {
+        transform:
+            scale(1.07)
+            translate3d(0.5%, 0.8%, 0);
+    }
+}
+
+
+@keyframes firefliesFloat {
+
+    from {
+        transform:
+            scale(1.04)
+            translate3d(-0.5%, -0.5%, 0);
+    }
+
+    to {
+        transform:
+            scale(1.08)
+            translate3d(0.8%, 0.7%, 0);
+    }
+}
+
+
+@keyframes firefliesGlow {
+
+    from {
+        opacity: 0.55;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes groundMove {
+
+    from {
+        transform:
+            scale(1.04)
+            translate3d(0, 0, 0);
+    }
+
+    to {
+        transform:
+            scale(1.07)
+            translate3d(-0.4%, 0, 0);
+    }
+}
+
+
+/* =====================================================
+   REDUCE MOTION ACCESSIBILITY
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .friends-background img {
+        animation: none !important;
+    }
+
+}
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .friends-page {
+            position: relative;
+            z-index: 10;
+
+            width: min(1100px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            /*
+             * IMPORTANT:
+             * Large top padding prevents the Friends content
+             * from going underneath the top area.
+             */
+            padding-top: 125px;
+            padding-bottom: 70px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .friends-header {
+            position: relative;
+            z-index: 20;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 24px;
+
+            width: 100%;
+
+            padding: 22px 26px;
+
+            margin-bottom: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(13, 35, 90, 0.98),
+                    rgba(7, 20, 58, 0.98)
+                );
+
+            border:
+                1px solid
+                rgba(100, 200, 255, 0.55);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =====================================================
+           TITLE
+        ===================================================== */
+
+        .friends-title {
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            min-width: 0;
+        }
+
+        .friends-title-icon {
+            width: 54px;
+            height: 54px;
+
+            flex: 0 0 54px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #16e0ff,
+                    #4677ff
+                );
+
+            color: white;
+
+            font-size: 25px;
+
+            box-shadow:
+                0 0 20px
+                rgba(22, 224, 255, 0.25);
+        }
+
+        .friends-title h1 {
+            margin: 0;
+
+            color: #ffd84d;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: clamp(20px, 3vw, 30px);
+
+            line-height: 1.4;
+        }
+
+        .friends-title p {
+            margin: 7px 0 0;
+
+            color: #dbe8ff;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           BACK TO DASHBOARD
+        ===================================================== */
+
+        #backDashboardBtn {
+            flex: 0 0 auto;
+
+            border:
+                1px solid
+                rgba(255, 216, 77, 0.7);
+
+            background:
+                rgba(10, 28, 70, 0.95);
+
+            color: white;
+
+            padding: 12px 18px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-family: "Poppins", sans-serif;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        #backDashboardBtn:hover {
+            background:
+                rgba(255, 216, 77, 0.18);
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 0 15px
+                rgba(255, 216, 77, 0.18);
+        }
+
+        #backDashboardBtn:active {
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           TOP GRID
+        ===================================================== */
+
+        .friends-top-grid {
+            position: relative;
+            z-index: 15;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr);
+
+            gap: 22px;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* =====================================================
+           FRIENDS SECTION
+        ===================================================== */
+
+        .friends-section {
+            position: relative;
+            z-index: 15;
+
+            width: 100%;
+            min-width: 0;
+
+            padding: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13, 38, 94, 0.96),
+                    rgba(7, 21, 61, 0.96)
+                );
+
+            border:
+                1px solid
+                rgba(95, 180, 255, 0.45);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.25);
+
+            overflow: visible;
+        }
+
+
+        /* =====================================================
+           FULL WIDTH FRIENDS
+        ===================================================== */
+
+        .friends-section-full {
+            width: 100%;
+
+            margin-top: 22px;
+        }
+
+
+        /* =====================================================
+           SECTION TITLE
+        ===================================================== */
+
+        .section-title {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+
+            color: #ffd84d;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        .section-title span {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-width: 28px;
+            height: 28px;
+
+            padding: 0 8px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(22, 224, 255, 0.15);
+
+            border:
+                1px solid
+                rgba(22, 224, 255, 0.4);
+
+            color: #70edff;
+
+            font-family: "Poppins", sans-serif;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .friend-search-row {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            width: 100%;
+        }
+
+        .friend-search-input {
+            flex: 1;
+
+            min-width: 0;
+
+            width: 100%;
+
+            height: 46px;
+
+            padding: 0 15px;
+
+            border:
+                1px solid
+                rgba(150, 210, 255, 0.4);
+
+            border-radius: 12px;
+
+            background:
+                rgba(4, 16, 47, 0.75);
+
+            color: white;
+
+            outline: none;
+
+            font-family:
+                "Poppins",
+                sans-serif;
+
+            font-size: 14px;
+        }
+
+        .friend-search-input::placeholder {
+            color: #aebedb;
+        }
+
+        .friend-search-input:focus {
+            border-color: #20efff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(32, 239, 255, 0.12);
+        }
+
+
+        /* =====================================================
+           SEARCH BUTTON
+        ===================================================== */
+
+        .friend-search-btn {
+            flex: 0 0 auto;
+
+            height: 46px;
+
+            padding: 0 18px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #16e9f5,
+                    #248fff
+                );
+
+            color: white;
+
+            font-family:
+                "Poppins",
+                sans-serif;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            transition:
+                transform 0.2s ease,
+                filter 0.2s ease;
+        }
+
+        .friend-search-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
+        .friend-search-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* =====================================================
+           SEARCH RESULTS
+        ===================================================== */
+
+        .search-results {
+            width: 100%;
+
+            margin-top: 18px;
+        }
+
+
+        /* =====================================================
+           USER RESULT
+        ===================================================== */
+
+        .user-result {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            border-radius: 12px;
+        }
+
+        .user-result-info {
+            flex: 1;
+
+            min-width: 0;
+        }
+
+        .user-result-name {
+            color: white;
+
+            font-weight: 700;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+        .user-result-id {
+            margin-top: 3px;
+
+            color: #a9c7e8;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           SEND REQUEST
+        ===================================================== */
+
+        .send-request-btn {
+            flex: 0 0 auto;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 9px 13px;
+
+            background:
+                #20e8ff;
+
+            color:
+                #062052;
+
+            cursor: pointer;
+
+            font-family:
+                "Poppins",
+                sans-serif;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .send-request-btn:hover {
+            background: #6ff7ff;
+        }
+
+
+        /* =====================================================
+           REQUEST / FRIEND LIST
+        ===================================================== */
+
+        .request-list,
+        .friends-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            width: 100%;
+        }
+
+
+        /* =====================================================
+           REQUEST / FRIEND ITEM
+        ===================================================== */
+
+        .request-item,
+        .friend-item {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            width: 100%;
+
+            padding: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            border-radius: 12px;
+        }
+
+        .request-name,
+        .friend-name {
+            flex: 1;
+
+            min-width: 0;
+
+            color: white;
+
+            font-weight: 700;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .request-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            flex: 0 0 auto;
+        }
+
+        .accept-btn,
+        .reject-btn,
+        .remove-btn {
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 8px 12px;
+
+            cursor: pointer;
+
+            font-family:
+                "Poppins",
+                sans-serif;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .accept-btn {
+            background: #20e6a0;
+            color: #062052;
+        }
+
+        .reject-btn {
+            background: #ff6688;
+            color: white;
+        }
+
+        .remove-btn {
+            background:
+                rgba(255, 80, 110, 0.15);
+
+            color: #ff8ba2;
+
+            border:
+                1px solid
+                rgba(255, 100, 130, 0.3);
+        }
+
+        .accept-btn:hover,
+        .reject-btn:hover,
+        .remove-btn:hover {
+            filter: brightness(1.08);
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            width: 100%;
+
+            padding: 28px 15px;
+
+            text-align: center;
+
+            color: #d6e7ff;
+
+            line-height: 1.7;
+        }
+
+        .empty-icon {
+            margin-bottom: 8px;
+
+            color: #20efff;
+
+            font-size: 34px;
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error-state {
+            width: 100%;
+
+            padding: 28px 15px;
+
+            text-align: center;
+
+            color: #ff9db0;
+
+            line-height: 1.7;
+        }
+
+        .error-icon {
+            margin-bottom: 8px;
+
+            font-size: 34px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .friends-page {
+                width: calc(100% - 30px);
+
+                padding-top: 105px;
+            }
+
+            .friends-top-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .friends-header {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            #backDashboardBtn {
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .friends-page {
+                width: calc(100% - 18px);
+
+                padding-top: 90px;
+
+                padding-bottom: 40px;
+            }
+
+            .friends-header {
+                padding: 18px;
+            }
+
+            .friends-title {
+                align-items: flex-start;
+            }
+
+            .friends-title-icon {
+                width: 46px;
+                height: 46px;
+
+                flex-basis: 46px;
+
+                font-size: 20px;
+            }
+
+            .friends-title h1 {
+                font-size: 18px;
+            }
+
+            .friends-title p {
+                font-size: 12px;
+            }
+
+            .friends-section {
+                padding: 18px;
+            }
+
+            .friend-search-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .friend-search-input,
+            .friend-search-btn {
+                width: 100%;
+            }
+
+            .user-result,
+            .request-item,
+            .friend-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .send-request-btn,
+            .request-actions,
+            .request-actions button,
+            .remove-btn {
+                width: 100%;
+            }
+
+            .request-actions {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="friends-background">
+
+        <img
+            src="images/background/1-Sky.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/2-Stars.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/3-Sky.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/4-Moon.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/5-BG Mountains.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/6-Mountains.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/7-Forests.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/10-Floating Castle.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/8-Fireflies1.png"
+            alt=""
+        >
+
+        <img
+            src="images/background/9-Ground.png"
+            alt=""
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="friends-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="friends-header">
+
+            <div class="friends-title">
+
+                <div class="friends-title-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <h1>FRIENDS</h1>
+
+                    <p>
+                        Find readers and build your Reading Quest team.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="backDashboardBtn"
+                type="button"
+            >
+                ← Back to Dashboard
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             TOP SECTIONS
+        ================================================== -->
+
+        <div class="friends-top-grid">
+
+
+            <!-- FIND FRIEND -->
+            <section class="friends-section">
+
+                <div class="section-title">
+                    🔎 Find a Reading Buddy
+                </div>
+
+
+                <div class="friend-search-row">
+
+                    <input
+                        id="friendSearchInput"
+                        class="friend-search-input"
+                        type="text"
+                        placeholder="Search by username..."
+                        autocomplete="off"
+                    >
+
+
+                    <button
+                        id="friendSearchBtn"
+                        class="friend-search-btn"
+                        type="button"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="searchResults"
+                    class="search-results"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            👥
+                        </div>
+
+                        Search for another player to send a friend request.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REQUESTS -->
+            <section class="friends-section">
+
+                <div class="section-title">
+
+                    📩 Requests
+
+                    <span id="requestCount">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="requestList"
+                    class="request-list"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📩
+                        </div>
+
+                        No pending friend requests.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- =================================================
+             MY FRIENDS
+        ================================================== -->
+
+        <section
+            class="friends-section friends-section-full"
+        >
+
+            <div class="section-title">
+                💙 My Friends
+            </div>
+
+
+            <div
+                id="friendsList"
+                class="friends-list"
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        👥
+                    </div>
+
+                    No friends yet.
+
+                    <br>
+
+                    Search for a player above and send your first friend request.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         FRIENDS JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* =====================================================
+           CURRENT USER
+        ===================================================== */
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem("user")
+            );
+
+
+        /* =====================================================
+           REQUIRE LOGIN
+        ===================================================== */
+
+        if (!currentUser) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const backDashboardBtn =
+            document.getElementById(
+                "backDashboardBtn"
+            );
+
+        const friendSearchInput =
+            document.getElementById(
+                "friendSearchInput"
+            );
+
+        const friendSearchBtn =
+            document.getElementById(
+                "friendSearchBtn"
+            );
+
+        const searchResults =
+            document.getElementById(
+                "searchResults"
+            );
+
+        const requestList =
+            document.getElementById(
+                "requestList"
+            );
+
+        const requestCount =
+            document.getElementById(
+                "requestCount"
+            );
+
+        const friendsList =
+            document.getElementById(
+                "friendsList"
+            );
+
+
+        /* =====================================================
+           BACK TO DASHBOARD
+        ===================================================== */
+
+        if (backDashboardBtn) {
+
+            backDashboardBtn.addEventListener(
+                "click",
+                function () {
+
+                    window.location.assign(
+                        "dashboard.html"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ESCAPE KEY
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    window.location.assign(
+                        "dashboard.html"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           GET USER ID
+        ===================================================== */
+
+        function getUserId() {
+
+            if (!currentUser) {
+                return null;
+            }
+
+            return Number(
+                currentUser.id ??
+                currentUser.UserId
+            );
+
+        }
+
+
+        /* =====================================================
+           SEARCH USERS
+        ===================================================== */
+
+        async function searchUsers() {
+
+            const username =
+                friendSearchInput.value.trim();
+
+            if (!username) {
+
+                searchResults.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔎</div>
+                        Enter a username to search.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const userId =
+                getUserId();
+
+
+            if (!userId) {
+
+                searchResults.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">⚠️</div>
+                        User session not found.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            friendSearchBtn.disabled = true;
+
+            friendSearchBtn.textContent =
+                "Searching...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/friends/search?username=${encodeURIComponent(username)}&userId=${userId}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to search users."
+                    );
+
+                }
+
+
+                const users =
+                    Array.isArray(data.users)
+                        ? data.users
+                        : [];
+
+
+                if (users.length === 0) {
+
+                    searchResults.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🔎</div>
+                            No players found.
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                searchResults.innerHTML =
+                    users.map(
+                        user => `
+
+                            <div class="user-result">
+
+                                <div class="user-result-info">
+
+                                    <div class="user-result-name">
+                                        ${escapeHtml(user.DisplayName)}
+                                    </div>
+
+                                    <div class="user-result-id">
+                                        Player ID: ${user.UserId}
+                                    </div>
+
+                                </div>
+
+                                <button
+                                    class="send-request-btn"
+                                    type="button"
+                                    data-user-id="${user.UserId}"
+                                >
+                                    Add Friend
+                                </button>
+
+                            </div>
+
+                        `
+                    ).join("");
+
+
+                document
+                    .querySelectorAll(
+                        ".send-request-btn"
+                    )
+                    .forEach(
+                        button => {
+
+                            button.addEventListener(
+                                "click",
+                                function () {
+
+                                    sendFriendRequest(
+                                        Number(
+                                            this.dataset.userId
+                                        ),
+                                        this
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Search error:",
+                    error
+                );
+
+                searchResults.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">⚠️</div>
+                        ${escapeHtml(error.message)}
+                    </div>
+                `;
+
+            } finally {
+
+                friendSearchBtn.disabled = false;
+
+                friendSearchBtn.textContent =
+                    "Search";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SEND FRIEND REQUEST
+        ===================================================== */
+
+        async function sendFriendRequest(
+            receiverId,
+            button
+        ) {
+
+            const senderId =
+                getUserId();
+
+
+            if (!senderId) {
+                return;
+            }
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Sending...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/friends/request",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                senderId:
+                                    senderId,
+
+                                receiverId:
+                                    receiverId
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to send friend request."
+                    );
+
+                }
+
+
+                button.textContent =
+                    "Request Sent";
+
+                button.style.background =
+                    "#20e6a0";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Friend request error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to send friend request."
+                );
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Add Friend";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LOAD REQUESTS
+        ===================================================== */
+
+        async function loadRequests() {
+
+            const userId =
+                getUserId();
+
+
+            if (!userId) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/friends/requests/${userId}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load requests."
+                    );
+
+                }
+
+
+                const requests =
+                    Array.isArray(data.requests)
+                        ? data.requests
+                        : [];
+
+
+                requestCount.textContent =
+                    requests.length;
+
+
+                if (requests.length === 0) {
+
+                    requestList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📩</div>
+                            No pending friend requests.
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                requestList.innerHTML =
+                    requests.map(
+                        request => `
+
+                            <div class="request-item">
+
+                                <div class="request-name">
+                                    ${escapeHtml(request.DisplayName)}
+                                </div>
+
+                                <div class="request-actions">
+
+                                    <button
+                                        class="accept-btn"
+                                        type="button"
+                                        data-request-id="${request.RequestId}"
+                                        data-status="Accepted"
+                                    >
+                                        Accept
+                                    </button>
+
+                                    <button
+                                        class="reject-btn"
+                                        type="button"
+                                        data-request-id="${request.RequestId}"
+                                        data-status="Rejected"
+                                    >
+                                        Reject
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        `
+                    ).join("");
+
+
+                document
+                    .querySelectorAll(
+                        ".accept-btn, .reject-btn"
+                    )
+                    .forEach(
+                        button => {
+
+                            button.addEventListener(
+                                "click",
+                                function () {
+
+                                    respondToRequest(
+                                        Number(
+                                            this.dataset.requestId
+                                        ),
+                                        this.dataset.status,
+                                        this
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Load requests error:",
+                    error
+                );
+
+                requestList.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">⚠️</div>
+                        Unable to load requests.
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPOND TO REQUEST
+        ===================================================== */
+
+        async function respondToRequest(
+            requestId,
+            status,
+            clickedButton
+        ) {
+
+            const userId =
+                getUserId();
+
+
+            clickedButton.disabled = true;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/friends/request/respond",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                requestId:
+                                    requestId,
+
+                                userId:
+                                    userId,
+
+                                status:
+                                    status
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to update friend request."
+                    );
+
+                }
+
+
+                await loadRequests();
+
+                await loadFriends();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Respond request error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to update friend request."
+                );
+
+                clickedButton.disabled =
+                    false;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LOAD FRIENDS
+        ===================================================== */
+
+        async function loadFriends() {
+
+            const userId =
+                getUserId();
+
+
+            if (!userId) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/friends/${userId}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load friends."
+                    );
+
+                }
+
+
+                const friends =
+                    Array.isArray(data.friends)
+                        ? data.friends
+                        : [];
+
+
+                if (friends.length === 0) {
+
+                    friendsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">👥</div>
+                            No friends yet.
+                            <br>
+                            Search for a player above and send your first friend request.
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                friendsList.innerHTML =
+                    friends.map(
+                        friend => `
+
+                            <div class="friend-item">
+
+                                <div class="friend-name">
+                                    ${escapeHtml(friend.DisplayName)}
+                                </div>
+
+                                <button
+                                    class="remove-btn"
+                                    type="button"
+                                    data-friend-id="${friend.FriendUserId}"
+                                >
+                                    Remove
+                                </button>
+
+                            </div>
+
+                        `
+                    ).join("");
+
+
+                document
+                    .querySelectorAll(
+                        ".remove-btn"
+                    )
+                    .forEach(
+                        button => {
+
+                            button.addEventListener(
+                                "click",
+                                function () {
+
+                                    removeFriend(
+                                        Number(
+                                            this.dataset.friendId
+                                        ),
+                                        this
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Load friends error:",
+                    error
+                );
+
+                friendsList.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">⚠️</div>
+                        Unable to load friends.
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REMOVE FRIEND
+        ===================================================== */
+
+        async function removeFriend(
+            friendUserId,
+            button
+        ) {
+
+            const userId =
+                getUserId();
+
+
+            button.disabled = true;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/friends/remove",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                userId:
+                                    userId,
+
+                                friendUserId:
+                                    friendUserId
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to remove friend."
+                    );
+
+                }
+
+
+                await loadFriends();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Remove friend error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to remove friend."
+                );
+
+                button.disabled =
+                    false;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+
+        }
+
+
+        /* =====================================================
+           EVENTS
+        ===================================================== */
+
+        friendSearchBtn.addEventListener(
+            "click",
+            searchUsers
+        );
+
+
+        friendSearchInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    searchUsers();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           INITIAL LOAD
+        ===================================================== */
+
+        loadRequests();
+
+        loadFriends();
+
+    </script>
+
+</body>
+
+</html>

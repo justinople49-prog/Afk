@@ -1,0 +1,1337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReadQuest | Pixel Choices</title>
+  <style>
+    :root {
+      --bg: #080d18;
+      --panel: #101827;
+      --panel2: #142033;
+      --gold: #f5a623;
+      --gold-light: #ffd078;
+      --text: #f5f1e8;
+      --muted: #aab4c6;
+      --border: #26354b;
+      --green: #3bc98a;
+      --red: #ff727b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: radial-gradient(ellipse at top, #17233a, var(--bg) 65%);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    button, a { font: inherit; }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      background: #0b1220;
+    }
+
+    .topbar-inner {
+      width: min(1000px, 94%);
+      margin: auto;
+      padding: 18px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand {
+      color: var(--gold);
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .brand span { color: white; }
+
+    .top-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+    }
+
+    main {
+      width: min(900px, 94%);
+      margin: 28px auto 48px;
+    }
+
+    .case-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px 16px 0 0;
+      background: linear-gradient(135deg, #111a2a, #0c1422);
+    }
+
+    .case-info {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .case-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--gold);
+      color: #201504;
+      font-size: 1.35rem;
+    }
+
+    .case-title {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .case-subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .stat {
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #151e2e;
+      color: var(--gold-light);
+      font-size: .86rem;
+      white-space: nowrap;
+    }
+
+    .level-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-top: 0;
+      background: #0d1523;
+    }
+
+    .level-tab {
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #111b2b;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .level-tab strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .level-tab.active {
+      border-color: var(--gold);
+      background: #302516;
+    }
+
+    .level-tab.active strong { color: var(--gold-light); }
+
+    .level-tab:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .progress-track {
+      height: 5px;
+      background: #202b3d;
+    }
+
+    #progressBar {
+      width: 0;
+      height: 100%;
+      background: var(--gold);
+      transition: width .3s ease;
+    }
+
+    .panel {
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(145deg, #121b2b, #0e1624);
+    }
+
+    .story-panel {
+      padding: 24px;
+      color: #24201a;
+      background: linear-gradient(135deg, #fff1d1, #f4ddb0);
+      border-color: #f4d39a;
+      box-shadow: 0 10px 30px #00000020;
+    }
+
+    .eyebrow {
+      margin: 0 0 13px;
+      color: #8a5b14;
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .story-panel h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.4rem, 4vw, 1.9rem);
+      line-height: 1.25;
+    }
+
+    .story-panel p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+
+    .story-tip {
+      margin-top: 17px;
+      color: #765a32;
+      font-size: .83rem;
+    }
+
+    .question-panel { padding: 22px; }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .wh-tag {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--gold);
+      color: #211707;
+      font-size: .76rem;
+      font-weight: 900;
+    }
+
+    .question-count {
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    #questionText {
+      margin: 18px 0 20px;
+      font-size: clamp(1.15rem, 3vw, 1.45rem);
+      line-height: 1.5;
+    }
+
+    .sprite-card {
+      margin: 0 0 20px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #080e19;
+    }
+
+    .sprite-window {
+      position: relative;
+      width: 100%;
+      height: clamp(160px, 32vw, 260px);
+      overflow: hidden;
+      border-radius: 8px;
+      background: radial-gradient(ellipse, #1d2940, #080e19);
+    }
+
+    #animatedScene {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sprite-caption {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: .78rem;
+      text-align: center;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 59px;
+      padding: 12px 14px;
+      border: 1px solid #29384f;
+      border-radius: 11px;
+      background: linear-gradient(100deg, #121e30, #0e1828);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .16s, background .16s, transform .16s;
+    }
+
+    .choice:hover:not(:disabled) {
+      border-color: var(--gold);
+      background: #202b3d;
+      transform: translateY(-1px);
+    }
+
+    .choice:disabled { cursor: default; }
+
+    .choice-letter {
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #1b293d;
+      color: var(--gold-light);
+      font-weight: 900;
+    }
+
+    .choice-text {
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .choice.correct {
+      border-color: var(--green);
+      background: #102d28;
+    }
+
+    .choice.correct .choice-letter {
+      background: var(--green);
+      color: #062117;
+    }
+
+    .choice.incorrect {
+      border-color: var(--red);
+      background: #351b27;
+    }
+
+    .choice.incorrect .choice-letter {
+      background: var(--red);
+      color: #260b10;
+    }
+
+    .feedback, .hint {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 11px;
+      line-height: 1.65;
+    }
+
+    .feedback {
+      border: 1px solid #344660;
+      background: #131f31;
+      color: #e6edf8;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.good { border-color: #287a50; }
+    .feedback.try { border-color: #a8772c; }
+
+    .hint {
+      border: 1px solid #705321;
+      background: #2a2418;
+      color: #ffe0a1;
+    }
+
+    .hint.show { display: block; }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: filter .16s, transform .16s;
+    }
+
+    .btn:hover:not(:disabled) {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #211707;
+    }
+
+    .btn-dark {
+      border-color: #35445b;
+      background: #182438;
+      color: var(--text);
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .navigation a {
+      padding: 11px 15px;
+      border: 1px solid #36445a;
+      border-radius: 10px;
+      background: #101a2a;
+      color: #e7edf6;
+      text-decoration: none;
+      font-size: .9rem;
+    }
+
+    .navigation a:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    #resultScreen {
+      display: none;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .result-icon { font-size: 2.8rem; }
+
+    #resultTitle {
+      margin: 10px 0;
+      font-size: 1.8rem;
+    }
+
+    .result-score {
+      margin: 18px 0;
+      color: var(--gold-light);
+      font-size: clamp(2.2rem, 8vw, 3.2rem);
+      font-weight: 900;
+    }
+
+    .result-message {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 10px 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0d1625;
+      text-align: left;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (min-width: 620px) {
+      .choices { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      main { margin-top: 16px; }
+      .case-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .stats { justify-content: flex-start; }
+      .story-panel, .question-panel { padding: 17px; }
+      .actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .button-group { width: 100%; }
+      .button-group .btn, .actions > .btn { flex: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">READ<span>QUEST</span></div>
+    <a class="top-link" id="topBack" href="text-comprehension-games.html">
+      ← All Games
+    </a>
+  </div>
+</header>
+
+<main>
+  <section id="gameScreen">
+    <div class="case-header">
+      <div class="case-info">
+        <div class="case-icon" aria-hidden="true">◉</div>
+        <div>
+          <h1 class="case-title" id="caseTitle">Case File #071</h1>
+          <p class="case-subtitle" id="caseSubtitle">Easy Case · Grade 7</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">⭐ <span id="score">0</span> pts</div>
+        <div class="stat">🔥 <span id="streak">0</span> streak</div>
+      </div>
+    </div>
+
+    <div class="level-tabs">
+      <button class="level-tab active" id="levelTab1" type="button">
+        <strong>Level 1 · School</strong>
+        <span>Bullying case</span>
+      </button>
+      <button class="level-tab" id="levelTab2" type="button" disabled>
+        <strong>Level 2 · Family</strong>
+        <span id="level2Status">Complete Level 1 to unlock</span>
+      </button>
+    </div>
+
+    <div class="progress-track">
+      <div id="progressBar"></div>
+    </div>
+
+    <article class="panel story-panel">
+      <p class="eyebrow">▣ Read the story first</p>
+      <h2 id="storyTitle"></h2>
+      <p id="storyText"></p>
+      <div class="story-tip">ⓘ You may refer to the story while answering.</div>
+    </article>
+
+    <section class="panel question-panel">
+      <div class="question-top">
+        <span class="wh-tag" id="questionTag">WHAT WOULD YOU DO?</span>
+        <span class="question-count" id="questionCounter">Question 1 of 10</span>
+      </div>
+
+      <figure class="sprite-card">
+        <div class="sprite-window">
+          <canvas id="animatedScene"
+                  role="img"
+                  aria-label="Animated illustration for the current case"></canvas>
+        </div>
+        <figcaption class="sprite-caption" id="sceneCaption">
+          Loading case illustration...
+        </figcaption>
+      </figure>
+
+      <h2 id="questionText"></h2>
+      <div class="choices" id="choices"></div>
+      <div class="hint" id="hintBox" role="status"></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+      <div class="actions">
+        <div class="button-group">
+          <button class="btn btn-dark" id="hintButton" type="button">
+            ♧ Get a Hint
+          </button>
+          <button class="btn btn-dark" id="resetButton" type="button">
+            ↻ Restart Case
+          </button>
+        </div>
+        <button class="btn btn-gold" id="checkButton" type="button" disabled>
+          Check Answer First →
+        </button>
+      </div>
+    </section>
+  </section>
+
+  <section class="panel" id="resultScreen" aria-live="polite">
+    <div style="padding:26px">
+      <div class="result-icon">🏆</div>
+      <p class="eyebrow">Case report completed</p>
+      <h2 id="resultTitle">Case Complete!</h2>
+      <div class="result-score" id="finalScore">0 pts</div>
+      <p class="result-message" id="resultMessage"></p>
+      <div id="levelResults"></div>
+      <div class="actions" style="justify-content:center">
+        <button class="btn btn-gold" id="continueButton" type="button">
+          Unlock Level 2 →
+        </button>
+        <button class="btn btn-dark" id="playAgainButton" type="button">
+          Play Again
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="navigation" aria-label="Game navigation">
+    <a id="backButton" href="text-comprehension-games.html">← Back to Games</a>
+    <a id="categoriesButton" href="assessment-categories.html">Assessment Categories</a>
+  </nav>
+</main>
+
+<script>
+"use strict";
+
+const levels = [
+  {
+    caseNumber: "071",
+    title: "Level 1: Bullying at School",
+    storyTitle: "The School Bullying Case",
+    story: "During break time, a student notices two classmates teasing another student. The student being targeted looks upset and tries to move away. Instead of joining in, a bystander must decide how to respond safely. A trusted teacher is nearby and can help.",
+    image: "images/hero/bully.png",
+    imageAlt: "Students bullying a classmate at school",
+    caption: "Bullying at school — scene illustrations",
+    tag: "WHAT WOULD YOU DO?",
+    questions: [
+      {
+        q: "You see students teasing a classmate who looks upset. What should you do?",
+        choices: [
+          "Laugh along with the students.",
+          "Check on the classmate and tell a trusted teacher.",
+          "Join the teasing.",
+          "Record the incident to share for fun."
+        ],
+        answer: 1,
+        hint: "Choose an action that supports the student and gets responsible help.",
+        feedback: "Checking on the student and getting help from a trusted teacher supports their safety."
+      },
+      {
+        q: "A classmate tells you they are being bullied. How should you respond?",
+        choices: [
+          "Listen calmly and take their concern seriously.",
+          "Tell them to stop being sensitive.",
+          "Share their story with everyone.",
+          "Blame them for what happened."
+        ],
+        answer: 0,
+        hint: "Think about what would make someone feel heard and respected.",
+        feedback: "Listening without judgment helps the student feel supported. Respect their privacy."
+      },
+      {
+        q: "A student is excluded and mocked during group work. What can you do?",
+        choices: [
+          "Pretend you did not notice.",
+          "Make another joke about them.",
+          "Invite them to join you and seek adult help if needed.",
+          "Tell everyone to exclude them."
+        ],
+        answer: 2,
+        hint: "Look for a choice that includes the student rather than isolating them.",
+        feedback: "Including the student is kind. Ask a trusted adult for help if the behavior continues."
+      },
+      {
+        q: "Someone shares cruel messages about a classmate in a group chat. What should you do?",
+        choices: [
+          "Forward the messages to more people.",
+          "Add another cruel message.",
+          "Ignore every sign that the student needs help.",
+          "Avoid joining in, preserve relevant evidence, and tell a trusted adult."
+        ],
+        answer: 3,
+        hint: "Do not spread the messages. Think about safe reporting.",
+        feedback: "Do not spread hurtful content. Keep relevant evidence and report the bullying to a trusted adult."
+      },
+      {
+        q: "A student threatens to hurt another student after class. What is safest?",
+        choices: [
+          "Arrange a fight to settle it.",
+          "Keep it secret even if someone might get hurt.",
+          "Tell a teacher or school staff member immediately.",
+          "Encourage the students to fight."
+        ],
+        answer: 2,
+        hint: "A threat should be taken seriously. Which option gets responsible help?",
+        feedback: "Tell a trusted adult immediately so they can help keep everyone safe."
+      },
+      {
+        q: "Your friend wants you to embarrass another student. What should you do?",
+        choices: [
+          "Agree because they are your friend.",
+          "Refuse to participate and encourage respectful behavior.",
+          "Record it to post online.",
+          "Help spread rumors about the student."
+        ],
+        answer: 1,
+        hint: "Being a friend does not mean joining harmful behavior.",
+        feedback: "Set a boundary and choose respect, even when a friend asks you to do something hurtful."
+      },
+      {
+        q: "A student who was bullied is sitting alone and seems sad. What could you do?",
+        choices: [
+          "Kindly ask if they are okay and listen if they want to talk.",
+          "Demand that they explain everything.",
+          "Tell them they are overreacting.",
+          "Tell other students to laugh at them."
+        ],
+        answer: 0,
+        hint: "A gentle offer of support is better than pressure or judgment.",
+        feedback: "A gentle check-in and patient listening can help. Let the student choose what to share."
+      },
+      {
+        q: "You reported repeated bullying, but it happens again. What should you do?",
+        choices: [
+          "Give up asking for help.",
+          "Take revenge on the students.",
+          "Pretend it never happened.",
+          "Tell a trusted adult again and explain what has continued."
+        ],
+        answer: 3,
+        hint: "You can keep asking for help if the problem continues.",
+        feedback: "Keep seeking help until the concern is addressed. A counselor or another trusted adult may help."
+      },
+      {
+        q: "An angry group surrounds a student. What is the safest response?",
+        choices: [
+          "Jump into the confrontation yourself.",
+          "Stay at a safe distance and get a responsible adult immediately.",
+          "Film it for entertainment.",
+          "Encourage the group to continue."
+        ],
+        answer: 1,
+        hint: "Do not put yourself in danger. Get someone who can safely intervene.",
+        feedback: "Stay at a safe distance and get responsible adults to intervene."
+      },
+      {
+        q: "Which action helps build a safer school?",
+        choices: [
+          "Stay silent whenever someone is targeted.",
+          "Make fun of people who are different.",
+          "Show respect, include others, and report bullying safely.",
+          "Spread rumors about classmates."
+        ],
+        answer: 2,
+        hint: "Think about the kind of environment where everyone can learn.",
+        feedback: "Respect, inclusion, and safe reporting help create a school where everyone can learn."
+      }
+    ]
+  },
+  {
+    caseNumber: "072",
+    title: "Level 2: Family Problems",
+    storyTitle: "The Family Difficulties Case",
+    story: "A student has noticed that things at home have been difficult lately. Family members have been arguing, and the student feels worried and unsure what to do. A friend also shares that they are struggling with problems at home. The student must consider empathy, safe communication, and when to seek help from a trusted adult.",
+    image: "images/hero/Family.png",
+    imageAlt: "A young person experiencing family difficulties",
+    caption: "Family difficulties — scene illustrations",
+    tag: "THINK IT THROUGH",
+    questions: [
+      {
+        q: "Your friend is upset because their family has been arguing. What should you do?",
+        choices: [
+          "Tell the whole class about their family.",
+          "Make jokes about their problem.",
+          "Tell them their feelings do not matter.",
+          "Listen kindly and ask if they would like support."
+        ],
+        answer: 3,
+        hint: "Think about how you can support a friend without judging them.",
+        feedback: "Listening with kindness can help. You do not need to solve every problem to be supportive."
+      },
+      {
+        q: "You feel worried after an argument at home. What is a helpful first step?",
+        choices: [
+          "Talk to a trusted adult when it is safe.",
+          "Keep every feeling secret forever.",
+          "Blame yourself for the entire argument.",
+          "Start another argument."
+        ],
+        answer: 0,
+        hint: "You deserve support. Consider who you trust to listen safely.",
+        feedback: "Talking to a trusted adult can help you understand your feelings. Family conflict is not automatically your fault."
+      },
+      {
+        q: "Your sibling seems sad but does not want to talk yet. What should you do?",
+        choices: [
+          "Force them to explain immediately.",
+          "Respect their space and let them know you are available.",
+          "Tell everyone what you think is wrong.",
+          "Make fun of them for being quiet."
+        ],
+        answer: 1,
+        hint: "Support does not mean forcing someone to talk before they are ready.",
+        feedback: "Respect their space while letting them know support is available."
+      },
+      {
+        q: "Two family members disagree loudly. What is constructive when it is safe?",
+        choices: [
+          "Insult one person to take sides.",
+          "Make the disagreement worse.",
+          "Stay calm and suggest talking respectfully when everyone is ready.",
+          "Threaten to hurt someone."
+        ],
+        answer: 2,
+        hint: "Choose respectful communication, but remember safety comes first.",
+        feedback: "Calm communication may help. If the situation feels unsafe, move to safety and contact a trusted adult."
+      },
+      {
+        q: "Your friend feels responsible for their parents' problems. What should you say?",
+        choices: [
+          "Agree that everything is their fault.",
+          "Tell other people their private story.",
+          "Tell them to solve the adults' problems alone.",
+          "Remind them adult disagreements are not automatically their fault and encourage support."
+        ],
+        answer: 3,
+        hint: "Young people are not responsible for solving every adult problem.",
+        feedback: "Encourage your friend to speak with a trusted adult. They do not have to solve adult relationship problems."
+      },
+      {
+        q: "You need help with a difficult situation at home. Who could you approach?",
+        choices: [
+          "A trusted relative, teacher, counselor, or another safe adult.",
+          "Someone who threatens to stop you from getting help.",
+          "A stranger asking for private information online.",
+          "Nobody, even if you are in danger."
+        ],
+        answer: 0,
+        hint: "Choose someone responsible who can listen and help you find support.",
+        feedback: "A trusted relative, teacher, counselor, or another safe adult can help you find support."
+      },
+      {
+        q: "Your family is experiencing financial stress. Your sibling is worried. What could help?",
+        choices: [
+          "Promise you can solve every financial problem.",
+          "Listen, offer reassurance, and ask a trusted adult for help.",
+          "Blame your sibling for the situation.",
+          "Share private family details online."
+        ],
+        answer: 1,
+        hint: "You can offer comfort without taking responsibility for adult problems.",
+        feedback: "You can offer kindness without taking responsibility for solving adult financial problems."
+      },
+      {
+        q: "You are upset and need to talk to a family member. What is respectful when it is safe?",
+        choices: [
+          "Shout insults to get attention.",
+          "Threaten the other person.",
+          "Explain your feelings calmly using statements that begin with 'I feel'.",
+          "Spread rumors about them."
+        ],
+        answer: 2,
+        hint: "Try expressing your own feelings without insulting or threatening someone.",
+        feedback: "Using 'I feel' statements can express emotions without blaming someone. If a conversation is unsafe, seek help instead."
+      },
+      {
+        q: "A friend says they do not feel safe at home. What should you do?",
+        choices: [
+          "Promise never to tell anyone, no matter what.",
+          "Tell them to deal with it alone.",
+          "Post their situation on social media.",
+          "Listen seriously and help them contact a trusted adult or appropriate support."
+        ],
+        answer: 3,
+        hint: "Safety concerns should be shared with a safe, responsible adult.",
+        feedback: "Take safety concerns seriously. Help your friend reach a safe, trusted adult. Seek emergency assistance if there is immediate danger."
+      },
+      {
+        q: "What is a healthy way to deal with difficult family feelings?",
+        choices: [
+          "Recognize your feelings, talk to someone safe, and seek support when needed.",
+          "Assume you must fix every family problem alone.",
+          "Hide all your feelings because they do not matter.",
+          "Hurt someone because you are upset."
+        ],
+        answer: 0,
+        hint: "Your feelings matter, and you do not have to face every problem alone.",
+        feedback: "Seeking support and using safe coping strategies can help you through difficult situations."
+      }
+    ]
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+const params = new URLSearchParams(location.search);
+const requestedGrade = params.get("grade");
+const grade = ["7", "8", "9", "10"].includes(requestedGrade)
+  ? requestedGrade
+  : "7";
+
+if (requestedGrade) {
+  const query = `?grade=${encodeURIComponent(grade)}`;
+  $("backButton").href = "text-comprehension-games.html" + query;
+  $("categoriesButton").href = "assessment-categories.html" + query;
+  $("topBack").href = "text-comprehension-games.html" + query;
+}
+
+/* Sprite-sheet crop animation */
+const sceneAnimator = (() => {
+  const canvas = $("animatedScene");
+  const ctx = canvas.getContext("2d");
+
+  /*
+    These are normalized crop boundaries (x, y, width, height).
+    They are estimates for the supplied wide illustrations.
+    Adjust them if a crop cuts through an illustration.
+  */
+  const sheets = {
+    bullying: {
+      src: "images/hero/bully.png",
+      frames: [
+        [0.00, 0, 0.255, 1],
+        [0.255, 0, 0.245, 1],
+        [0.500, 0, 0.255, 1],
+        [0.755, 0, 0.245, 1]
+      ]
+    },
+    family: {
+      src: "images/hero/Family.png",
+      frames: [
+        [0.00, 0, 0.285, 1],
+        [0.285, 0, 0.300, 1],
+        [0.585, 0, 0.190, 1],
+        [0.775, 0, 0.225, 1]
+      ]
+    }
+  };
+
+  const loadedImages = {};
+  let activeKey = null;
+  let frameIndex = 0;
+  let animationId = 0;
+  let lastTime = 0;
+  const frameDuration = 1100;
+
+  function loadImage(key) {
+    if (loadedImages[key]) return Promise.resolve(loadedImages[key]);
+
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+
+      image.onload = () => {
+        loadedImages[key] = image;
+        resolve(image);
+      };
+
+      image.onerror = () => reject(
+        new Error(`Image could not load: ${sheets[key].src}`)
+      );
+
+      image.src = sheets[key].src;
+    });
+  }
+
+  function draw() {
+    if (!activeKey || !loadedImages[activeKey]) return;
+
+    const image = loadedImages[activeKey];
+    const [nx, ny, nw, nh] = sheets[activeKey].frames[frameIndex];
+
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.round(rect.width * dpr);
+    const height = Math.round(rect.height * dpr);
+
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+
+    const sx = nx * image.naturalWidth;
+    const sy = ny * image.naturalHeight;
+    const sw = nw * image.naturalWidth;
+    const sh = nh * image.naturalHeight;
+
+    const scale = Math.min(width / sw, height / sh);
+    const dw = sw * scale;
+    const dh = sh * scale;
+    const dx = (width - dw) / 2;
+    const dy = (height - dh) / 2;
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
+    ctx.drawImage(
+      image,
+      sx, sy, sw, sh,
+      dx, dy, dw, dh
+    );
+  }
+
+  function tick(time) {
+    if (!activeKey) return;
+
+    if (!lastTime) lastTime = time;
+
+    if (time - lastTime >= frameDuration) {
+      frameIndex = (frameIndex + 1) % sheets[activeKey].frames.length;
+      lastTime = time;
+      draw();
+    }
+
+    animationId = requestAnimationFrame(tick);
+  }
+
+  async function show(key) {
+    if (!sheets[key]) return;
+
+    activeKey = key;
+    frameIndex = 0;
+    lastTime = 0;
+
+    cancelAnimationFrame(animationId);
+
+    try {
+      await loadImage(key);
+
+      if (activeKey !== key) return;
+
+      draw();
+      animationId = requestAnimationFrame(tick);
+    } catch (error) {
+      console.error(error);
+      $("sceneCaption").textContent =
+        `Image not found: ${sheets[key].src}. Check your image folder and filename.`;
+    }
+  }
+
+  window.addEventListener("resize", draw);
+
+  return { show };
+})();
+
+let levelIndex = 0;
+let questionIndex = 0;
+let levelScore = 0;
+let totalScore = 0;
+let streak = 0;
+let selectedAnswer = null;
+let checked = false;
+let hintUsed = false;
+let levelScores = [null, null];
+let levelUnlocked = [true, false];
+
+function render() {
+  const level = levels[levelIndex];
+  const item = level.questions[questionIndex];
+
+  $("caseTitle").textContent = `Case File #${level.caseNumber}`;
+  $("caseSubtitle").textContent = `Easy Case · Grade ${grade}`;
+
+  $("levelTab1").classList.toggle("active", levelIndex === 0);
+  $("levelTab2").classList.toggle("active", levelIndex === 1);
+  $("levelTab2").disabled = !levelUnlocked[1];
+
+  $("level2Status").textContent = levelUnlocked[1]
+    ? "Unlocked"
+    : "Complete Level 1 to unlock";
+
+  $("storyTitle").textContent = level.storyTitle;
+  $("storyText").textContent = level.story;
+
+  $("sceneCaption").textContent = level.caption;
+  sceneAnimator.show(levelIndex === 0 ? "bullying" : "family");
+
+  $("questionTag").textContent = level.tag;
+  $("questionCounter").textContent =
+    `Question ${questionIndex + 1} of ${level.questions.length}`;
+  $("questionText").textContent = item.q;
+  $("score").textContent = totalScore;
+  $("streak").textContent = streak;
+
+  $("progressBar").style.width =
+    `${((questionIndex + 1) / level.questions.length) * 100}%`;
+
+  $("choices").replaceChildren();
+
+  item.choices.forEach((choice, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "choice";
+
+    const letter = document.createElement("span");
+    letter.className = "choice-letter";
+    letter.textContent = "ABCD"[index];
+
+    const text = document.createElement("span");
+    text.className = "choice-text";
+    text.textContent = choice;
+
+    button.append(letter, text);
+    button.addEventListener("click", () => choose(index));
+
+    $("choices").appendChild(button);
+  });
+
+  selectedAnswer = null;
+  checked = false;
+  hintUsed = false;
+
+  $("feedback").className = "feedback";
+  $("feedback").replaceChildren();
+
+  $("hintBox").className = "hint";
+  $("hintBox").textContent = "";
+
+  $("hintButton").disabled = false;
+  $("checkButton").disabled = true;
+  $("checkButton").textContent = "Check Answer First →";
+  $("checkButton").style.display = "inline-block";
+}
+
+function choose(index) {
+  if (checked) return;
+
+  selectedAnswer = index;
+
+  document.querySelectorAll(".choice").forEach((button, i) => {
+    button.style.borderColor = i === index ? "#f5a623" : "";
+    button.style.background = i === index ? "#302516" : "";
+  });
+
+  $("checkButton").disabled = false;
+  $("checkButton").textContent = "Check Answer →";
+}
+
+function checkAnswer() {
+  if (selectedAnswer === null || checked) return;
+
+  checked = true;
+
+  const item = levels[levelIndex].questions[questionIndex];
+  const correct = selectedAnswer === item.answer;
+  const buttons = [...document.querySelectorAll(".choice")];
+
+  buttons.forEach((button, index) => {
+    button.disabled = true;
+    button.style.borderColor = "";
+    button.style.background = "";
+
+    if (index === item.answer) button.classList.add("correct");
+    if (index === selectedAnswer && !correct) {
+      button.classList.add("incorrect");
+    }
+  });
+
+  if (correct) {
+    const points = hintUsed ? 5 : 10;
+    levelScore += points;
+    totalScore += points;
+    streak++;
+    $("feedback").className = "feedback show good";
+    $("feedback").append(
+      document.createTextNode(`✓ Correct! +${points} points. ${item.feedback}`)
+    );
+  } else {
+    streak = 0;
+    $("feedback").className = "feedback show try";
+    $("feedback").append(
+      document.createTextNode(
+        `Not quite. The correct answer is ${"ABCD"[item.answer]}. ${item.feedback}`
+      )
+    );
+  }
+
+  $("score").textContent = totalScore;
+  $("streak").textContent = streak;
+  $("checkButton").style.display = "none";
+
+  const lastQuestion =
+    questionIndex === levels[levelIndex].questions.length - 1;
+
+  const next = document.createElement("button");
+  next.type = "button";
+  next.className = "btn btn-gold";
+  next.style.marginTop = "12px";
+  next.textContent = lastQuestion
+    ? (levelIndex === 0 ? "Complete Level 1 →" : "Finish Case Files →")
+    : "Next Question →";
+
+  next.addEventListener("click", () => {
+    if (!lastQuestion) {
+      questionIndex++;
+      render();
+    } else {
+      finishLevel();
+    }
+  });
+
+  $("feedback").appendChild(document.createElement("br"));
+  $("feedback").appendChild(next);
+}
+
+function showHint() {
+  if (checked || hintUsed) return;
+
+  const item = levels[levelIndex].questions[questionIndex];
+  hintUsed = true;
+
+  $("hintBox").textContent =
+    `💡 Hint: ${item.hint} This question is now worth 5 points.`;
+
+  $("hintBox").className = "hint show";
+  $("hintButton").disabled = true;
+}
+
+function finishLevel() {
+  levelScores[levelIndex] = levelScore;
+
+  $("gameScreen").classList.add("hidden");
+  $("resultScreen").style.display = "block";
+
+  const allDone = levelIndex === 1;
+
+  if (
+    allDone &&
+    typeof window.reportAchievementCompletion === "function"
+) {
+    window.reportAchievementCompletion("pixel_choices")
+        .then(result => {
+            console.log("Pixel Choices achievement saved:", result);
+        })
+        .catch(error => {
+            console.error(
+                "Failed to save Pixel Choices achievement:",
+                error
+            );
+        });
+}
+
+  $("resultTitle").textContent = allDone
+    ? "All Case Files Completed!"
+    : "Level 1 Case Completed!";
+
+  $("finalScore").textContent = allDone
+    ? `${totalScore} points`
+    : `${levelScore} points`;
+
+  $("resultMessage").textContent = allDone
+    ? "You completed both cases. Keep practicing empathy, safe choices, and asking trusted people for help."
+    : "You completed the school bullying case. Level 2 is now unlocked.";
+
+  $("levelResults").replaceChildren();
+
+  levels.forEach((level, i) => {
+    const row = document.createElement("div");
+    row.className = "result-row";
+
+    const name = document.createElement("span");
+    name.textContent = level.title;
+
+    const result = document.createElement("strong");
+    result.textContent = levelScores[i] === null
+      ? "Locked"
+      : `${levelScores[i]} pts`;
+
+    row.append(name, result);
+    $("levelResults").appendChild(row);
+  });
+
+  $("continueButton").style.display = allDone ? "none" : "inline-block";
+  $("continueButton").textContent = "Unlock Level 2 →";
+
+  $("playAgainButton").textContent = allDone
+    ? "Play Both Again"
+    : "Replay Level 1";
+}
+
+function startLevel(index) {
+  if (!levelUnlocked[index]) return;
+
+  levelIndex = index;
+  questionIndex = 0;
+  levelScore = 0;
+
+  $("resultScreen").style.display = "none";
+  $("gameScreen").classList.remove("hidden");
+
+  render();
+}
+
+function restartAll() {
+  levelIndex = 0;
+  questionIndex = 0;
+  levelScore = 0;
+  totalScore = 0;
+  streak = 0;
+  levelScores = [null, null];
+  levelUnlocked = [true, false];
+
+  startLevel(0);
+}
+
+$("checkButton").addEventListener("click", checkAnswer);
+$("hintButton").addEventListener("click", showHint);
+
+$("resetButton").addEventListener("click", () => {
+  if (!confirm("Restart this case and clear its current score?")) return;
+
+  if (levelIndex === 0) {
+    restartAll();
+  } else {
+    totalScore -= levelScore;
+    levelScores[1] = null;
+    startLevel(1);
+  }
+});
+
+$("continueButton").addEventListener("click", () => {
+  levelUnlocked[1] = true;
+  startLevel(1);
+});
+
+$("playAgainButton").addEventListener("click", restartAll);
+$("levelTab1").addEventListener("click", () => startLevel(0));
+$("levelTab2").addEventListener("click", () => startLevel(1));
+
+render();
+</script>
+<script src="js/achievement-tracker.js"></script>
+</body>
+</html>

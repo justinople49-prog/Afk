@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Grade | ReadQuest</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+              
+<style>
+    html {
+        min-height: 100%;
+        background-color: #071329 !important;
+    }
+
+    body {
+        display: block !important;
+        width: 100%;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        padding: 0;
+        overflow-x: hidden;
+        color: #F5F8FF;
+        background-color: #071329 !important;
+        background-image: radial-gradient(
+            ellipse at top center,
+            #14284a 0%,
+            #071329 70%
+        ) !important;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        font-family: Poppins, sans-serif;
+        box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    .grade-page {
+        display: block !important;
+        width: 100%;
+        max-width: 1100px;
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 35px 24px;
+        background: transparent !important;
+    }
+
+    .grade-header {
+        display: block !important;
+        width: 100%;
+        margin: 0 0 30px;
+        padding: 28px;
+        background: rgba(10, 20, 45, 0.96);
+        border: 2px solid #2A4A8F;
+        border-radius: 20px;
+    }
+
+    .grade-header h1 {
+        display: block;
+        margin: 0 0 14px;
+        color: #FFD54A;
+        font-family: "Press Start 2P", cursive;
+        font-size: clamp(18px, 2.5vw, 28px);
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .grade-header p {
+        margin: 0;
+        color: #D8E7FF;
+        line-height: 1.8;
+    }
+
+    .grade-section-title {
+        display: block;
+        margin: 0 0 20px;
+        color: #FFD54A;
+        font-size: 23px;
+    }
+
+    .grade-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        width: 100%;
+    }
+
+    .grade-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        width: 100%;
+        min-width: 0;
+        min-height: 210px;
+        margin: 0;
+        padding: 28px 20px;
+        color: #F5F8FF;
+        background: #0A142D;
+        border: 2px solid #2A4A8F;
+        border-radius: 18px;
+        cursor: pointer;
+        font: inherit;
+        transition: transform 0.2s ease, border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+    }
+
+    .grade-card:hover,
+    .grade-card:focus-visible {
+        transform: translateY(-5px);
+        border-color: #69B8FF;
+        box-shadow: 0 0 25px rgba(105, 184, 255, 0.3);
+        outline: none;
+    }
+
+    .grade-card i {
+        color: #4E8DFF;
+        font-size: 42px;
+    }
+
+    .grade-card h2 {
+        margin: 0;
+        color: #FFD54A;
+        font-size: 23px;
+    }
+
+    .grade-card span {
+        color: #D8E7FF;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .grade-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 28px;
+        padding: 12px 20px;
+        color: white;
+        background: #2D8CFF;
+        border: none;
+        border-radius: 10px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .grade-back:hover {
+        background: #4FA7FF;
+    }
+
+    @media (max-width: 600px) {
+        .grade-page {
+            padding: 24px 16px;
+        }
+
+        .grade-header {
+            padding: 20px;
+        }
+
+        .grade-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .grade-card {
+            min-height: 170px;
+            padding: 20px 10px;
+        }
+
+        .grade-card i {
+            font-size: 32px;
+        }
+
+        .grade-card h2 {
+            font-size: 17px;
+        }
+
+        .grade-card span {
+            font-size: 12px;
+        }
+    }
+</style>
+
+
+</head>
+<body>
+
+    <main class="grade-page">
+        <header class="grade-header">
+            <h1>🎮 ReadQuest Games</h1>
+            <p>Choose your grade level to begin your learning adventure!</p>
+        </header>
+
+        <h2 class="grade-section-title">🎓 Select Your Grade</h2>
+
+        <section class="grade-grid" aria-label="Grade levels">
+            <button class="grade-card" type="button" data-grade="7">
+                <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+                <h2>Grade 7</h2>
+                <span>Start your adventure →</span>
+            </button>
+
+            <button class="grade-card" type="button" data-grade="8">
+                <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                <h2>Grade 8</h2>
+                <span>Start your adventure →</span>
+            </button>
+
+            <button class="grade-card" type="button" data-grade="9">
+                <i class="fa-solid fa-book-open-reader" aria-hidden="true"></i>
+                <h2>Grade 9</h2>
+                <span>Start your adventure →</span>
+            </button>
+
+            <button class="grade-card" type="button" data-grade="10">
+                <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+                <h2>Grade 10</h2>
+                <span>Start your adventure →</span>
+            </button>
+        </section>
+
+        <button class="grade-back" id="backDashboard" type="button">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            Back to Dashboard
+        </button>
+    </main>
+
+    <script>
+        "use strict";
+
+        document.querySelectorAll("[data-grade]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const grade = button.dataset.grade;
+                window.location.href =
+                    `assessment-categories.html?grade=${encodeURIComponent(grade)}`;
+            });
+        });
+
+        document.getElementById("backDashboard").addEventListener("click", () => {
+            window.location.href = "dashboard.html";
+        });
+    </script>
+</body>
+</html>

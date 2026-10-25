@@ -1,0 +1,1062 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReadQuest | Definition Detective</title>
+<style>
+:root {
+  --bg:#091321;
+  --panel:#111f31;
+  --panel2:#172b40;
+  --line:#2b4860;
+  --cyan:#25e4d0;
+  --gold:#ffc857;
+  --text:#f2f7ff;
+  --muted:#a9bdd0;
+  --green:#53e3a0;
+  --red:#ff7885;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#173653 0%,var(--bg) 70%);
+  color:var(--text);
+  font-family:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+button,a { font:inherit; }
+button:focus-visible,a:focus-visible {
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+}
+.topbar { background:#08111e;border-bottom:1px solid var(--line); }
+.topbar-inner {
+  width:min(1050px,94%);
+  margin:auto;
+  padding:16px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.brand { font-weight:900;letter-spacing:2px;color:var(--cyan); }
+.brand span { color:white; }
+.top-link { color:var(--muted);text-decoration:none;font-size:.9rem; }
+main { width:min(950px,94%);margin:24px auto 45px; }
+.header {
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:15px;padding:18px;
+  border:1px solid var(--line);border-radius:15px;background:#101d2d;
+}
+.header h1 { margin:0;font-size:clamp(1.2rem,3vw,1.7rem); }
+.subtitle { margin:6px 0 0;color:var(--muted);font-size:.9rem; }
+.stats { display:flex;flex-wrap:wrap;gap:8px; }
+.stat {
+  padding:9px 11px;border:1px solid var(--line);border-radius:9px;
+  color:var(--gold);background:#17283a;font-size:.85rem;
+}
+.level-tabs {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;padding:12px;margin-top:12px;
+  border:1px solid var(--line);border-radius:12px;background:#0d1928;
+}
+.level-tab {
+  padding:12px 8px;border:1px solid var(--line);border-radius:10px;
+  background:#132438;color:var(--muted);cursor:pointer;
+}
+.level-tab strong,.level-tab small { display:block; }
+.level-tab strong { color:var(--text);margin-bottom:5px; }
+.level-tab small { font-size:.75rem; }
+.level-tab.active { border-color:var(--cyan);background:#123a42; }
+.level-tab.active strong { color:var(--cyan); }
+.level-tab:disabled { opacity:.5;cursor:not-allowed; }
+.progress-track { height:7px;background:#25374a;margin-top:12px;border-radius:20px;overflow:hidden; }
+#progressBar { height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width .3s; }
+.panel {
+  margin-top:14px;border:1px solid var(--line);border-radius:14px;
+  background:linear-gradient(145deg,#122237,#0d1928);overflow:hidden;
+}
+.intro { padding:18px 20px; }
+.eyebrow { color:var(--cyan);font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase; }
+.intro h2 { margin:8px 0;font-size:1.2rem; }
+.intro p { margin:0;color:var(--muted);line-height:1.7; }
+.game-panel { padding:20px; }
+.question-top { display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px; }
+.tag { padding:7px 10px;border-radius:7px;background:var(--gold);color:#25200e;font-size:.75rem;font-weight:900; }
+.counter { color:var(--muted);font-size:.85rem; }
+.case-card {
+  margin-top:18px;padding:20px;border:1px solid #35516a;
+  border-radius:12px;background:linear-gradient(135deg,#152b41,#101c2b);
+}
+.case-label { color:var(--gold);font-size:.75rem;font-weight:900;letter-spacing:1px; }
+#caseTitle { margin:10px 0;font-size:1.35rem; }
+#caseScenario { margin:0;color:#d4e1ef;line-height:1.8; }
+.evidence-card {
+  margin-top:16px;padding:17px;border:1px solid #24616a;
+  border-radius:11px;background:#101f31;
+}
+.evidence-card h3 { margin:0 0 12px;color:var(--cyan);font-size:.85rem;letter-spacing:1px; }
+#evidenceQuote {
+  margin:0;padding-left:14px;border-left:3px solid var(--gold);
+  color:#f2f7ff;line-height:1.8;
+}
+#questionText { margin:22px 0 14px;font-size:1.1rem;line-height:1.6; }
+.choices { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+.choice {
+  display:flex;align-items:center;gap:11px;width:100%;min-height:58px;
+  padding:12px;border:2px solid var(--line);border-radius:10px;
+  background:#132438;color:var(--text);text-align:left;cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s,box-shadow .2s;
+}
+.choice:hover:not(:disabled) { border-color:var(--cyan);transform:translateY(-2px); }
+.choice.selected {
+  background:#124b52;border-color:var(--cyan);color:white;
+  box-shadow:0 0 0 3px #25e4d033;
+}
+.letter {
+  display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;
+  border-radius:8px;background:#213950;color:var(--cyan);font-weight:900;
+}
+.choice.selected .letter { background:var(--cyan);color:#082329; }
+.choice.correct { border-color:var(--green);background:#12372f; }
+.choice.correct .letter { background:var(--green);color:#08251b; }
+.choice.incorrect { border-color:var(--red);background:#3a202c; }
+.choice.incorrect .letter { background:var(--red);color:#2b0d13; }
+.choice:disabled { cursor:default; }
+.hint,.feedback {
+  display:none;margin-top:14px;padding:14px;border:1px solid var(--line);
+  border-radius:10px;line-height:1.7;
+}
+.hint.show { display:block;border-color:#78602c;background:#332b18;color:#ffe3a3; }
+.feedback.show { display:block;background:#14273a; }
+.feedback.good { border-color:#287a50;background:#12372f; }
+.feedback.try { border-color:#a8772c;background:#332b18; }
+.actions { display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:18px; }
+.button-group { display:flex;flex-wrap:wrap;gap:9px; }
+.btn {
+  padding:12px 15px;border:1px solid transparent;border-radius:9px;
+  font-weight:800;cursor:pointer;transition:filter .15s,transform .15s;
+}
+.btn:hover:not(:disabled) { filter:brightness(1.1);transform:translateY(-1px); }
+.btn:disabled { opacity:.45;cursor:not-allowed; }
+.btn-primary { background:var(--cyan);color:#062a2a; }
+.btn-secondary { background:#192c40;border-color:#35516a;color:var(--text); }
+#resultScreen { display:none;padding:24px;text-align:center; }
+#resultScreen.show { display:block; }
+.result-icon { font-size:3rem; }
+#resultTitle { font-size:1.6rem;margin:12px 0; }
+.final-score { font-size:clamp(2rem,7vw,3rem);font-weight:900;color:var(--gold);margin:16px 0; }
+.result-message { color:var(--muted);line-height:1.8; }
+.result-row {
+  display:flex;justify-content:space-between;gap:10px;padding:13px;margin:9px 0;
+  border:1px solid var(--line);border-radius:9px;background:#0e1c2c;text-align:left;
+}
+.navigation { display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px; }
+.navigation a {
+  padding:11px 14px;border:1px solid var(--line);border-radius:9px;
+  background:#102237;color:var(--text);text-decoration:none;font-size:.85rem;
+}
+.navigation a:hover { border-color:var(--cyan);color:var(--cyan); }
+@media(max-width:600px) {
+  .header { align-items:flex-start; }
+  .game-panel { padding:13px; }
+  .choices { grid-template-columns:1fr; }
+  .level-tabs { gap:5px;padding:7px; }
+  .level-tab { padding:9px 4px; }
+  .level-tab small { font-size:.65rem; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation:none!important;transition:none!important; }
+}
+
+
+/* Evidence layout: detective beside the clue */
+.evidence-card .evidence-content {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.evidence-card .detective-sprite {
+  flex: 0 0 115px;
+  width: 115px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.evidence-card .detective-sprite img {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.evidence-card #evidenceQuote {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  line-height: 1.8;
+}
+
+@media (max-width: 520px) {
+  .evidence-card .evidence-content {
+    gap: 10px;
+  }
+
+  .evidence-card .detective-sprite {
+    flex-basis: 82px;
+    width: 82px;
+  }
+
+  .evidence-card .detective-sprite img {
+    height: 110px;
+  }
+
+  .evidence-card #evidenceQuote {
+    font-size: 0.88rem;
+  }
+}
+
+.evidence-card .evidence-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.evidence-card .detective-sprite {
+  flex: 0 0 130px;
+  width: 130px;
+  overflow: hidden;
+}
+
+.detective-animation {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-image: url("../images/hero//detective.png");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  background-position: 0% center;
+  image-rendering: pixelated;
+  animation: detectiveFrames 1.6s steps(1, end) infinite;
+}
+
+@keyframes detectiveFrames {
+  0%, 24.9% {
+    background-position: 0% center;
+  }
+  25%, 49.9% {
+    background-position: 33.333% center;
+  }
+  50%, 74.9% {
+    background-position: 66.667% center;
+  }
+  75%, 100% {
+    background-position: 100% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detective-animation {
+    animation: none;
+    background-position: 0% center;
+  }
+}
+
+@media (max-width: 520px) {
+  .evidence-card .detective-sprite {
+    flex-basis: 90px;
+    width: 90px;
+  }
+}
+
+/* Make the detective smaller inside the Evidence panel */
+.evidence-card .evidence-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.evidence-card .detective-sprite {
+  flex: 0 0 85px;
+  width: 85px;
+  max-width: 85px;
+  overflow: hidden;
+}
+
+.evidence-card .detective-animation {
+  width: 85px;
+  height: 85px;
+  aspect-ratio: 1 / 1;
+  background-size: 400% 100%;
+}
+
+.evidence-card #evidenceQuote {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 520px) {
+  .evidence-card .detective-sprite {
+    flex-basis: 65px;
+    width: 65px;
+    max-width: 65px;
+  }
+
+  .evidence-card .detective-animation {
+    width: 65px;
+    height: 65px;
+  }
+
+  .evidence-card #evidenceQuote {
+    font-size: 0.85rem;
+  }
+}
+
+/* FORCE smaller detective sprite */
+.evidence-card .evidence-content .detective-sprite {
+  flex: 0 0 70px !important;
+  width: 70px !important;
+  max-width: 70px !important;
+  height: 70px !important;
+  overflow: hidden !important;
+}
+
+.evidence-card .evidence-content .detective-sprite img,
+.evidence-card .evidence-content .detective-sprite .detective-animation {
+  display: block !important;
+  width: 70px !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
+  height: 70px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
+  background-size: 400% 100% !important;
+}
+
+.evidence-card .evidence-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.evidence-card .evidence-content blockquote,
+.evidence-card .evidence-content #evidenceQuote {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.evidence-card {
+  margin-top: 16px;
+  padding: 17px;
+  border: 1px solid #24616a;
+  border-radius: 11px;
+  background: #101f31;
+}
+
+.evidence-card h3 {
+  margin: 0 0 12px;
+  color: var(--cyan);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.evidence-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detective-sprite {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+}
+
+.detective-animation {
+  width: 64px;
+  height: 64px;
+  background-image: url("../images/hero/detective.png");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  background-position: 0% center;
+  image-rendering: pixelated;
+  animation: detectiveFrames 1.6s steps(1, end) infinite;
+}
+
+#evidenceQuote {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--gold);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+@keyframes detectiveFrames {
+  0%, 24.9% { background-position: 0% center; }
+  25%, 49.9% { background-position: 33.333% center; }
+  50%, 74.9% { background-position: 66.667% center; }
+  75%, 100% { background-position: 100% center; }
+}
+
+@media (max-width: 520px) {
+  .detective-sprite {
+    flex-basis: 52px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .detective-animation {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detective-animation {
+    animation: none;
+    background-position: 0% center;
+  }
+}
+/* Fix Evidence: keep the quote visible beside the detective */
+.evidence-card {
+  display: block;
+  min-height: 140px;
+}
+
+.evidence-card .evidence-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.evidence-card .detective-sprite {
+  flex: 0 0 85px;
+  width: 85px;
+  max-width: 85px;
+}
+
+.evidence-card .detective-animation {
+  width: 85px;
+  height: 85px;
+}
+
+.evidence-card #evidenceQuote {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  color: #f2f7ff;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+  .evidence-card .detective-sprite {
+    flex-basis: 65px;
+    width: 65px;
+  }
+
+  .evidence-card .detective-animation {
+    width: 65px;
+    height: 65px;
+  }
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  min-height: 58px;
+  padding: 12px;
+  border: 2px solid #2b4860;
+  border-radius: 10px;
+  background: #132438;
+  color: #f2f7ff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.choice.selected {
+  background: #124b52;
+  border-color: #25e4d0;
+  box-shadow: 0 0 0 3px #25e4d033;
+}
+
+.choice.correct {
+  background: #12372f;
+  border-color: #53e3a0;
+}
+
+.choice.incorrect {
+  background: #3a202c;
+  border-color: #ff7885;
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: 0.9;
+}
+
+.letter {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #213950;
+  color: #25e4d0;
+  font-weight: 900;
+}
+
+@media (max-width: 600px) {
+  .choices {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">READ<span>QUEST</span></div>
+    
+  </div>
+</header>
+
+<main>
+  <header class="header">
+    <div>
+      <h1>🕵️ Definition Detective</h1>
+      <p class="subtitle">Clue-Based Investigation · Solve the case using vocabulary!</p>
+    </div>
+    <div class="stats">
+      <div class="stat">⭐ <span id="score">0</span> XP</div>
+      <div class="stat">🔥 <span id="streak">0</span> streak</div>
+      <div class="stat">📁 <span id="solved">0</span>/30 cases</div>
+    </div>
+  </header>
+
+  <nav class="level-tabs" aria-label="Game levels">
+    <button class="level-tab active" id="level0" type="button">
+      <strong>Level 1</strong><small>Rookie Detective</small>
+    </button>
+    <button class="level-tab" id="level1" type="button" disabled>
+      <strong>Level 2</strong><small>Clue Analyst 🔒</small>
+    </button>
+    <button class="level-tab" id="level2" type="button" disabled>
+      <strong>Level 3</strong><small>Master Detective 🔒</small>
+    </button>
+  </nav>
+
+ 
+<div class="progress-track">
+  <div id="progressBar"></div>
+</div>
+
+<section class="panel intro">
+  <div class="eyebrow">✦ Detective mission</div>
+  <h2 id="missionTitle">Your first case awaits!</h2>
+  <p id="missionText">
+    Read the scenario, examine the evidence, and choose the vocabulary word that best solves the mystery.
+  </p>
+</section>
+
+<section class="panel game-panel" id="gameScreen">
+
+  <div class="question-top">
+    <span class="tag" id="levelTag">ROOKIE DETECTIVE</span>
+    <span class="counter" id="counter">Case 1 of 10</span>
+  </div>
+
+  <div class="case-card">
+    <div class="case-label">
+      📁 CASE FILE <span id="caseNumber">#001</span>
+    </div>
+
+    <h2 id="caseTitle">The Missing Wallet</h2>
+
+    <p id="caseScenario">
+      A student finds a wallet in the hallway and takes it straight to the school office instead of keeping it.
+    </p>
+  </div>
+
+  <section class="evidence-card">
+    <h3>🔎 EVIDENCE</h3>
+
+    <div class="evidence-content">
+      <div class="detective-sprite">
+        <div
+          class="detective-animation"
+          id="detectiveAnimation"
+          role="img"
+          aria-label="Animated pixel detective">
+        </div>
+      </div>
+
+      <blockquote id="evidenceQuote">
+        Even though nobody was watching, Marco returned the wallet to its owner.
+      </blockquote>
+    </div>
+  </section>
+
+  <h2 id="questionText">
+    Which word best describes Marco?
+  </h2>
+
+  <div class="choices" id="choices"></div>
+
+  <div class="hint" id="hint" role="status"></div>
+
+  <div
+    class="feedback"
+    id="feedback"
+    role="status"
+    aria-live="polite">
+  </div>
+
+  <div class="actions">
+    <div class="button-group">
+      <button
+        class="btn btn-secondary"
+        id="hintButton"
+        type="button">
+        💡 Get a Hint
+      </button>
+
+      <button
+        class="btn btn-secondary"
+        id="restartButton"
+        type="button">
+        ↻ Restart
+      </button>
+    </div>
+
+    <button
+      class="btn btn-primary"
+      id="submitButton"
+      type="button"
+      disabled>
+      Submit Evidence →
+    </button>
+  </div>
+
+</section>
+
+
+  <section class="panel" id="resultScreen" aria-live="polite">
+    <div style="padding:12px">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <p class="eyebrow">Investigation report</p>
+      <h2 id="resultTitle">Case File Complete!</h2>
+      <div class="final-score" id="finalScore">0 XP</div>
+      <p class="result-message" id="resultMessage"></p>
+      <div id="levelResults"></div>
+      <div class="actions" style="justify-content:center">
+        <button class="btn btn-primary" id="nextLevelButton" type="button">Next Level →</button>
+        <button class="btn btn-secondary" id="playAgainButton" type="button">Play Again</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="navigation" aria-label="Game navigation">
+    <a href="vocabulary-games.html">← Back to Vocabulary Games</a>
+    <a href="lessons.html">Back to Lessons</a>
+  </nav>
+</main>
+
+<script>
+const levels = [
+  {
+    name: "Rookie Detective",
+    questions: [
+      { title: "The Missing Wallet", scenario: "A student finds a wallet in the hallway and takes it straight to the school office instead of keeping it.", quote: "Even though nobody was watching, Marco returned the wallet to its owner.", question: "Which word best describes Marco?", word: "HONEST", hint: "Marco did the right thing even when nobody was watching.", choices: ["Careless", "Honest", "Confused", "Impatient"], answer: 1, explanation: "Honest means truthful and fair, even when nobody is watching." },
+      { title: "The Helpful Neighbor", scenario: "An elderly neighbor is carrying heavy grocery bags. Ana offers to help carry them inside.", quote: "I can help you with those bags, Ana said, putting her own activities aside for a moment.", question: "Which word best describes Ana?", word: "CONSIDERATE", hint: "Ana is thinking about another person's needs.", choices: ["Considerate", "Selfish", "Envious", "Stubborn"], answer: 0, explanation: "Considerate means thinking about other people's feelings and needs." },
+      { title: "The Torn Page", scenario: "A student accidentally tears a library book page. Instead of hiding it, he tells the librarian.", quote: "I am sorry. I accidentally damaged the page, and I wanted you to know.", question: "Which quality does the student show?", word: "RESPONSIBLE", hint: "He accepts that he caused a problem.", choices: ["Reckless", "Responsible", "Forgetful", "Careless"], answer: 1, explanation: "Responsible people accept their duties and own their actions." },
+      { title: "The Long Practice", scenario: "The school team loses its first match. The players continue practicing every afternoon.", quote: "We can improve if we keep working at it, the captain says.", question: "Which word describes the team's attitude?", word: "PERSISTENT", hint: "They do not give up after a setback.", choices: ["Persistent", "Lazy", "Uncertain", "Indifferent"], answer: 0, explanation: "Persistent means continuing despite difficulty." },
+      { title: "The Quiet Room", scenario: "A classmate is reading in a quiet corner. Ben lowers his voice so the classmate can concentrate.", quote: "I'll speak more softly so you can finish your book, Ben says.", question: "Which word describes Ben's action?", word: "THOUGHTFUL", hint: "Ben considers how his behavior affects someone else.", choices: ["Thoughtful", "Impatient", "Careless", "Demanding"], answer: 0, explanation: "Thoughtful means considering others before acting." },
+      { title: "The Lost Puppy", scenario: "Mika sees a lost puppy near the road. She stays nearby and asks an adult to help.", quote: "The puppy might be frightened. Let's make sure it is safe, Mika says.", question: "Which word best describes Mika?", word: "COMPASSIONATE", hint: "She cares about the puppy's well-being.", choices: ["Cruel", "Compassionate", "Indifferent", "Proud"], answer: 1, explanation: "Compassionate means showing concern for the suffering of others." },
+      { title: "The Group Project", scenario: "Everyone in a group has a different task. Luis finishes his work and offers to help a teammate who is behind.", quote: "Our project will be better if we all help each other, Luis says.", question: "Which word describes Luis?", word: "COOPERATIVE", hint: "He works with others toward a shared goal.", choices: ["Competitive", "Cooperative", "Secretive", "Stubborn"], answer: 1, explanation: "Cooperative means willing to work together." },
+      { title: "The New Student", scenario: "A new student joins class and struggles to find the correct room. Priya walks with the student and explains the schedule.", quote: "I'll show you where to go so your first day is easier, Priya says.", question: "Which word best describes Priya?", word: "WELCOMING", hint: "She helps someone feel included.", choices: ["Welcoming", "Hostile", "Suspicious", "Dismissive"], answer: 0, explanation: "Welcoming means friendly toward someone who has arrived." },
+      { title: "The Broken Model", scenario: "A science model falls apart shortly before the presentation. The team calmly rebuilds it using spare materials.", quote: "Let's see what we can fix first, the team leader says.", question: "Which word describes the team's approach?", word: "RESOURCEFUL", hint: "They find practical ways to solve a problem.", choices: ["Helpless", "Resourceful", "Careless", "Confused"], answer: 1, explanation: "Resourceful means good at finding ways to deal with difficulties." },
+      { title: "The Fair Decision", scenario: "Two students want to lead a project. Their teacher invites them to discuss their ideas and agree on a fair plan.", quote: "Both ideas deserve a chance, so let's decide fairly, the teacher says.", question: "Which word best describes the teacher?", word: "IMPARTIAL", hint: "The teacher is not unfairly favoring either student.", choices: ["Biased", "Impartial", "Impulsive", "Uncertain"], answer: 1, explanation: "Impartial means treating people fairly without favoring one side." }
+    ]
+  },
+  {
+    name: "Clue Analyst",
+    questions: [
+      { title: "The Conflicting Report", scenario: "Two reports describe the same event differently. A detective checks dates, interviews witnesses, and compares the details before deciding.", quote: "I will not settle on a conclusion until the evidence supports it.", question: "Which word describes the detective's approach?", word: "METHODICAL", hint: "The detective follows an organized process.", choices: ["Methodical", "Impulsive", "Careless", "Vague"], answer: 0, explanation: "Methodical means working in a careful, organized way." },
+      { title: "The Unclear Message", scenario: "A note says, Meet me by the bank. The reader cannot tell whether it means a riverbank or a financial institution.", quote: "This instruction could mean two different things.", question: "Which word describes the note?", word: "AMBIGUOUS", hint: "The message has more than one possible meaning.", choices: ["Precise", "Ambiguous", "Obvious", "Reliable"], answer: 1, explanation: "Ambiguous means open to more than one interpretation." },
+      { title: "The Reliable Witness", scenario: "A witness gives the same account each time and provides details that match the available records.", quote: "Her account matches the time stamps and the other evidence.", question: "Which word best describes the witness's account?", word: "CREDIBLE", hint: "The account is believable and supported by evidence.", choices: ["Dubious", "Credible", "Contradictory", "Unrelated"], answer: 1, explanation: "Credible means believable or worthy of trust." },
+      { title: "The Hidden Pattern", scenario: "A student notices that several missing items disappeared shortly after the same storage room was left unlocked.", quote: "These events may be connected because they share a similar pattern.", question: "Which word describes the student's reasoning?", word: "INFERENTIAL", hint: "The student is drawing a conclusion from clues.", choices: ["Random", "Inferential", "Literal", "Uninformed"], answer: 1, explanation: "Inferential reasoning uses evidence and clues to reach a conclusion." },
+      { title: "The Sudden Change", scenario: "A town's water supply becomes limited after several weeks without rain. Residents are asked to conserve water.", quote: "We have only a small amount available until the rain returns.", question: "Which word describes the water supply?", word: "SCARCE", hint: "There is not enough of something available.", choices: ["Abundant", "Scarce", "Plentiful", "Unlimited"], answer: 1, explanation: "Scarce means limited in amount or difficult to find." },
+      { title: "The Careful Editor", scenario: "Before publishing an article, an editor checks every date, name, quotation, and source.", quote: "I need to inspect each detail before this can be published.", question: "Which word describes the editor's work?", word: "SCRUTINIZE", hint: "The editor examines details very closely.", choices: ["Overlook", "Scrutinize", "Assume", "Dismiss"], answer: 1, explanation: "Scrutinize means to examine something closely and carefully." },
+      { title: "The Unexpected Delay", scenario: "A train is delayed by a storm. A traveler changes plans and finds another route rather than waiting without a plan.", quote: "I'll adjust my route so I can still reach my destination.", question: "Which word describes the traveler?", word: "ADAPTABLE", hint: "The traveler adjusts to a change in circumstances.", choices: ["Inflexible", "Adaptable", "Reluctant", "Indifferent"], answer: 1, explanation: "Adaptable means able to adjust to new conditions." },
+      { title: "The Missing Detail", scenario: "A report leaves out a key time stamp. The investigator cannot yet determine the sequence of events.", quote: "We need this information before we can make a sound decision.", question: "Which word best describes the missing information?", word: "CRUCIAL", hint: "The detail is extremely important to the investigation.", choices: ["Trivial", "Crucial", "Decorative", "Optional"], answer: 1, explanation: "Crucial means extremely important or necessary." },
+      { title: "The Competing Claims", scenario: "One statement says the door was locked, but another says it was open. Both cannot be true at the same moment.", quote: "These two accounts disagree with each other.", question: "Which word describes the accounts?", word: "CONTRADICTORY", hint: "The claims are in conflict.", choices: ["Consistent", "Contradictory", "Identical", "Unanimous"], answer: 1, explanation: "Contradictory statements oppose or conflict with one another." },
+      { title: "The Final Conclusion", scenario: "After reviewing all records and witness statements, the investigator identifies the explanation best supported by the evidence.", quote: "The details point toward this conclusion, although we should explain how we reached it.", question: "Which word means a conclusion reached using clues?", word: "INFERENCE", hint: "It is a conclusion drawn from evidence and reasoning.", choices: ["Inference", "Rumor", "Distraction", "Assumption"], answer: 0, explanation: "An inference is a conclusion reached from evidence and reasoning." }
+    ]
+  },
+  {
+    name: "Master Detective",
+    questions: [
+      { title: "The Altered Timeline", scenario: "A timeline contains several events that appear out of order. The analyst compares verified time stamps and reconstructs the sequence.", quote: "The verified records allow us to establish the order of events.", question: "Which word means to put events into a logical sequence?", word: "RECONSTRUCT", hint: "The analyst is rebuilding the timeline from evidence.", choices: ["Obscure", "Reconstruct", "Contradict", "Neglect"], answer: 1, explanation: "Reconstruct means to build or recreate something from available pieces or evidence." },
+      { title: "The Unavoidable Result", scenario: "A frozen lake becomes unsafe as temperatures rise. Officials close the route because melting ice cannot be prevented by warning signs alone.", quote: "The seasonal thaw will happen regardless of our preference.", question: "Which word best describes the seasonal thaw?", word: "INEVITABLE", hint: "It is certain to happen and cannot be avoided.", choices: ["Optional", "Inevitable", "Doubtful", "Unusual"], answer: 1, explanation: "Inevitable means certain to happen or impossible to avoid." },
+      { title: "The Careful Distinction", scenario: "Two documents use similar words, but one makes a promise while the other merely expresses a possibility. The analyst explains the difference.", quote: "The wording looks similar, but the meanings are not equivalent.", question: "Which word means equal in meaning or value?", word: "EQUIVALENT", hint: "The two things have the same value or meaning.", choices: ["Opposite", "Equivalent", "Unrelated", "Ambiguous"], answer: 1, explanation: "Equivalent means equal in value, meaning, or function." },
+      { title: "The Reduced Impact", scenario: "A school introduces extra shade, drinking-water stations, and rest breaks during hot weather to reduce heat-related problems.", quote: "These measures will not remove the heat, but they can make its effects less severe.", question: "Which word means to make something less severe?", word: "MITIGATE", hint: "The measures reduce the impact of a problem.", choices: ["Intensify", "Mitigate", "Duplicate", "Prolong"], answer: 1, explanation: "Mitigate means to make something less harmful, serious, or severe." },
+      { title: "The Unreliable Shortcut", scenario: "A post makes a dramatic claim but provides no author, date, or supporting sources. The investigator decides not to treat it as established fact.", quote: "We need reliable support before we can accept this claim.", question: "Which word means trustworthy and believable?", word: "CREDIBLE", hint: "Reliable evidence supports a credible claim.", choices: ["Credible", "Dubious", "Arbitrary", "Ambiguous"], answer: 0, explanation: "Credible means believable and worthy of trust." },
+      { title: "The Persistent Researcher", scenario: "A researcher encounters repeated failed attempts but changes methods, studies the results, and continues working toward an answer.", quote: "Each failed attempt tells me what to adjust next.", question: "Which word describes the researcher's determination?", word: "PERSEVERANCE", hint: "The researcher keeps going despite difficulties.", choices: ["Hesitation", "Perseverance", "Indifference", "Complacency"], answer: 1, explanation: "Perseverance means continued effort despite difficulty or delay." },
+      { title: "The Subtle Clue", scenario: "A witness never directly says the room was cold, but mentions shivering, rubbing their hands, and seeing frost on the window.", quote: "The details suggest the temperature was low, even though the witness never states it directly.", question: "What is the reader doing when drawing this conclusion?", word: "INFER", hint: "The reader combines clues to reach an unstated conclusion.", choices: ["Infer", "Quote", "Exaggerate", "Contradict"], answer: 0, explanation: "Infer means to reach a conclusion based on clues and evidence." },
+      { title: "The Significant Discovery", scenario: "A small mark on a document reveals that it was revised after the official deadline, changing the interpretation of the entire case.", quote: "This detail changes our understanding of the report.", question: "Which word means important or meaningful?", word: "SIGNIFICANT", hint: "The discovery has an important effect on the case.", choices: ["Insignificant", "Significant", "Incidental", "Trivial"], answer: 1, explanation: "Significant means important enough to matter or have an effect." },
+      { title: "The Conflicting Evidence", scenario: "Several records support one explanation, but one new record challenges it. The analyst reviews the new evidence instead of ignoring it.", quote: "A strong conclusion must account for evidence that challenges it.", question: "Which word describes evidence that opposes a claim?", word: "CONTRADICT", hint: "The new evidence conflicts with the earlier explanation.", choices: ["Corroborate", "Contradict", "Summarize", "Illustrate"], answer: 1, explanation: "Contradict means to oppose a statement or show it may be wrong." },
+      { title: "The Complete Case", scenario: "After collecting observations, checking sources, and comparing explanations, the detective presents a conclusion that follows logically from the evidence.", quote: "Every part of the explanation is supported by the clues we verified.", question: "Which word describes reasoning based on evidence and logic?", word: "RATIONAL", hint: "The reasoning is sensible and based on facts.", choices: ["Arbitrary", "Rational", "Impulsive", "Unfounded"], answer: 1, explanation: "Rational means based on reason, logic, and evidence." }
+    ]
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+let levelIndex = 0;
+let questionIndex = 0;
+let score = 0;
+let streak = 0;
+let solved = 0;
+let selectedAnswer = null;
+let answered = false;
+let levelScores = [0, 0, 0];
+let levelCorrect = [0, 0, 0];
+let gameFinished = false;
+
+function shuffle(items) {
+  const array = [...items];
+
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
+function updateStats() {
+  $("score").textContent = score;
+  $("streak").textContent = streak;
+  $("solved").textContent = solved;
+  $("counter").textContent = `Case ${questionIndex + 1} of 10`;
+  $("progressBar").style.width =
+    `${((questionIndex + (answered ? 1 : 0)) / 10) * 100}%`;
+}
+
+function updateLevelTabs() {
+  for (let i = 0; i < levels.length; i++) {
+    const tab = $(`level${i}`);
+    tab.classList.toggle("active", i === levelIndex);
+    tab.disabled = i > levelIndex;
+
+    const small = tab.querySelector("small");
+    small.textContent = i < levelIndex
+      ? "Completed ✓"
+      : i === 0
+        ? "Rookie Detective"
+        : i === 1
+          ? "Clue Analyst"
+          : "Master Detective";
+  }
+}
+
+function renderQuestion() {
+  const level = levels[levelIndex];
+  const question = level.questions[questionIndex];
+
+  selectedAnswer = null;
+  answered = false;
+  gameFinished = false;
+
+  $("gameScreen").style.display = "block";
+  $("resultScreen").classList.remove("show");
+
+  $("missionTitle").textContent = `Mission: ${level.name}`;
+  $("missionText").textContent =
+    "Study the scenario, inspect the evidence, and identify the vocabulary word that best fits the case.";
+
+  $("levelTag").textContent = level.name.toUpperCase();
+  $("caseNumber").textContent =
+    `#${String(levelIndex * 10 + questionIndex + 1).padStart(3, "0")}`;
+
+  $("caseTitle").textContent = question.title;
+  $("caseScenario").textContent = question.scenario;
+  $("evidenceQuote").textContent = question.quote;
+  $("questionText").textContent = question.question;
+
+  $("hint").className = "hint";
+  $("hint").textContent = "";
+  $("feedback").className = "feedback";
+  $("feedback").textContent = "";
+
+  $("submitButton").disabled = true;
+  $("submitButton").textContent = "Submit Evidence →";
+
+  updateStats();
+  updateLevelTabs();
+
+  const choicesContainer = $("choices");
+  choicesContainer.replaceChildren();
+
+  shuffle(question.choices).forEach((choiceText, position) => {
+    const originalIndex = question.choices.indexOf(choiceText);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "choice";
+    button.setAttribute("aria-pressed", "false");
+    button.dataset.answer = String(originalIndex);
+
+    const letter = document.createElement("span");
+    letter.className = "letter";
+    letter.textContent = String.fromCharCode(65 + position);
+
+    const label = document.createElement("span");
+    label.textContent = choiceText;
+
+    button.append(letter, label);
+    button.addEventListener("click", () => selectAnswer(button, originalIndex));
+
+    choicesContainer.appendChild(button);
+  });
+}
+
+function selectAnswer(selectedButton, answerIndex) {
+  if (answered) return;
+
+  selectedAnswer = answerIndex;
+
+  $("choices").querySelectorAll(".choice").forEach(button => {
+    const isSelected = button === selectedButton;
+    button.classList.toggle("selected", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+
+  $("submitButton").disabled = false;
+}
+
+function submitEvidence() {
+  if (answered || selectedAnswer === null) return;
+
+  answered = true;
+
+  const question = levels[levelIndex].questions[questionIndex];
+  const correct = selectedAnswer === question.answer;
+  const buttons = [...$("choices").querySelectorAll(".choice")];
+
+  buttons.forEach(button => {
+    button.disabled = true;
+
+    const answerIndex = Number(button.dataset.answer);
+
+    if (answerIndex === question.answer) {
+      button.classList.add("correct");
+    }
+
+    if (answerIndex === selectedAnswer && !correct) {
+      button.classList.add("incorrect");
+    }
+  });
+
+  if (correct) {
+    const points = 10 + Math.min(streak, 5) * 2;
+
+    score += points;
+    levelScores[levelIndex] += points;
+    levelCorrect[levelIndex]++;
+    solved++;
+    streak++;
+
+    $("feedback").className = "feedback show good";
+    $("feedback").textContent =
+      `✅ Case solved! +${points} XP. ${question.explanation}`;
+  } else {
+    streak = 0;
+
+    $("feedback").className = "feedback show try";
+    $("feedback").textContent =
+      `❌ Not quite. The best answer is "${question.choices[question.answer]}". ${question.explanation}`;
+  }
+
+  $("submitButton").textContent =
+    questionIndex === 9 ? "Complete Level →" : "Next Case →";
+
+  updateStats();
+}
+
+function showHint() {
+  if (answered) return;
+
+  const question = levels[levelIndex].questions[questionIndex];
+
+  $("hint").textContent = `💡 Detective hint: ${question.hint}`;
+  $("hint").classList.add("show");
+}
+
+function nextCase() {
+  if (!answered) return;
+
+  if (questionIndex < levels[levelIndex].questions.length - 1) {
+    questionIndex++;
+    renderQuestion();
+  } else {
+    finishLevel();
+  }
+}
+
+function reportDefinitionDetectiveAchievement() {
+  if (typeof window.reportAchievementCompletion !== "function") {
+    console.warn(
+      "Achievement tracker is unavailable. Check js/achievement-tracker.js."
+    );
+    return;
+  }
+
+  window.reportAchievementCompletion("definition_detective")
+    .then(result => {
+      console.log("Definition Detective achievement saved:", result);
+    })
+    .catch(error => {
+      console.error(
+        "Failed to save Definition Detective achievement:",
+        error
+      );
+    });
+}
+
+function finishLevel() {
+  $("gameScreen").style.display = "none";
+  $("resultScreen").classList.add("show");
+
+  const perfect = levelCorrect[levelIndex] === 10;
+
+  $("resultIcon").textContent = perfect ? "🏆" : "🕵️";
+  $("resultTitle").textContent = perfect
+    ? "Perfect Investigation!"
+    : `${levels[levelIndex].name} Complete!`;
+
+  $("finalScore").textContent = `${levelScores[levelIndex]} XP`;
+  $("resultMessage").textContent =
+    `You solved ${levelCorrect[levelIndex]} out of 10 cases in this level. Keep investigating to strengthen your vocabulary!`;
+
+  $("levelResults").innerHTML = levels.map((level, index) => {
+    const status = index < levelIndex
+      ? "Completed ✓"
+      : index === levelIndex
+        ? "Just completed"
+        : "🔒 Locked";
+
+    return `
+      <div class="result-row">
+        <span>
+          <strong>${level.name}</strong><br>
+          <small>${status}</small>
+        </span>
+        <span>
+          ${levelCorrect[index]}/10<br>
+          <strong>${levelScores[index]} XP</strong>
+        </span>
+      </div>
+    `;
+  }).join("");
+
+  if (levelIndex < levels.length - 1) {
+    $("nextLevelButton").style.display = "inline-block";
+    $("nextLevelButton").textContent =
+      `Start ${levels[levelIndex + 1].name} →`;
+  } else {
+    gameFinished = true;
+
+    $("nextLevelButton").style.display = "none";
+    $("resultIcon").textContent = "🏆";
+    $("resultTitle").textContent = "Master Detective!";
+    $("resultMessage").textContent =
+      `You completed all 30 cases and earned ${score} XP. You solved ${solved} cases correctly. Excellent investigation!`;
+
+    // Achievement is reported only after all three levels are completed.
+    reportDefinitionDetectiveAchievement();
+  }
+}
+
+function startLevel(index) {
+  if (index < 0 || index >= levels.length) return;
+
+  levelIndex = index;
+  questionIndex = 0;
+  streak = 0;
+
+  renderQuestion();
+}
+
+function restartGame() {
+  levelIndex = 0;
+  questionIndex = 0;
+  score = 0;
+  streak = 0;
+  solved = 0;
+  selectedAnswer = null;
+  answered = false;
+  levelScores = [0, 0, 0];
+  levelCorrect = [0, 0, 0];
+  gameFinished = false;
+
+  startLevel(0);
+}
+
+$("submitButton").addEventListener("click", () => {
+  if (answered) {
+    nextCase();
+  } else {
+    submitEvidence();
+  }
+});
+
+$("hintButton").addEventListener("click", showHint);
+$("restartButton").addEventListener("click", restartGame);
+$("playAgainButton").addEventListener("click", restartGame);
+
+$("nextLevelButton").addEventListener("click", () => {
+  if (levelIndex < levels.length - 1) {
+    startLevel(levelIndex + 1);
+  }
+});
+
+for (let i = 0; i < levels.length; i++) {
+  $(`level${i}`).addEventListener("click", () => {
+    if (i <= levelIndex) {
+      startLevel(i);
+    }
+  });
+}
+
+renderQuestion();
+</script>
+</body>
+<script src="js/achievement-tracker.js"></script>
+</html>

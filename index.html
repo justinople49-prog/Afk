@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadQuest</title>
+  <meta name="description" content="Welcome to ReadQuest, your reading adventure.">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe, #ede9fe);
+      color: #1e293b;
+    }
+
+    main {
+      width: 100%;
+      max-width: 440px;
+      padding: 36px 24px;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 12px 36px rgba(30, 41, 59, 0.12);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      color: #4f46e5;
+      font-size: 2.4rem;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #475569;
+    }
+
+    nav {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    a {
+      display: block;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      background: #4f46e5;
+      color: white;
+    }
+
+    a:last-child {
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    a:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ReadQuest</h1>
+    <p>Your reading adventure starts here!</p>
+    <p>Log in to continue, or create an account to begin your journey.</p>
+
+    <nav aria-label="Account options">
+      <a href="./login.html">Log In</a>
+      <a href="./signup.html">Sign Up</a>
+    </nav>
+  </main>
+</body>
+</html>
